@@ -10,146 +10,37 @@
 
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:#090b12;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-
-body{
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
-}
-
-.app{
-  width:100%;
-  max-width:620px;
-  margin:auto;
-  padding:24px 16px 40px
-}
-
-h1{
-  text-align:center;
-  font-size:46px;
-  margin:18px 0 28px;
-  letter-spacing:3px;
-  font-weight:900
-}
-
-.card{
-  background:#131724;
-  border:1px solid #292f43;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.2)
-}
-
-h2{margin-top:0}
-
-input,button{
-  width:100%;
-  height:54px;
-  border-radius:14px;
-  font-size:17px;
-  margin-top:10px
-}
-
-input{
-  padding:0 15px;
-  background:#090c14;
-  border:1px solid #353c51;
-  color:#fff;
-  outline:none
-}
-
-input:focus{border-color:#686aff}
-
-button{
-  border:0;
-  background:#6264ff;
-  color:#fff;
-  font-weight:800
-}
-
-button:active{transform:scale(.98)}
-
+html,body{margin:0;min-height:100%;background:#090b12;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.app{width:100%;max-width:620px;margin:auto;padding:20px 16px 40px}
+h1{text-align:center;font-size:46px;margin:18px 0 25px;letter-spacing:3px;font-weight:900}
+.card{background:#131724;border:1px solid #292f43;border-radius:20px;padding:20px;margin-bottom:16px}
+input,button,select{width:100%;height:54px;border-radius:14px;font-size:17px;margin-top:10px}
+input,select{padding:0 15px;background:#090c14;border:1px solid #353c51;color:#fff;outline:none}
+button{border:0;background:#6264ff;color:#fff;font-weight:800}
 button:disabled{opacity:.5}
-
 .secondary{background:#242a3b}
-
-.status{
-  margin-top:14px;
-  padding:13px;
-  border-radius:12px;
-  background:#1c2130;
-  font-size:14px;
-  line-height:1.4;
-  word-break:break-word
-}
-
-.ok{color:#7ee5a7}
-.err{color:#ff8199}
-
+.danger{background:#9d3850}
 .hidden{display:none!important}
-
-.code{
-  text-align:center;
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:12px 0
-}
-
-.player{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:13px;
-  border-radius:12px;
-  margin-top:8px
-}
-
-.host{
-  color:#8c8fff;
-  font-size:13px;
-  font-weight:700;
-  float:right
-}
-
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:10px
-}
-
-.tab{
-  flex:1;
-  margin:0;
-  background:#242a3b
-}
-
-.tab.active{
-  background:#6264ff
-}
-
-.center{
-  text-align:center
-}
-
-.small{
-  color:#9299ac;
-  font-size:13px;
-  text-align:center;
-  margin-top:14px
-}
-
-.divider{
-  height:1px;
-  background:#292f43;
-  margin:20px 0
-}
+.status{margin-top:13px;padding:13px;border-radius:12px;background:#1c2130;font-size:14px;line-height:1.4;word-break:break-word}
+.ok{color:#7ee5a7}.err{color:#ff8199}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{margin:0;background:#242a3b}
+.tab.active{background:#6264ff}
+.code{text-align:center;font-size:42px;font-weight:900;letter-spacing:7px;margin:12px 0}
+.player{background:#0d111b;border:1px solid #252b3c;padding:13px;border-radius:12px;margin-top:8px}
+.host{float:right;color:#8c8fff;font-size:13px;font-weight:700}
+.center{text-align:center}
+.small{text-align:center;color:#8e95a8;font-size:13px}
+.roleBox{text-align:center;padding:25px 10px}
+.role{font-size:42px;font-weight:900;margin:15px 0}
+.word{font-size:34px;font-weight:900;margin:15px 0}
+.category{color:#9ba2b5}
+.choice{background:#1d2332;border:1px solid #30384d;margin-top:8px}
+.choice.selected{background:#6264ff;border-color:#6264ff}
+.timer{font-size:52px;font-weight:900;text-align:center;margin:10px 0}
+.result{font-size:25px;text-align:center;font-weight:800;padding:15px}
+hr{border:0;border-top:1px solid #292f43;margin:20px 0}
 </style>
 </head>
 
@@ -162,100 +53,150 @@ button:disabled{opacity:.5}
 <!-- HOME -->
 <section id="home">
 
-  <div class="tabs">
-    <button id="createTab" class="tab active">Create Game</button>
-    <button id="joinTab" class="tab">Join Game</button>
-  </div>
+<div class="tabs">
+<button id="createTab" class="tab active">Create Game</button>
+<button id="joinTab" class="tab">Join Game</button>
+</div>
 
-  <!-- CREATE -->
-  <div id="createCard" class="card">
+<div id="createCard" class="card">
+<h2>Create Room</h2>
+<input id="createName" maxlength="24" placeholder="Your name" autocomplete="name">
+<button id="createButton">Create Room</button>
+<div id="createStatus" class="status">Checking multiplayer connection...</div>
+</div>
 
-    <h2>Create Room</h2>
-
-    <input
-      id="createName"
-      maxlength="24"
-      autocomplete="name"
-      placeholder="Your name"
-    >
-
-    <button id="createButton">
-      Create Room
-    </button>
-
-    <div id="createStatus" class="status">
-      Checking multiplayer connection...
-    </div>
-
-  </div>
-
-  <!-- JOIN -->
-  <div id="joinCard" class="card hidden">
-
-    <h2>Join Room</h2>
-
-    <input
-      id="joinName"
-      maxlength="24"
-      autocomplete="name"
-      placeholder="Your name"
-    >
-
-    <input
-      id="joinCode"
-      maxlength="6"
-      autocapitalize="characters"
-      autocomplete="off"
-      placeholder="6-character room code"
-    >
-
-    <button id="joinButton">
-      Join Game
-    </button>
-
-    <div id="joinStatus" class="status">
-      Enter the code your friend gave you.
-    </div>
-
-  </div>
+<div id="joinCard" class="card hidden">
+<h2>Join Room</h2>
+<input id="joinName" maxlength="24" placeholder="Your name" autocomplete="name">
+<input id="joinCode" maxlength="6" placeholder="6-character room code" autocapitalize="characters">
+<button id="joinButton">Join Game</button>
+<div id="joinStatus" class="status">Enter the room code from your friend.</div>
+</div>
 
 </section>
 
 
-<!-- ROOM -->
-<section id="room" class="card hidden">
+<!-- LOBBY -->
+<section id="lobby" class="card hidden">
 
-  <h2 class="center">Game Lobby</h2>
+<h2 class="center">Game Lobby</h2>
 
-  <div id="roomCode" class="code">------</div>
+<div id="roomCode" class="code">------</div>
 
-  <p class="center">
-    Share this code with your friends.
-  </p>
+<p class="center">Share this code with your friends.</p>
 
-  <div class="divider"></div>
+<hr>
 
-  <div id="players">
-    Loading players...
-  </div>
+<div id="players">Loading players...</div>
 
-  <button id="startButton">
-    Start Game
-  </button>
+<div id="hostControls" class="hidden">
 
-  <button id="leaveButton" class="secondary">
-    Leave Room
-  </button>
+<hr>
 
-  <div id="roomStatus" class="status">
-    Waiting for players...
-  </div>
+<h3>Game Settings</h3>
+
+<select id="category">
+<option value="random">Random Category</option>
+</select>
+
+<button id="startButton">Start Game</button>
+
+</div>
+
+<button id="leaveButton" class="secondary">Leave Room</button>
+
+<div id="lobbyStatus" class="status">Waiting for players...</div>
 
 </section>
 
-<p class="small">
-  Multiplayer powered by Supabase
+
+<!-- ROLE -->
+<section id="roleScreen" class="card hidden">
+
+<div class="roleBox">
+
+<div class="category" id="roleCategory"></div>
+
+<div id="roleTitle" class="role"></div>
+
+<div id="roleWord" class="word"></div>
+
+<p id="roleDescription"></p>
+
+<button id="readyButton">I'm Ready</button>
+
+</div>
+
+</section>
+
+
+<!-- CLUES -->
+<section id="clueScreen" class="card hidden">
+
+<h2 class="center">Clue Round</h2>
+
+<p class="center">
+Give a clue about the secret word.
+<br>
+Don't make it too obvious!
 </p>
+
+<div id="clueTimer" class="timer">60</div>
+
+<div id="clueStatus" class="status center">
+Waiting for the clue round...
+</div>
+
+<button id="openVotingButton">Start Voting</button>
+
+</section>
+
+
+<!-- VOTING -->
+<section id="votingScreen" class="card hidden">
+
+<h2 class="center">Vote</h2>
+
+<p class="center">
+Who do you think the Imposter is?
+</p>
+
+<div id="votePlayers"></div>
+
+<button id="submitVoteButton" disabled>
+Submit Vote
+</button>
+
+<div id="voteStatus" class="status center">
+Choose a player.
+</div>
+
+</section>
+
+
+<!-- RESULTS -->
+<section id="resultsScreen" class="card hidden">
+
+<h2 class="center">Results</h2>
+
+<div id="resultText" class="result">
+Calculating...
+</div>
+
+<div id="voteResults"></div>
+
+<button id="nextRoundButton">
+Next Round
+</button>
+
+<button id="backLobbyButton" class="secondary">
+Back to Lobby
+</button>
+
+</section>
+
+
+<p class="small">Powered by Supabase</p>
 
 </main>
 
@@ -263,756 +204,997 @@ button:disabled{opacity:.5}
 <script>
 "use strict";
 
-/* ==============================
+/* =====================================
    SUPABASE
-============================== */
+===================================== */
 
 const SUPABASE_URL =
-  "https://rcpxsidynmfstsihqyfc.supabase.co";
+"https://rcpxsidynmfstsihqyfc.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
+"sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
 const db =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
-/* ==============================
+/* =====================================
    STATE
-============================== */
+===================================== */
 
 let game = null;
 let player = null;
+let round = null;
 let channel = null;
+let selectedVote = null;
+let clueInterval = null;
 
 
-/* ==============================
+/* =====================================
    ELEMENTS
-============================== */
+===================================== */
 
-const home =
-  document.getElementById("home");
+const home = document.getElementById("home");
+const lobby = document.getElementById("lobby");
+const roleScreen = document.getElementById("roleScreen");
+const clueScreen = document.getElementById("clueScreen");
+const votingScreen = document.getElementById("votingScreen");
+const resultsScreen = document.getElementById("resultsScreen");
 
-const createCard =
-  document.getElementById("createCard");
+const createTab = document.getElementById("createTab");
+const joinTab = document.getElementById("joinTab");
 
-const joinCard =
-  document.getElementById("joinCard");
+const createCard = document.getElementById("createCard");
+const joinCard = document.getElementById("joinCard");
 
-const createTab =
-  document.getElementById("createTab");
+const createName = document.getElementById("createName");
+const joinName = document.getElementById("joinName");
+const joinCode = document.getElementById("joinCode");
 
-const joinTab =
-  document.getElementById("joinTab");
+const createButton = document.getElementById("createButton");
+const joinButton = document.getElementById("joinButton");
 
-const createName =
-  document.getElementById("createName");
+const createStatus = document.getElementById("createStatus");
+const joinStatus = document.getElementById("joinStatus");
 
-const joinName =
-  document.getElementById("joinName");
+const roomCode = document.getElementById("roomCode");
+const players = document.getElementById("players");
+const lobbyStatus = document.getElementById("lobbyStatus");
 
-const joinCode =
-  document.getElementById("joinCode");
+const hostControls = document.getElementById("hostControls");
+const category = document.getElementById("category");
+const startButton = document.getElementById("startButton");
+const leaveButton = document.getElementById("leaveButton");
 
-const createButton =
-  document.getElementById("createButton");
+const roleCategory = document.getElementById("roleCategory");
+const roleTitle = document.getElementById("roleTitle");
+const roleWord = document.getElementById("roleWord");
+const roleDescription = document.getElementById("roleDescription");
+const readyButton = document.getElementById("readyButton");
 
-const joinButton =
-  document.getElementById("joinButton");
+const clueTimer = document.getElementById("clueTimer");
+const clueStatus = document.getElementById("clueStatus");
+const openVotingButton = document.getElementById("openVotingButton");
 
-const createStatus =
-  document.getElementById("createStatus");
+const votePlayers = document.getElementById("votePlayers");
+const submitVoteButton = document.getElementById("submitVoteButton");
+const voteStatus = document.getElementById("voteStatus");
 
-const joinStatus =
-  document.getElementById("joinStatus");
+const resultText = document.getElementById("resultText");
+const voteResults = document.getElementById("voteResults");
 
-const room =
-  document.getElementById("room");
-
-const roomCode =
-  document.getElementById("roomCode");
-
-const players =
-  document.getElementById("players");
-
-const startButton =
-  document.getElementById("startButton");
-
-const leaveButton =
-  document.getElementById("leaveButton");
-
-const roomStatus =
-  document.getElementById("roomStatus");
+const nextRoundButton = document.getElementById("nextRoundButton");
+const backLobbyButton = document.getElementById("backLobbyButton");
 
 
-/* ==============================
+/* =====================================
    TOKEN
-============================== */
+===================================== */
 
-function getToken(){
+function token(){
 
-  let token =
-    localStorage.getItem(
-      "imposter_player_token"
-    );
+let t =
+localStorage.getItem("imposter_token");
 
-  if(!token){
+if(!t){
 
-    token =
-      crypto.randomUUID();
+t = crypto.randomUUID();
 
-    localStorage.setItem(
-      "imposter_player_token",
-      token
-    );
-  }
+localStorage.setItem(
+"imposter_token",
+t
+);
 
-  return token;
+}
+
+return t;
+
 }
 
 
-/* ==============================
+/* =====================================
    STATUS
-============================== */
+===================================== */
 
-function status(element,text,type=""){
-  element.textContent = text;
-  element.className =
-    "status " + type;
+function setStatus(el,text,type=""){
+
+el.textContent = text;
+el.className = "status " + type;
+
 }
 
 
-/* ==============================
+/* =====================================
+   SCREEN
+===================================== */
+
+function show(screen){
+
+[
+home,
+lobby,
+roleScreen,
+clueScreen,
+votingScreen,
+resultsScreen
+].forEach(x=>x.classList.add("hidden"));
+
+screen.classList.remove("hidden");
+
+}
+
+
+/* =====================================
    TABS
-============================== */
+===================================== */
 
-createTab.onclick = function(){
+createTab.onclick=()=>{
 
-  createTab.classList.add("active");
-  joinTab.classList.remove("active");
+createTab.classList.add("active");
+joinTab.classList.remove("active");
 
-  createCard.classList.remove("hidden");
-  joinCard.classList.add("hidden");
+createCard.classList.remove("hidden");
+joinCard.classList.add("hidden");
+
+};
+
+joinTab.onclick=()=>{
+
+joinTab.classList.add("active");
+createTab.classList.remove("active");
+
+joinCard.classList.remove("hidden");
+createCard.classList.add("hidden");
 
 };
 
 
-joinTab.onclick = function(){
-
-  joinTab.classList.add("active");
-  createTab.classList.remove("active");
-
-  joinCard.classList.remove("hidden");
-  createCard.classList.add("hidden");
-
-};
-
-
-/* ==============================
-   CHECK CONNECTION
-============================== */
+/* =====================================
+   CONNECTION
+===================================== */
 
 async function checkConnection(){
 
-  try{
+try{
 
-    const result =
-      await db
-        .from("game_categories")
-        .select("id")
-        .limit(1);
+const r =
+await db
+.from("game_categories")
+.select("id,name")
+.limit(1);
 
-    if(result.error)
-      throw result.error;
+if(r.error) throw r.error;
 
-    status(
-      createStatus,
-      "✓ Multiplayer server connected",
-      "ok"
-    );
+setStatus(
+createStatus,
+"✓ Multiplayer server connected",
+"ok"
+);
 
-  }catch(error){
+loadCategories();
 
-    console.error(error);
+}catch(e){
 
-    status(
-      createStatus,
-      "Connection error: " +
-      error.message,
-      "err"
-    );
+setStatus(
+createStatus,
+"Connection error: "+e.message,
+"err"
+);
 
-  }
+}
 
 }
 
 
-/* ==============================
-   CREATE GAME
-============================== */
+/* =====================================
+   CATEGORIES
+===================================== */
+
+async function loadCategories(){
+
+const r =
+await db
+.from("game_categories")
+.select("id,name")
+.eq("active",true)
+.order("name");
+
+if(r.error){
+
+console.error(r.error);
+return;
+
+}
+
+category.innerHTML =
+'<option value="random">Random Category</option>';
+
+(r.data||[]).forEach(c=>{
+
+const option =
+document.createElement("option");
+
+option.value=c.id;
+option.textContent=c.name;
+
+category.appendChild(option);
+
+});
+
+}
+
+
+/* =====================================
+   CREATE
+===================================== */
 
 async function createGame(){
 
-  const name =
-    createName.value.trim();
+const name =
+createName.value.trim();
 
-  if(!name){
+if(!name){
 
-    status(
-      createStatus,
-      "Enter your name.",
-      "err"
-    );
+setStatus(
+createStatus,
+"Enter your name.",
+"err"
+);
 
-    createName.focus();
+return;
 
-    return;
-  }
+}
 
-  createButton.disabled = true;
+createButton.disabled=true;
 
-  status(
-    createStatus,
-    "Creating room..."
-  );
+setStatus(
+createStatus,
+"Creating room..."
+);
 
-  try{
+try{
 
-    const token =
-      getToken();
+const r =
+await db.rpc(
+"create_game",
+{
+p_host_token:token(),
+p_name:name,
+p_max_players:12
+}
+);
 
-    const result =
-      await db.rpc(
-        "create_game",
-        {
-          p_host_token:token,
-          p_name:name,
-          p_max_players:12
-        }
-      );
+if(r.error) throw r.error;
 
-    console.log(
-      "CREATE RESULT",
-      result
-    );
+game=r.data.game;
+player=r.data.player;
 
-    if(result.error)
-      throw result.error;
+if(!game) throw new Error(
+"No room returned."
+);
 
-    if(!result.data)
-      throw new Error(
-        "No room was returned."
-      );
+openLobby();
 
-    game =
-      result.data.game;
+}catch(e){
 
-    player =
-      result.data.player;
+console.error(e);
 
-    if(!game || !game.id || !game.code){
+setStatus(
+createStatus,
+"Could not create room: "+e.message,
+"err"
+);
 
-      throw new Error(
-        "Invalid room returned."
-      );
+}finally{
 
-    }
+createButton.disabled=false;
 
-    openRoom();
-
-  }catch(error){
-
-    console.error(
-      "CREATE ERROR",
-      error
-    );
-
-    status(
-      createStatus,
-      "Could not create room: " +
-      error.message,
-      "err"
-    );
-
-  }finally{
-
-    createButton.disabled = false;
-
-  }
+}
 
 }
 
 
-/* ==============================
-   JOIN GAME
-============================== */
+/* =====================================
+   JOIN
+===================================== */
 
 async function joinGame(){
 
-  const name =
-    joinName.value.trim();
+const name =
+joinName.value.trim();
 
-  const code =
-    joinCode.value.trim().toUpperCase();
+const code =
+joinCode.value.trim().toUpperCase();
 
-  if(!name){
+if(!name){
 
-    status(
-      joinStatus,
-      "Enter your name.",
-      "err"
-    );
+setStatus(
+joinStatus,
+"Enter your name.",
+"err"
+);
 
-    joinName.focus();
+return;
 
-    return;
-  }
+}
 
-  if(!/^[A-Z0-9]{6}$/.test(code)){
+if(!/^[A-Z0-9]{6}$/.test(code)){
 
-    status(
-      joinStatus,
-      "Enter the 6-character room code.",
-      "err"
-    );
+setStatus(
+joinStatus,
+"Enter a valid 6-character room code.",
+"err"
+);
 
-    joinCode.focus();
+return;
 
-    return;
-  }
+}
 
-  joinButton.disabled = true;
+joinButton.disabled=true;
 
-  status(
-    joinStatus,
-    "Joining room..."
-  );
+setStatus(
+joinStatus,
+"Joining room..."
+);
 
-  try{
+try{
 
-    const token =
-      getToken();
+const r =
+await db.rpc(
+"join_game",
+{
+p_code:code,
+p_player_token:token(),
+p_name:name
+}
+);
 
-    const result =
-      await db.rpc(
-        "join_game",
-        {
-          p_code:code,
-          p_player_token:token,
-          p_name:name
-        }
-      );
+if(r.error) throw r.error;
 
-    console.log(
-      "JOIN RESULT",
-      result
-    );
+game=r.data.game;
+player=r.data.player;
 
-    if(result.error)
-      throw result.error;
+openLobby();
 
-    if(!result.data)
-      throw new Error(
-        "No room was returned."
-      );
+}catch(e){
 
-    game =
-      result.data.game;
+console.error(e);
 
-    player =
-      result.data.player;
+setStatus(
+joinStatus,
+"Could not join room: "+e.message,
+"err"
+);
 
-    if(!game || !game.id){
+}finally{
 
-      throw new Error(
-        "Invalid room returned."
-      );
+joinButton.disabled=false;
 
-    }
-
-    openRoom();
-
-  }catch(error){
-
-    console.error(
-      "JOIN ERROR",
-      error
-    );
-
-    status(
-      joinStatus,
-      "Could not join room: " +
-      error.message,
-      "err"
-    );
-
-  }finally{
-
-    joinButton.disabled = false;
-
-  }
+}
 
 }
 
 
-/* ==============================
-   OPEN ROOM
-============================== */
+/* =====================================
+   LOBBY
+===================================== */
 
-function openRoom(){
+function openLobby(){
 
-  home.classList.add("hidden");
-  room.classList.remove("hidden");
+show(lobby);
 
-  roomCode.textContent =
-    game.code;
+roomCode.textContent=game.code;
 
-  startButton.style.display =
-    player && player.is_host
-      ? "block"
-      : "none";
+hostControls.classList.toggle(
+"hidden",
+!player.is_host
+);
 
-  roomStatus.textContent =
-    "Waiting for players...";
-
-  loadPlayers();
-
-  subscribe();
+loadPlayers();
+subscribe();
 
 }
 
-
-/* ==============================
-   LOAD PLAYERS
-============================== */
 
 async function loadPlayers(){
 
-  if(!game)
-    return;
+if(!game)return;
 
-  const result =
-    await db
-      .from("game_players")
-      .select(
-        "id,display_name,is_host,is_alive"
-      )
-      .eq(
-        "game_id",
-        game.id
-      )
-      .order(
-        "joined_at",
-        {ascending:true}
-      );
+const r =
+await db
+.from("game_players")
+.select("id,display_name,is_host,is_alive")
+.eq("game_id",game.id)
+.order("joined_at");
 
-  if(result.error){
+if(r.error){
 
-    players.innerHTML =
-      "<p>Could not load players.</p>";
+players.innerHTML=
+"<p>Unable to load players.</p>";
 
-    console.error(result.error);
+return;
 
-    return;
-  }
+}
 
-  const list =
-    result.data || [];
+players.innerHTML=
+"<h3>Players ("+
+r.data.length+
+")</h3>";
 
-  players.innerHTML =
-    "<h3>Players (" +
-    list.length +
-    ")</h3>";
+r.data.forEach(p=>{
 
-  list.forEach(p=>{
+const div=
+document.createElement("div");
 
-    const div =
-      document.createElement("div");
+div.className="player";
 
-    div.className =
-      "player";
+div.textContent=p.display_name;
 
-    const span =
-      document.createElement("span");
+if(p.is_host){
 
-    span.textContent =
-      p.display_name;
+const host=
+document.createElement("span");
 
-    div.appendChild(span);
+host.className="host";
+host.textContent="HOST";
 
-    if(p.is_host){
+div.appendChild(host);
 
-      const host =
-        document.createElement("span");
+}
 
-      host.className =
-        "host";
+players.appendChild(div);
 
-      host.textContent =
-        "HOST";
+});
 
-      div.appendChild(host);
-
-    }
-
-    players.appendChild(div);
-
-  });
-
-  if(list.length < 3){
-
-    roomStatus.textContent =
-      "Waiting for at least 3 players...";
-
-  }else{
-
-    roomStatus.textContent =
-      list.length +
-      " players in the room.";
-
-  }
+lobbyStatus.textContent=
+r.data.length+
+" player"+
+(r.data.length===1?"":"s")+
+" in the room.";
 
 }
 
 
-/* ==============================
+/* =====================================
    REALTIME
-============================== */
+===================================== */
 
 function subscribe(){
 
-  if(!game)
-    return;
+if(channel)
+db.removeChannel(channel);
 
-  if(channel){
+channel=
+db.channel("game-"+game.id)
 
-    db.removeChannel(channel);
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"game_players",
+filter:"game_id=eq."+game.id
+},
+()=>loadPlayers()
+)
 
-  }
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"games",
+filter:"id=eq."+game.id
+},
+payload=>{
 
-  channel =
-    db
-      .channel(
-        "room-" + game.id
-      )
+if(payload.new &&
+payload.new.status){
 
-      .on(
-        "postgres_changes",
-        {
-          event:"*",
-          schema:"public",
-          table:"game_players",
-          filter:
-            "game_id=eq." +
-            game.id
-        },
-        function(){
+handlePhase(
+payload.new.status
+);
 
-          loadPlayers();
+}
 
-        }
-      )
+}
+)
 
-      .on(
-        "postgres_changes",
-        {
-          event:"*",
-          schema:"public",
-          table:"games",
-          filter:
-            "id=eq." +
-            game.id
-        },
-        function(payload){
-
-          console.log(
-            "GAME UPDATE",
-            payload
-          );
-
-          if(
-            payload.new &&
-            payload.new.status &&
-            payload.new.status !== "lobby"
-          ){
-
-            roomStatus.textContent =
-              "Game status: " +
-              payload.new.status;
-
-          }
-
-        }
-      )
-
-      .subscribe(
-        function(s){
-
-          console.log(
-            "Realtime:",
-            s
-          );
-
-        }
-      );
+.subscribe();
 
 }
 
 
-/* ==============================
+/* =====================================
    START GAME
-============================== */
+===================================== */
 
 async function startGame(){
 
-  if(!game || !player)
-    return;
+if(!player.is_host)return;
 
-  if(!player.is_host)
-    return;
+startButton.disabled=true;
 
-  startButton.disabled = true;
+try{
 
-  roomStatus.textContent =
-    "Starting game...";
+const r=
+await db.rpc(
+"start_game",
+{
+p_code:game.code,
+p_host_token:token()
+}
+);
 
-  try{
+if(r.error)throw r.error;
 
-    const result =
-      await db.rpc(
-        "start_game",
-        {
-          p_code:game.code,
-          p_host_token:getToken()
-        }
-      );
+handlePhase("playing");
 
-    console.log(
-      "START RESULT",
-      result
-    );
+}catch(e){
 
-    if(result.error)
-      throw result.error;
+alert(
+"Could not start game: "+e.message
+);
 
-    roomStatus.textContent =
-      "Game started!";
+}finally{
 
-  }catch(error){
+startButton.disabled=false;
 
-    console.error(
-      "START ERROR",
-      error
-    );
-
-    roomStatus.textContent =
-      "Could not start game: " +
-      error.message;
-
-  }finally{
-
-    startButton.disabled = false;
-
-  }
+}
 
 }
 
 
-/* ==============================
+/* =====================================
+   ROLE
+===================================== */
+
+async function loadRole(){
+
+const r=
+await db.rpc(
+"get_role",
+{
+p_code:game.code,
+p_player_token:token()
+}
+);
+
+if(r.error){
+
+alert(r.error.message);
+return;
+
+}
+
+const data=r.data;
+
+if(data.status==="lobby"){
+
+openLobby();
+return;
+
+}
+
+round=data.round;
+
+roleCategory.textContent=
+data.category;
+
+if(data.is_imposter){
+
+roleTitle.textContent="YOU ARE THE IMPOSTER";
+
+roleWord.textContent="";
+
+roleDescription.textContent=
+"You don't know the secret word. Listen carefully to the clues and try to blend in.";
+
+}else{
+
+roleTitle.textContent="YOU ARE NOT THE IMPOSTER";
+
+roleWord.textContent=
+data.word;
+
+roleDescription.textContent=
+"Give clues that prove you know the word without making it too obvious.";
+
+}
+
+show(roleScreen);
+
+}
+
+
+/* =====================================
+   READY
+===================================== */
+
+readyButton.onclick=async()=>{
+
+readyButton.disabled=true;
+
+if(player.is_host){
+
+await db.rpc(
+"set_phase",
+{
+p_code:game.code,
+p_host_token:token(),
+p_phase:"clues"
+}
+);
+
+}
+
+setTimeout(
+()=>handlePhase("clues"),
+500
+);
+
+};
+
+
+/* =====================================
+   CLUES
+===================================== */
+
+function startClues(){
+
+show(clueScreen);
+
+let time=60;
+
+clueTimer.textContent=time;
+
+clueStatus.textContent=
+"Give your clue!";
+
+openVotingButton.style.display=
+player.is_host?"block":"none";
+
+clearInterval(clueInterval);
+
+clueInterval=
+setInterval(()=>{
+
+time--;
+
+clueTimer.textContent=time;
+
+if(time<=0){
+
+clearInterval(clueInterval);
+
+if(player.is_host)
+openVoting();
+
+}
+
+},1000);
+
+}
+
+
+async function openVoting(){
+
+if(!player.is_host)return;
+
+await db.rpc(
+"set_phase",
+{
+p_code:game.code,
+p_host_token:token(),
+p_phase:"voting"
+}
+);
+
+handlePhase("voting");
+
+}
+
+
+/* =====================================
+   VOTING
+===================================== */
+
+async function showVoting(){
+
+show(votingScreen);
+
+selectedVote=null;
+submitVoteButton.disabled=true;
+
+const r=
+await db
+.from("game_players")
+.select("id,display_name,is_alive")
+.eq("game_id",game.id)
+.eq("is_alive",true);
+
+if(r.error){
+
+votePlayers.textContent=
+"Could not load players.";
+
+return;
+
+}
+
+votePlayers.innerHTML="";
+
+r.data.forEach(p=>{
+
+if(p.id===player.id)return;
+
+const b=
+document.createElement("button");
+
+b.className="choice";
+
+b.textContent=p.display_name;
+
+b.onclick=()=>{
+
+document
+.querySelectorAll(".choice")
+.forEach(x=>
+x.classList.remove("selected")
+);
+
+b.classList.add("selected");
+
+selectedVote=p.id;
+
+submitVoteButton.disabled=false;
+
+};
+
+votePlayers.appendChild(b);
+
+});
+
+}
+
+
+submitVoteButton.onclick=async()=>{
+
+if(!selectedVote)return;
+
+submitVoteButton.disabled=true;
+
+const r=
+await db.rpc(
+"cast_vote",
+{
+p_code:game.code,
+p_voter_token:token(),
+p_target_id:selectedVote
+}
+);
+
+if(r.error){
+
+voteStatus.textContent=
+r.error.message;
+
+submitVoteButton.disabled=false;
+
+return;
+
+}
+
+voteStatus.textContent=
+"Vote submitted. Waiting for everyone...";
+
+if(player.is_host){
+
+setTimeout(
+finishVoting,
+1500
+);
+
+}
+
+};
+
+
+/* =====================================
+   RESULTS
+===================================== */
+
+async function finishVoting(){
+
+const r=
+await db.rpc(
+"get_vote_result",
+{
+p_code:game.code,
+p_host_token:token()
+}
+);
+
+if(r.error){
+
+console.error(r.error);
+return;
+
+}
+
+resultText.textContent=
+"Voting complete!";
+
+voteResults.innerHTML="";
+
+(r.data||[]).forEach(p=>{
+
+const div=
+document.createElement("div");
+
+div.className="player";
+
+div.textContent=
+p.name+" — "+p.votes+
+(p.votes===1?" vote":" votes");
+
+voteResults.appendChild(div);
+
+});
+
+await db.rpc(
+"set_phase",
+{
+p_code:game.code,
+p_host_token:token(),
+p_phase:"results"
+}
+);
+
+showResults();
+
+}
+
+
+/* =====================================
+   RESULTS SCREEN
+===================================== */
+
+async function showResults(){
+
+show(resultsScreen);
+
+nextRoundButton.style.display=
+player.is_host?"block":"none";
+
+}
+
+
+/* =====================================
+   NEXT ROUND
+===================================== */
+
+nextRoundButton.onclick=async()=>{
+
+if(!player.is_host)return;
+
+await db.rpc(
+"start_game",
+{
+p_code:game.code,
+p_host_token:token()
+}
+);
+
+handlePhase("playing");
+
+};
+
+
+backLobbyButton.onclick=()=>{
+
+show(lobby);
+
+};
+
+
+/* =====================================
+   PHASE HANDLER
+===================================== */
+
+function handlePhase(phase){
+
+if(!game)return;
+
+if(phase==="lobby"){
+
+openLobby();
+
+}else if(phase==="playing"){
+
+loadRole();
+
+}else if(phase==="clues"){
+
+startClues();
+
+}else if(phase==="voting"){
+
+showVoting();
+
+}else if(phase==="results"){
+
+showResults();
+
+}
+
+}
+
+
+/* =====================================
    LEAVE
-============================== */
+===================================== */
 
-async function leaveGame(){
+leaveButton.onclick=async()=>{
 
-  if(channel){
+if(channel){
 
-    await db.removeChannel(
-      channel
-    );
+await db.removeChannel(channel);
 
-    channel = null;
-
-  }
-
-  game = null;
-  player = null;
-
-  room.classList.add(
-    "hidden"
-  );
-
-  home.classList.remove(
-    "hidden"
-  );
-
-  status(
-    createStatus,
-    "Ready to create a game.",
-    "ok"
-  );
+channel=null;
 
 }
 
+game=null;
+player=null;
 
-/* ==============================
+show(home);
+
+setStatus(
+createStatus,
+"Ready to create a game.",
+"ok"
+);
+
+};
+
+
+/* =====================================
    EVENTS
-============================== */
+===================================== */
 
-createButton.onclick =
-  createGame;
-
-joinButton.onclick =
-  joinGame;
-
-startButton.onclick =
-  startGame;
-
-leaveButton.onclick =
-  leaveGame;
+createButton.onclick=createGame;
+joinButton.onclick=joinGame;
+startButton.onclick=startGame;
+openVotingButton.onclick=openVoting;
 
 
-createName.addEventListener(
-  "keydown",
-  function(e){
-
-    if(e.key === "Enter")
-      createGame();
-
-  }
-);
-
-
-joinName.addEventListener(
-  "keydown",
-  function(e){
-
-    if(e.key === "Enter")
-      joinGame();
-
-  }
-);
-
-
-joinCode.addEventListener(
-  "input",
-  function(){
-
-    joinCode.value =
-      joinCode.value
-        .toUpperCase()
-        .replace(/[^A-Z0-9]/g,"")
-        .slice(0,6);
-
-  }
-);
-
-
-/* ==============================
-   START
-============================== */
+/* =====================================
+   INIT
+===================================== */
 
 checkConnection();
 
