@@ -1,154 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090b12">
 <title>IMPOSTER</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#090b12;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
 
-html, body {
-  margin: 0;
-  min-height: 100%;
-  background: #090b12;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+body{
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
 }
 
-body {
-  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+.app{
+  width:100%;
+  max-width:620px;
+  margin:auto;
+  padding:24px 16px 40px
 }
 
-.app {
-  width: 100%;
-  max-width: 620px;
-  margin: 0 auto;
-  padding: 24px 16px 40px;
+h1{
+  text-align:center;
+  font-size:46px;
+  margin:18px 0 28px;
+  letter-spacing:3px;
+  font-weight:900
 }
 
-h1 {
-  text-align: center;
-  font-size: 46px;
-  margin: 18px 0 28px;
-  letter-spacing: 3px;
-  font-weight: 900;
+.card{
+  background:#131724;
+  border:1px solid #292f43;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2)
 }
 
-.card {
-  background: #131724;
-  border: 1px solid #292f43;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+h2{margin-top:0}
+
+input,button{
+  width:100%;
+  height:54px;
+  border-radius:14px;
+  font-size:17px;
+  margin-top:10px
 }
 
-h2 {
-  margin-top: 0;
+input{
+  padding:0 15px;
+  background:#090c14;
+  border:1px solid #353c51;
+  color:#fff;
+  outline:none
 }
 
-input,
-button {
-  width: 100%;
-  height: 54px;
-  border-radius: 14px;
-  font-size: 17px;
-  margin-top: 10px;
+input:focus{border-color:#686aff}
+
+button{
+  border:0;
+  background:#6264ff;
+  color:#fff;
+  font-weight:800
 }
 
-input {
-  padding: 0 15px;
-  background: #090c14;
-  border: 1px solid #353c51;
-  color: white;
-  outline: none;
+button:active{transform:scale(.98)}
+
+button:disabled{opacity:.5}
+
+.secondary{background:#242a3b}
+
+.status{
+  margin-top:14px;
+  padding:13px;
+  border-radius:12px;
+  background:#1c2130;
+  font-size:14px;
+  line-height:1.4;
+  word-break:break-word
 }
 
-input:focus {
-  border-color: #6c6fff;
+.ok{color:#7ee5a7}
+.err{color:#ff8199}
+
+.hidden{display:none!important}
+
+.code{
+  text-align:center;
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:7px;
+  margin:12px 0
 }
 
-button {
-  border: 0;
-  background: #6264ff;
-  color: white;
-  font-weight: 800;
-  cursor: pointer;
+.player{
+  background:#0d111b;
+  border:1px solid #252b3c;
+  padding:13px;
+  border-radius:12px;
+  margin-top:8px
 }
 
-button:active {
-  transform: scale(.98);
+.host{
+  color:#8c8fff;
+  font-size:13px;
+  font-weight:700;
+  float:right
 }
 
-button:disabled {
-  opacity: .5;
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px
 }
 
-.secondary {
-  background: #242a3b;
+.tab{
+  flex:1;
+  margin:0;
+  background:#242a3b
 }
 
-.status {
-  margin-top: 14px;
-  padding: 13px;
-  border-radius: 12px;
-  background: #1c2130;
-  font-size: 14px;
-  line-height: 1.4;
-  word-break: break-word;
+.tab.active{
+  background:#6264ff
 }
 
-.ok {
-  color: #7ee5a7;
+.center{
+  text-align:center
 }
 
-.err {
-  color: #ff8199;
+.small{
+  color:#9299ac;
+  font-size:13px;
+  text-align:center;
+  margin-top:14px
 }
 
-.hidden {
-  display: none !important;
-}
-
-.code {
-  text-align: center;
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: 7px;
-  margin: 12px 0;
-}
-
-.players {
-  margin-top: 18px;
-}
-
-.player {
-  background: #0d111b;
-  border: 1px solid #252b3c;
-  padding: 13px;
-  border-radius: 12px;
-  margin-top: 8px;
-}
-
-.host {
-  color: #8c8fff;
-  font-size: 13px;
-  font-weight: 700;
-  float: right;
-}
-
-.small {
-  text-align: center;
-  color: #8d94a8;
-  font-size: 13px;
-  margin-top: 14px;
+.divider{
+  height:1px;
+  background:#292f43;
+  margin:20px 0
 }
 </style>
 </head>
@@ -157,60 +157,105 @@ button:disabled {
 
 <main class="app">
 
-  <h1>IMPOSTER</h1>
+<h1>IMPOSTER</h1>
 
-  <!-- HOME -->
-  <section id="home" class="card">
+<!-- HOME -->
+<section id="home">
+
+  <div class="tabs">
+    <button id="createTab" class="tab active">Create Game</button>
+    <button id="joinTab" class="tab">Join Game</button>
+  </div>
+
+  <!-- CREATE -->
+  <div id="createCard" class="card">
 
     <h2>Create Room</h2>
 
     <input
-      id="name"
-      type="text"
+      id="createName"
       maxlength="24"
       autocomplete="name"
-      placeholder="Enter your name"
+      placeholder="Your name"
     >
 
     <button id="createButton">
       Create Room
     </button>
 
-    <div id="status" class="status">
+    <div id="createStatus" class="status">
       Checking multiplayer connection...
     </div>
 
-  </section>
+  </div>
 
+  <!-- JOIN -->
+  <div id="joinCard" class="card hidden">
 
-  <!-- ROOM -->
-  <section id="room" class="card hidden">
+    <h2>Join Room</h2>
 
-    <h2>Game Lobby</h2>
+    <input
+      id="joinName"
+      maxlength="24"
+      autocomplete="name"
+      placeholder="Your name"
+    >
 
-    <div id="roomCode" class="code">------</div>
+    <input
+      id="joinCode"
+      maxlength="6"
+      autocapitalize="characters"
+      autocomplete="off"
+      placeholder="6-character room code"
+    >
 
-    <p style="text-align:center;color:#9ba2b5;">
-      Share this code with your friends.
-    </p>
+    <button id="joinButton">
+      Join Game
+    </button>
 
-    <div id="players" class="players">
-      Loading players...
+    <div id="joinStatus" class="status">
+      Enter the code your friend gave you.
     </div>
 
-    <button id="startButton">
-      Start Game
-    </button>
+  </div>
 
-    <button id="leaveButton" class="secondary">
-      Leave Room
-    </button>
+</section>
 
-  </section>
 
-  <p class="small">
-    Multiplayer powered by Supabase
+<!-- ROOM -->
+<section id="room" class="card hidden">
+
+  <h2 class="center">Game Lobby</h2>
+
+  <div id="roomCode" class="code">------</div>
+
+  <p class="center">
+    Share this code with your friends.
   </p>
+
+  <div class="divider"></div>
+
+  <div id="players">
+    Loading players...
+  </div>
+
+  <button id="startButton">
+    Start Game
+  </button>
+
+  <button id="leaveButton" class="secondary">
+    Leave Room
+  </button>
+
+  <div id="roomStatus" class="status">
+    Waiting for players...
+  </div>
+
+</section>
+
+<p class="small">
+  Multiplayer powered by Supabase
+</p>
 
 </main>
 
@@ -218,9 +263,9 @@ button:disabled {
 <script>
 "use strict";
 
-/* =========================
+/* ==============================
    SUPABASE
-========================= */
+============================== */
 
 const SUPABASE_URL =
   "https://rcpxsidynmfstsihqyfc.supabase.co";
@@ -228,37 +273,61 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
-const supabaseClient =
+const db =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
 
-/* =========================
+/* ==============================
    STATE
-========================= */
+============================== */
 
-let currentGame = null;
-let currentPlayer = null;
-let roomChannel = null;
+let game = null;
+let player = null;
+let channel = null;
 
 
-/* =========================
+/* ==============================
    ELEMENTS
-========================= */
+============================== */
 
-const nameInput =
-  document.getElementById("name");
+const home =
+  document.getElementById("home");
+
+const createCard =
+  document.getElementById("createCard");
+
+const joinCard =
+  document.getElementById("joinCard");
+
+const createTab =
+  document.getElementById("createTab");
+
+const joinTab =
+  document.getElementById("joinTab");
+
+const createName =
+  document.getElementById("createName");
+
+const joinName =
+  document.getElementById("joinName");
+
+const joinCode =
+  document.getElementById("joinCode");
 
 const createButton =
   document.getElementById("createButton");
 
-const statusBox =
-  document.getElementById("status");
+const joinButton =
+  document.getElementById("joinButton");
 
-const home =
-  document.getElementById("home");
+const createStatus =
+  document.getElementById("createStatus");
+
+const joinStatus =
+  document.getElementById("joinStatus");
 
 const room =
   document.getElementById("room");
@@ -266,7 +335,7 @@ const room =
 const roomCode =
   document.getElementById("roomCode");
 
-const playersBox =
+const players =
   document.getElementById("players");
 
 const startButton =
@@ -275,19 +344,25 @@ const startButton =
 const leaveButton =
   document.getElementById("leaveButton");
 
+const roomStatus =
+  document.getElementById("roomStatus");
 
-/* =========================
-   PLAYER TOKEN
-========================= */
 
-function getPlayerToken() {
+/* ==============================
+   TOKEN
+============================== */
+
+function getToken(){
 
   let token =
-    localStorage.getItem("imposter_player_token");
+    localStorage.getItem(
+      "imposter_player_token"
+    );
 
-  if (!token) {
+  if(!token){
 
-    token = crypto.randomUUID();
+    token =
+      crypto.randomUUID();
 
     localStorage.setItem(
       "imposter_player_token",
@@ -299,241 +374,360 @@ function getPlayerToken() {
 }
 
 
-/* =========================
+/* ==============================
    STATUS
-========================= */
+============================== */
 
-function setStatus(message, type = "") {
-
-  statusBox.textContent = message;
-
-  statusBox.className =
+function status(element,text,type=""){
+  element.textContent = text;
+  element.className =
     "status " + type;
 }
 
 
-/* =========================
-   CONNECTION TEST
-========================= */
+/* ==============================
+   TABS
+============================== */
 
-async function checkConnection() {
+createTab.onclick = function(){
 
-  try {
+  createTab.classList.add("active");
+  joinTab.classList.remove("active");
+
+  createCard.classList.remove("hidden");
+  joinCard.classList.add("hidden");
+
+};
+
+
+joinTab.onclick = function(){
+
+  joinTab.classList.add("active");
+  createTab.classList.remove("active");
+
+  joinCard.classList.remove("hidden");
+  createCard.classList.add("hidden");
+
+};
+
+
+/* ==============================
+   CHECK CONNECTION
+============================== */
+
+async function checkConnection(){
+
+  try{
 
     const result =
-      await supabaseClient
+      await db
         .from("game_categories")
         .select("id")
         .limit(1);
 
-    if (result.error) {
+    if(result.error)
       throw result.error;
-    }
 
-    setStatus(
+    status(
+      createStatus,
       "✓ Multiplayer server connected",
       "ok"
     );
 
-  } catch (error) {
+  }catch(error){
 
-    console.error(
-      "Supabase connection error:",
-      error
-    );
+    console.error(error);
 
-    setStatus(
+    status(
+      createStatus,
       "Connection error: " +
-      (error.message || "Unknown error"),
+      error.message,
       "err"
     );
+
   }
+
 }
 
 
-/* =========================
-   CREATE ROOM
-========================= */
+/* ==============================
+   CREATE GAME
+============================== */
 
-async function createRoom() {
+async function createGame(){
 
   const name =
-    nameInput.value.trim();
+    createName.value.trim();
 
-  if (!name) {
+  if(!name){
 
-    setStatus(
-      "Please enter your name.",
+    status(
+      createStatus,
+      "Enter your name.",
       "err"
     );
 
-    nameInput.focus();
+    createName.focus();
 
     return;
   }
 
   createButton.disabled = true;
 
-  setStatus(
+  status(
+    createStatus,
     "Creating room..."
   );
 
-  try {
+  try{
 
     const token =
-      getPlayerToken();
+      getToken();
 
     const result =
-      await supabaseClient.rpc(
+      await db.rpc(
         "create_game",
         {
-          p_host_token: token,
-          p_name: name,
-          p_max_players: 12
+          p_host_token:token,
+          p_name:name,
+          p_max_players:12
         }
       );
 
     console.log(
-      "create_game result:",
+      "CREATE RESULT",
       result
     );
 
-    if (result.error) {
+    if(result.error)
       throw result.error;
-    }
 
-    if (!result.data) {
+    if(!result.data)
       throw new Error(
-        "The server did not return a room."
+        "No room was returned."
       );
-    }
 
-    currentGame =
+    game =
       result.data.game;
 
-    currentPlayer =
+    player =
       result.data.player;
 
-
-    if (!currentGame ||
-        !currentGame.id ||
-        !currentGame.code) {
+    if(!game || !game.id || !game.code){
 
       throw new Error(
-        "Invalid room returned by server."
+        "Invalid room returned."
       );
+
     }
 
+    openRoom();
 
-    /* Save room locally */
-
-    localStorage.setItem(
-      "imposter_game_id",
-      currentGame.id
-    );
-
-    localStorage.setItem(
-      "imposter_game_code",
-      currentGame.code
-    );
-
-
-    /* Show room */
-
-    roomCode.textContent =
-      currentGame.code;
-
-    home.classList.add(
-      "hidden"
-    );
-
-    room.classList.remove(
-      "hidden"
-    );
-
-
-    await loadPlayers();
-
-    subscribeToRoom();
-
-
-  } catch (error) {
+  }catch(error){
 
     console.error(
-      "CREATE ROOM ERROR:",
+      "CREATE ERROR",
       error
     );
 
-    setStatus(
+    status(
+      createStatus,
       "Could not create room: " +
-      (error.message || "Unknown error"),
+      error.message,
       "err"
     );
 
-  } finally {
+  }finally{
 
     createButton.disabled = false;
+
   }
+
 }
 
 
-/* =========================
-   LOAD PLAYERS
-========================= */
+/* ==============================
+   JOIN GAME
+============================== */
 
-async function loadPlayers() {
+async function joinGame(){
 
-  if (!currentGame) {
+  const name =
+    joinName.value.trim();
+
+  const code =
+    joinCode.value.trim().toUpperCase();
+
+  if(!name){
+
+    status(
+      joinStatus,
+      "Enter your name.",
+      "err"
+    );
+
+    joinName.focus();
+
     return;
   }
 
-  playersBox.innerHTML =
-    "<p>Loading players...</p>";
+  if(!/^[A-Z0-9]{6}$/.test(code)){
 
+    status(
+      joinStatus,
+      "Enter the 6-character room code.",
+      "err"
+    );
+
+    joinCode.focus();
+
+    return;
+  }
+
+  joinButton.disabled = true;
+
+  status(
+    joinStatus,
+    "Joining room..."
+  );
+
+  try{
+
+    const token =
+      getToken();
+
+    const result =
+      await db.rpc(
+        "join_game",
+        {
+          p_code:code,
+          p_player_token:token,
+          p_name:name
+        }
+      );
+
+    console.log(
+      "JOIN RESULT",
+      result
+    );
+
+    if(result.error)
+      throw result.error;
+
+    if(!result.data)
+      throw new Error(
+        "No room was returned."
+      );
+
+    game =
+      result.data.game;
+
+    player =
+      result.data.player;
+
+    if(!game || !game.id){
+
+      throw new Error(
+        "Invalid room returned."
+      );
+
+    }
+
+    openRoom();
+
+  }catch(error){
+
+    console.error(
+      "JOIN ERROR",
+      error
+    );
+
+    status(
+      joinStatus,
+      "Could not join room: " +
+      error.message,
+      "err"
+    );
+
+  }finally{
+
+    joinButton.disabled = false;
+
+  }
+
+}
+
+
+/* ==============================
+   OPEN ROOM
+============================== */
+
+function openRoom(){
+
+  home.classList.add("hidden");
+  room.classList.remove("hidden");
+
+  roomCode.textContent =
+    game.code;
+
+  startButton.style.display =
+    player && player.is_host
+      ? "block"
+      : "none";
+
+  roomStatus.textContent =
+    "Waiting for players...";
+
+  loadPlayers();
+
+  subscribe();
+
+}
+
+
+/* ==============================
+   LOAD PLAYERS
+============================== */
+
+async function loadPlayers(){
+
+  if(!game)
+    return;
 
   const result =
-    await supabaseClient
+    await db
       .from("game_players")
       .select(
         "id,display_name,is_host,is_alive"
       )
       .eq(
         "game_id",
-        currentGame.id
+        game.id
       )
       .order(
         "joined_at",
-        {
-          ascending: true
-        }
+        {ascending:true}
       );
 
+  if(result.error){
 
-  if (result.error) {
+    players.innerHTML =
+      "<p>Could not load players.</p>";
 
-    console.error(
-      "Player loading error:",
-      result.error
-    );
-
-    playersBox.innerHTML =
-      "<p>Unable to load players.</p>";
+    console.error(result.error);
 
     return;
   }
 
-
   const list =
     result.data || [];
 
-
-  playersBox.innerHTML =
+  players.innerHTML =
     "<h3>Players (" +
     list.length +
     ")</h3>";
 
-
-  list.forEach(player => {
+  list.forEach(p=>{
 
     const div =
       document.createElement("div");
@@ -541,16 +735,15 @@ async function loadPlayers() {
     div.className =
       "player";
 
-    const name =
+    const span =
       document.createElement("span");
 
-    name.textContent =
-      player.display_name;
+    span.textContent =
+      p.display_name;
 
-    div.appendChild(name);
+    div.appendChild(span);
 
-
-    if (player.is_host) {
+    if(p.is_host){
 
       const host =
         document.createElement("span");
@@ -562,192 +755,264 @@ async function loadPlayers() {
         "HOST";
 
       div.appendChild(host);
+
     }
 
-
-    playersBox.appendChild(div);
+    players.appendChild(div);
 
   });
+
+  if(list.length < 3){
+
+    roomStatus.textContent =
+      "Waiting for at least 3 players...";
+
+  }else{
+
+    roomStatus.textContent =
+      list.length +
+      " players in the room.";
+
+  }
+
 }
 
 
-/* =========================
+/* ==============================
    REALTIME
-========================= */
+============================== */
 
-function subscribeToRoom() {
+function subscribe(){
 
-  if (!currentGame) {
+  if(!game)
     return;
+
+  if(channel){
+
+    db.removeChannel(channel);
+
   }
 
-
-  if (roomChannel) {
-
-    supabaseClient.removeChannel(
-      roomChannel
-    );
-  }
-
-
-  roomChannel =
-    supabaseClient
+  channel =
+    db
       .channel(
-        "imposter-room-" +
-        currentGame.id
+        "room-" + game.id
       )
-
 
       .on(
         "postgres_changes",
         {
-          event: "*",
-          schema: "public",
-          table: "game_players",
+          event:"*",
+          schema:"public",
+          table:"game_players",
           filter:
             "game_id=eq." +
-            currentGame.id
+            game.id
         },
-        function() {
+        function(){
 
           loadPlayers();
 
         }
       )
 
-
       .on(
         "postgres_changes",
         {
-          event: "*",
-          schema: "public",
-          table: "games",
+          event:"*",
+          schema:"public",
+          table:"games",
           filter:
             "id=eq." +
-            currentGame.id
+            game.id
         },
-        function(payload) {
+        function(payload){
 
           console.log(
-            "Game update:",
+            "GAME UPDATE",
             payload
           );
+
+          if(
+            payload.new &&
+            payload.new.status &&
+            payload.new.status !== "lobby"
+          ){
+
+            roomStatus.textContent =
+              "Game status: " +
+              payload.new.status;
+
+          }
 
         }
       )
 
-
       .subscribe(
-        function(status) {
+        function(s){
 
           console.log(
-            "Realtime status:",
-            status
+            "Realtime:",
+            s
           );
 
         }
       );
+
 }
 
 
-/* =========================
+/* ==============================
    START GAME
-========================= */
+============================== */
 
-startButton.addEventListener(
-  "click",
-  async function() {
+async function startGame(){
 
-    if (!currentGame) {
-      return;
-    }
+  if(!game || !player)
+    return;
 
-    setStatus(
-      "The lobby is ready. Game-start logic will be connected next.",
-      "ok"
+  if(!player.is_host)
+    return;
+
+  startButton.disabled = true;
+
+  roomStatus.textContent =
+    "Starting game...";
+
+  try{
+
+    const result =
+      await db.rpc(
+        "start_game",
+        {
+          p_code:game.code,
+          p_host_token:getToken()
+        }
+      );
+
+    console.log(
+      "START RESULT",
+      result
     );
+
+    if(result.error)
+      throw result.error;
+
+    roomStatus.textContent =
+      "Game started!";
+
+  }catch(error){
+
+    console.error(
+      "START ERROR",
+      error
+    );
+
+    roomStatus.textContent =
+      "Could not start game: " +
+      error.message;
+
+  }finally{
+
+    startButton.disabled = false;
 
   }
-);
+
+}
 
 
-/* =========================
-   LEAVE ROOM
-========================= */
+/* ==============================
+   LEAVE
+============================== */
 
-leaveButton.addEventListener(
-  "click",
-  async function() {
+async function leaveGame(){
 
-    if (roomChannel) {
+  if(channel){
 
-      await supabaseClient
-        .removeChannel(
-          roomChannel
-        );
-
-      roomChannel = null;
-    }
-
-
-    currentGame = null;
-    currentPlayer = null;
-
-
-    localStorage.removeItem(
-      "imposter_game_id"
+    await db.removeChannel(
+      channel
     );
 
-    localStorage.removeItem(
-      "imposter_game_code"
-    );
+    channel = null;
 
-
-    room.classList.add(
-      "hidden"
-    );
-
-    home.classList.remove(
-      "hidden"
-    );
-
-    setStatus(
-      "You left the room.",
-      "ok"
-    );
   }
-);
+
+  game = null;
+  player = null;
+
+  room.classList.add(
+    "hidden"
+  );
+
+  home.classList.remove(
+    "hidden"
+  );
+
+  status(
+    createStatus,
+    "Ready to create a game.",
+    "ok"
+  );
+
+}
 
 
-/* =========================
-   BUTTON
-========================= */
+/* ==============================
+   EVENTS
+============================== */
 
-createButton.addEventListener(
-  "click",
-  createRoom
-);
+createButton.onclick =
+  createGame;
+
+joinButton.onclick =
+  joinGame;
+
+startButton.onclick =
+  startGame;
+
+leaveButton.onclick =
+  leaveGame;
 
 
-/* =========================
-   ENTER KEY
-========================= */
-
-nameInput.addEventListener(
+createName.addEventListener(
   "keydown",
-  function(event) {
+  function(e){
 
-    if (event.key === "Enter") {
-      createRoom();
-    }
+    if(e.key === "Enter")
+      createGame();
 
   }
 );
 
 
-/* =========================
+joinName.addEventListener(
+  "keydown",
+  function(e){
+
+    if(e.key === "Enter")
+      joinGame();
+
+  }
+);
+
+
+joinCode.addEventListener(
+  "input",
+  function(){
+
+    joinCode.value =
+      joinCode.value
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g,"")
+        .slice(0,6);
+
+  }
+);
+
+
+/* ==============================
    START
-========================= */
+============================== */
 
 checkConnection();
 
