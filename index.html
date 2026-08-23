@@ -1,1 +1,757 @@
-<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b12"><title>IMPOSTER</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>body{margin:0;background:#090b12;color:white;font-family:-apple-system,BlinkMacSystemFont,sans-serif}.app{max-width:620px;margin:auto;padding:24px 16px}h1{text-align:center;font-size:44px} .card{background:#131724;border:1px solid #292f43;border-radius:20px;padding:20px;margin:14px 0}input,button{width:100%;height:54px;box-sizing:border-box;border-radius:13px;margin:6px 0;font-size:17px}input{padding:0 14px;background:#090c14;border:1px solid #353c51;color:white}button{border:0;background:#6264ff;color:white;font-weight:700}button:disabled{opacity:.5}.status{padding:12px;border-radius:12px;background:#1c2130;margin-top:12px;word-break:break-word}.ok{color:#7ee5a7}.err{color:#ff8199}.code{text-align:center;font-size:42px;font-weight:900;letter-spacing:7px}</style></head><body><main class="app"><h1>IMPOSTER</h1><div class="card"><h2>Create Room</h2><input id="name" autocomplete="name" placeholder="Your name"><button id="create">Create Room</button><div id="status" class="status">Connecting to multiplayer server...</div></div><div id="room" class="card" style="display:none"><div class="code" id="code"></div><p style="text-align:center">Share this code with your friends.</p><div id="players"></div><button id="start">Start Game</button></div></main><script>const URL='https://rcpxsidynmfstsihqyfc.supabase.co',KEY='sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V',s=supabase.createClient(URL,KEY);let game,player;const status=document.getElementById('status');function tok(){let x=localStorage.getItem('imp_token');if(!x){x=crypto.randomUUID();localStorage.setItem('imp_token',x)}return x}async function check(){try{let r=await s.from('game_categories').select('id').limit(1);if(r.error)throw r.error;status.textContent='âœ“ Multiplayer server connected';status.className='status ok'}catch(e){status.textContent='Connection error: '+e.message;status.className='status err'}}async function create(){let n=document.getElementById('name').value.trim();if(!n){status.textContent='Enter your name.';status.className='status err';return}document.getElementById('create').disabled=true;status.textContent='Creating room...';try{let r=await s.rpc('create_game',{p_host_token:tok(),p_name:n,p_max_players:12});if(r.error)throw r.error;if(!r.data?.game)throw Error('No room returned');game=r.data.game;player=r.data.player;document.getElementById('code').textContent=game.code;document.getElementById('room').style.display='block';status.textContent='âœ“ Room created';status.className='status ok';watch()}catch(e){status.textContent='CREATE ERROR: '+e.message;status.className='status err';console.error(e)}finally{document.getElementById('create').disabled=false}}async function watch(){async function load(){let r=await s.from('game_players').select('display_name,is_host').eq('game_id',game.id);if(!r.error)document.getElementById('players').innerHTML='<h3>Players ('+r.data.length+')</h3>'+r.data.map(p=>'<p>'+p.display_name+(p.is_host?' â€” HOST':'')+'</p>').join('')}load();s.channel('room-'+game.id).on('postgres_changes',{event:'*',schema:'public',table:'game_players',filter:'game_id=eq.'+game.id},load).subscribe()}document.getElementById('create').onclick=create;check();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090b12">
+<title>IMPOSTER</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: #090b12;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+
+.app {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 46px;
+  margin: 18px 0 28px;
+  letter-spacing: 3px;
+  font-weight: 900;
+}
+
+.card {
+  background: #131724;
+  border: 1px solid #292f43;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+
+h2 {
+  margin-top: 0;
+}
+
+input,
+button {
+  width: 100%;
+  height: 54px;
+  border-radius: 14px;
+  font-size: 17px;
+  margin-top: 10px;
+}
+
+input {
+  padding: 0 15px;
+  background: #090c14;
+  border: 1px solid #353c51;
+  color: white;
+  outline: none;
+}
+
+input:focus {
+  border-color: #6c6fff;
+}
+
+button {
+  border: 0;
+  background: #6264ff;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+button:disabled {
+  opacity: .5;
+}
+
+.secondary {
+  background: #242a3b;
+}
+
+.status {
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #1c2130;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.ok {
+  color: #7ee5a7;
+}
+
+.err {
+  color: #ff8199;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.code {
+  text-align: center;
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 7px;
+  margin: 12px 0;
+}
+
+.players {
+  margin-top: 18px;
+}
+
+.player {
+  background: #0d111b;
+  border: 1px solid #252b3c;
+  padding: 13px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.host {
+  color: #8c8fff;
+  font-size: 13px;
+  font-weight: 700;
+  float: right;
+}
+
+.small {
+  text-align: center;
+  color: #8d94a8;
+  font-size: 13px;
+  margin-top: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <h1>IMPOSTER</h1>
+
+  <!-- HOME -->
+  <section id="home" class="card">
+
+    <h2>Create Room</h2>
+
+    <input
+      id="name"
+      type="text"
+      maxlength="24"
+      autocomplete="name"
+      placeholder="Enter your name"
+    >
+
+    <button id="createButton">
+      Create Room
+    </button>
+
+    <div id="status" class="status">
+      Checking multiplayer connection...
+    </div>
+
+  </section>
+
+
+  <!-- ROOM -->
+  <section id="room" class="card hidden">
+
+    <h2>Game Lobby</h2>
+
+    <div id="roomCode" class="code">------</div>
+
+    <p style="text-align:center;color:#9ba2b5;">
+      Share this code with your friends.
+    </p>
+
+    <div id="players" class="players">
+      Loading players...
+    </div>
+
+    <button id="startButton">
+      Start Game
+    </button>
+
+    <button id="leaveButton" class="secondary">
+      Leave Room
+    </button>
+
+  </section>
+
+  <p class="small">
+    Multiplayer powered by Supabase
+  </p>
+
+</main>
+
+
+<script>
+"use strict";
+
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL =
+  "https://rcpxsidynmfstsihqyfc.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================
+   STATE
+========================= */
+
+let currentGame = null;
+let currentPlayer = null;
+let roomChannel = null;
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const nameInput =
+  document.getElementById("name");
+
+const createButton =
+  document.getElementById("createButton");
+
+const statusBox =
+  document.getElementById("status");
+
+const home =
+  document.getElementById("home");
+
+const room =
+  document.getElementById("room");
+
+const roomCode =
+  document.getElementById("roomCode");
+
+const playersBox =
+  document.getElementById("players");
+
+const startButton =
+  document.getElementById("startButton");
+
+const leaveButton =
+  document.getElementById("leaveButton");
+
+
+/* =========================
+   PLAYER TOKEN
+========================= */
+
+function getPlayerToken() {
+
+  let token =
+    localStorage.getItem("imposter_player_token");
+
+  if (!token) {
+
+    token = crypto.randomUUID();
+
+    localStorage.setItem(
+      "imposter_player_token",
+      token
+    );
+  }
+
+  return token;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function setStatus(message, type = "") {
+
+  statusBox.textContent = message;
+
+  statusBox.className =
+    "status " + type;
+}
+
+
+/* =========================
+   CONNECTION TEST
+========================= */
+
+async function checkConnection() {
+
+  try {
+
+    const result =
+      await supabaseClient
+        .from("game_categories")
+        .select("id")
+        .limit(1);
+
+    if (result.error) {
+      throw result.error;
+    }
+
+    setStatus(
+      "✓ Multiplayer server connected",
+      "ok"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Supabase connection error:",
+      error
+    );
+
+    setStatus(
+      "Connection error: " +
+      (error.message || "Unknown error"),
+      "err"
+    );
+  }
+}
+
+
+/* =========================
+   CREATE ROOM
+========================= */
+
+async function createRoom() {
+
+  const name =
+    nameInput.value.trim();
+
+  if (!name) {
+
+    setStatus(
+      "Please enter your name.",
+      "err"
+    );
+
+    nameInput.focus();
+
+    return;
+  }
+
+  createButton.disabled = true;
+
+  setStatus(
+    "Creating room..."
+  );
+
+  try {
+
+    const token =
+      getPlayerToken();
+
+    const result =
+      await supabaseClient.rpc(
+        "create_game",
+        {
+          p_host_token: token,
+          p_name: name,
+          p_max_players: 12
+        }
+      );
+
+    console.log(
+      "create_game result:",
+      result
+    );
+
+    if (result.error) {
+      throw result.error;
+    }
+
+    if (!result.data) {
+      throw new Error(
+        "The server did not return a room."
+      );
+    }
+
+    currentGame =
+      result.data.game;
+
+    currentPlayer =
+      result.data.player;
+
+
+    if (!currentGame ||
+        !currentGame.id ||
+        !currentGame.code) {
+
+      throw new Error(
+        "Invalid room returned by server."
+      );
+    }
+
+
+    /* Save room locally */
+
+    localStorage.setItem(
+      "imposter_game_id",
+      currentGame.id
+    );
+
+    localStorage.setItem(
+      "imposter_game_code",
+      currentGame.code
+    );
+
+
+    /* Show room */
+
+    roomCode.textContent =
+      currentGame.code;
+
+    home.classList.add(
+      "hidden"
+    );
+
+    room.classList.remove(
+      "hidden"
+    );
+
+
+    await loadPlayers();
+
+    subscribeToRoom();
+
+
+  } catch (error) {
+
+    console.error(
+      "CREATE ROOM ERROR:",
+      error
+    );
+
+    setStatus(
+      "Could not create room: " +
+      (error.message || "Unknown error"),
+      "err"
+    );
+
+  } finally {
+
+    createButton.disabled = false;
+  }
+}
+
+
+/* =========================
+   LOAD PLAYERS
+========================= */
+
+async function loadPlayers() {
+
+  if (!currentGame) {
+    return;
+  }
+
+  playersBox.innerHTML =
+    "<p>Loading players...</p>";
+
+
+  const result =
+    await supabaseClient
+      .from("game_players")
+      .select(
+        "id,display_name,is_host,is_alive"
+      )
+      .eq(
+        "game_id",
+        currentGame.id
+      )
+      .order(
+        "joined_at",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (result.error) {
+
+    console.error(
+      "Player loading error:",
+      result.error
+    );
+
+    playersBox.innerHTML =
+      "<p>Unable to load players.</p>";
+
+    return;
+  }
+
+
+  const list =
+    result.data || [];
+
+
+  playersBox.innerHTML =
+    "<h3>Players (" +
+    list.length +
+    ")</h3>";
+
+
+  list.forEach(player => {
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "player";
+
+    const name =
+      document.createElement("span");
+
+    name.textContent =
+      player.display_name;
+
+    div.appendChild(name);
+
+
+    if (player.is_host) {
+
+      const host =
+        document.createElement("span");
+
+      host.className =
+        "host";
+
+      host.textContent =
+        "HOST";
+
+      div.appendChild(host);
+    }
+
+
+    playersBox.appendChild(div);
+
+  });
+}
+
+
+/* =========================
+   REALTIME
+========================= */
+
+function subscribeToRoom() {
+
+  if (!currentGame) {
+    return;
+  }
+
+
+  if (roomChannel) {
+
+    supabaseClient.removeChannel(
+      roomChannel
+    );
+  }
+
+
+  roomChannel =
+    supabaseClient
+      .channel(
+        "imposter-room-" +
+        currentGame.id
+      )
+
+
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "game_players",
+          filter:
+            "game_id=eq." +
+            currentGame.id
+        },
+        function() {
+
+          loadPlayers();
+
+        }
+      )
+
+
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "games",
+          filter:
+            "id=eq." +
+            currentGame.id
+        },
+        function(payload) {
+
+          console.log(
+            "Game update:",
+            payload
+          );
+
+        }
+      )
+
+
+      .subscribe(
+        function(status) {
+
+          console.log(
+            "Realtime status:",
+            status
+          );
+
+        }
+      );
+}
+
+
+/* =========================
+   START GAME
+========================= */
+
+startButton.addEventListener(
+  "click",
+  async function() {
+
+    if (!currentGame) {
+      return;
+    }
+
+    setStatus(
+      "The lobby is ready. Game-start logic will be connected next.",
+      "ok"
+    );
+
+  }
+);
+
+
+/* =========================
+   LEAVE ROOM
+========================= */
+
+leaveButton.addEventListener(
+  "click",
+  async function() {
+
+    if (roomChannel) {
+
+      await supabaseClient
+        .removeChannel(
+          roomChannel
+        );
+
+      roomChannel = null;
+    }
+
+
+    currentGame = null;
+    currentPlayer = null;
+
+
+    localStorage.removeItem(
+      "imposter_game_id"
+    );
+
+    localStorage.removeItem(
+      "imposter_game_code"
+    );
+
+
+    room.classList.add(
+      "hidden"
+    );
+
+    home.classList.remove(
+      "hidden"
+    );
+
+    setStatus(
+      "You left the room.",
+      "ok"
+    );
+  }
+);
+
+
+/* =========================
+   BUTTON
+========================= */
+
+createButton.addEventListener(
+  "click",
+  createRoom
+);
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+nameInput.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Enter") {
+      createRoom();
+    }
+
+  }
+);
+
+
+/* =========================
+   START
+========================= */
+
+checkConnection();
+
+</script>
+
+</body>
+</html>
