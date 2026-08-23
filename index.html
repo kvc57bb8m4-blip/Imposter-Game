@@ -10,278 +10,310 @@
 
 <style>
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
 }
 
 html,body{
-  margin:0;
-  min-height:100%;
-  background:#090b12;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+margin:0;
+min-height:100%;
+background:#090b12;
+color:#fff;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
 
 body{
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
+padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
 }
 
 .app{
-  width:100%;
-  max-width:620px;
-  margin:auto;
-  padding:20px 16px 45px
+width:100%;
+max-width:620px;
+margin:auto;
+padding:20px 16px 45px
 }
 
 h1{
-  text-align:center;
-  font-size:46px;
-  margin:18px 0 25px;
-  letter-spacing:3px;
-  font-weight:900
+text-align:center;
+font-size:46px;
+margin:18px 0 25px;
+letter-spacing:3px;
+font-weight:900
 }
 
 .card{
-  background:#131724;
-  border:1px solid #292f43;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.18)
+background:#131724;
+border:1px solid #292f43;
+border-radius:20px;
+padding:20px;
+margin-bottom:16px;
+box-shadow:0 10px 30px rgba(0,0,0,.18)
 }
 
-h2{
-  margin-top:0
-}
+h2{margin-top:0}
 
 input,button,select{
-  width:100%;
-  height:54px;
-  border-radius:14px;
-  font-size:17px;
-  margin-top:10px
+width:100%;
+height:54px;
+border-radius:14px;
+font-size:17px;
+margin-top:10px
 }
 
 input,select{
-  padding:0 15px;
-  background:#090c14;
-  border:1px solid #353c51;
-  color:#fff;
-  outline:none
-}
-
-input:focus,select:focus{
-  border-color:#686aff
+padding:0 15px;
+background:#090c14;
+border:1px solid #353c51;
+color:#fff;
+outline:none
 }
 
 button{
-  border:0;
-  background:#6264ff;
-  color:#fff;
-  font-weight:800
+border:0;
+background:#6264ff;
+color:#fff;
+font-weight:800
 }
 
 button:active{
-  transform:scale(.98)
+transform:scale(.98)
 }
 
 button:disabled{
-  opacity:.5
+opacity:.5
 }
 
 .secondary{
-  background:#242a3b
-}
-
-.danger{
-  background:#963b51
+background:#242a3b
 }
 
 .hidden{
-  display:none!important
+display:none!important
 }
 
 .center{
-  text-align:center
+text-align:center
 }
 
 .status{
-  margin-top:13px;
-  padding:13px;
-  border-radius:12px;
-  background:#1c2130;
-  font-size:14px;
-  line-height:1.4;
-  word-break:break-word
+margin-top:13px;
+padding:13px;
+border-radius:12px;
+background:#1c2130;
+font-size:14px;
+line-height:1.4;
+word-break:break-word
 }
 
-.ok{
-  color:#7ee5a7
-}
-
-.err{
-  color:#ff8199
-}
+.ok{color:#7ee5a7}
+.err{color:#ff8199}
 
 .tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px
+display:flex;
+gap:8px;
+margin-bottom:12px
 }
 
 .tab{
-  margin:0;
-  background:#242a3b
+margin:0;
+background:#242a3b
 }
 
 .tab.active{
-  background:#6264ff
+background:#6264ff
 }
 
 .code{
-  text-align:center;
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:12px 0
+text-align:center;
+font-size:42px;
+font-weight:900;
+letter-spacing:7px;
+margin:12px 0
 }
 
 .player{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:14px;
-  border-radius:12px;
-  margin-top:8px;
-  min-height:50px
+background:#0d111b;
+border:1px solid #252b3c;
+padding:14px;
+border-radius:12px;
+margin-top:8px;
+min-height:50px
 }
 
 .host{
-  float:right;
-  color:#8c8fff;
-  font-size:13px;
-  font-weight:700
-}
-
-.badge{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:9px;
-  background:#282e41;
-  color:#b9bfd0;
-  font-size:12px;
-  font-weight:700;
-  margin-right:7px
-}
-
-.order{
-  display:flex;
-  align-items:center;
-  gap:12px
-}
-
-.number{
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#282e41;
-  font-weight:900;
-  flex-shrink:0
-}
-
-.current{
-  border-color:#6264ff;
-  background:#1b1d38
-}
-
-.current .number{
-  background:#6264ff
-}
-
-.first{
-  border-color:#7c65ff
-}
-
-.turn{
-  color:#8d91ff;
-  font-size:13px;
-  font-weight:800;
-  margin-left:auto
+float:right;
+color:#8c8fff;
+font-size:13px;
+font-weight:700
 }
 
 .roleBox{
-  text-align:center;
-  padding:20px 5px
+text-align:center;
+padding:20px 5px
 }
 
 .role{
-  font-size:35px;
-  font-weight:900;
-  margin:20px 0 10px
+font-size:35px;
+font-weight:900;
+margin:20px 0 10px
 }
 
 .word{
-  font-size:36px;
-  font-weight:900;
-  margin:18px 0
+font-size:36px;
+font-weight:900;
+margin:18px 0
 }
 
 .category{
-  color:#a2a8ba;
-  font-size:15px
+color:#a2a8ba;
+font-size:15px
+}
+
+/* CLUE ORDER */
+
+.clueHeader{
+text-align:center;
+margin-bottom:18px
+}
+
+.clueHeader h2{
+margin-bottom:6px
+}
+
+.clueHeader p{
+margin:0;
+color:#9299aa;
+font-size:14px
 }
 
 .timer{
-  font-size:64px;
-  line-height:1;
-  font-weight:900;
-  text-align:center;
-  margin:22px 0
+font-size:62px;
+line-height:1;
+font-weight:900;
+text-align:center;
+margin:18px 0 22px
 }
 
 .timerWarning{
-  font-size:64px;
-  line-height:1;
-  font-weight:900;
-  text-align:center;
-  margin:22px 0
+font-size:62px;
+line-height:1;
+font-weight:900;
+text-align:center;
+margin:18px 0 22px
+}
+
+.orderRow{
+display:flex;
+align-items:center;
+gap:11px;
+background:#0d111b;
+border:1px solid #252b3c;
+padding:13px;
+border-radius:13px;
+margin-top:8px;
+transition:.2s
+}
+
+.orderRow.current{
+background:#1d2040;
+border-color:#6264ff;
+box-shadow:0 0 0 1px rgba(98,100,255,.15)
+}
+
+.orderRow.done{
+opacity:.65
+}
+
+.orderNumber{
+width:34px;
+height:34px;
+min-width:34px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#282e41;
+font-weight:900
+}
+
+.current .orderNumber{
+background:#6264ff
+}
+
+.orderName{
+font-size:17px;
+font-weight:700;
+flex:1
+}
+
+.orderStatus{
+font-size:12px;
+font-weight:800;
+color:#8991a5;
+text-align:right
+}
+
+.current .orderStatus{
+color:#9b9dff
+}
+
+.done .orderStatus{
+color:#70d89a
+}
+
+.youBadge{
+display:inline-block;
+font-size:11px;
+font-weight:800;
+background:#282e41;
+color:#aeb4c4;
+padding:4px 7px;
+border-radius:7px;
+margin-left:6px
+}
+
+.current .youBadge{
+background:#6264ff;
+color:#fff
+}
+
+.turnMessage{
+margin-top:16px;
+text-align:center;
+padding:14px;
+border-radius:12px;
+background:#1c2130;
+font-weight:700
 }
 
 .choice{
-  background:#1d2332;
-  border:1px solid #30384d;
-  margin-top:8px
+background:#1d2332;
+border:1px solid #30384d;
+margin-top:8px
 }
 
 .choice.selected{
-  background:#6264ff;
-  border-color:#6264ff
+background:#6264ff;
+border-color:#6264ff
 }
 
 .result{
-  text-align:center;
-  font-size:25px;
-  font-weight:900;
-  padding:18px
+text-align:center;
+font-size:25px;
+font-weight:900;
+padding:18px
 }
 
 .small{
-  text-align:center;
-  color:#8e95a8;
-  font-size:13px
+text-align:center;
+color:#8e95a8;
+font-size:13px
 }
 
 hr{
-  border:0;
-  border-top:1px solid #292f43;
-  margin:20px 0
-}
-
-.big{
-  font-size:24px;
-  font-weight:900
+border:0;
+border-top:1px solid #292f43;
+margin:20px 0
 }
 </style>
 </head>
@@ -293,7 +325,7 @@ hr{
 <h1>IMPOSTER</h1>
 
 
-<!-- ================= HOME ================= -->
+<!-- HOME -->
 
 <section id="home">
 
@@ -308,7 +340,6 @@ Join Game
 </button>
 
 </div>
-
 
 <div id="createCard" class="card">
 
@@ -364,7 +395,7 @@ Enter the room code your friend gave you.
 
 
 
-<!-- ================= LOBBY ================= -->
+<!-- LOBBY -->
 
 <section id="lobby" class="card hidden">
 
@@ -386,16 +417,13 @@ Share this code with your friends.
 Loading players...
 </div>
 
-
 <div id="hostControls" class="hidden">
 
 <hr>
 
 <h3>Game Settings</h3>
 
-<label>
-Category
-</label>
+<label>Category</label>
 
 <select id="category">
 <option value="random">
@@ -420,7 +448,6 @@ Start Game
 
 </div>
 
-
 <button id="leaveButton" class="secondary">
 Leave Room
 </button>
@@ -433,7 +460,7 @@ Waiting for players...
 
 
 
-<!-- ================= ROLE ================= -->
+<!-- ROLE -->
 
 <section id="roleScreen" class="card hidden">
 
@@ -451,8 +478,7 @@ YOUR ROLE
 WORD
 </div>
 
-<p id="roleDescription">
-</p>
+<p id="roleDescription"></p>
 
 <button id="readyButton">
 I'm Ready
@@ -464,75 +490,43 @@ I'm Ready
 
 
 
-<!-- ================= CLUE ORDER ================= -->
-
-<section id="orderScreen" class="card hidden">
-
-<h2 class="center">
-Clue Order
-</h2>
-
-<p class="center">
-Everyone follows this order.
-<br>
-The first player changes every round.
-</p>
-
-<hr>
-
-<div id="orderPlayers">
-</div>
-
-<div id="orderStatus" class="status center">
-Waiting...
-</div>
-
-<button id="continueOrderButton">
-Continue
-</button>
-
-</section>
-
-
-
-<!-- ================= CLUE ================= -->
+<!-- CLUE ORDER + CLUE PHASE -->
 
 <section id="clueScreen" class="card hidden">
 
-<h2 class="center">
-Clue Round
+<div class="clueHeader">
+
+<h2>
+Clue Order
 </h2>
 
-<div class="category center">
-Give a clue about the secret word.
+<p>
+Everyone follows this order.
+The first player changes every round.
+</p>
+
 </div>
 
 <div id="clueTimer" class="timer">
 60
 </div>
 
-<div id="currentCluePlayer"
-class="big center">
+<div id="clueOrderList">
 </div>
 
-<div id="clueInstruction"
-class="status center">
+<div id="clueTurnMessage" class="turnMessage">
+Getting clue order...
 </div>
 
 <button id="clueDoneButton">
 I Gave My Clue
 </button>
 
-<button id="skipClueButton"
-class="secondary">
-Skip / Next
-</button>
-
 </section>
 
 
 
-<!-- ================= VOTING ================= -->
+<!-- VOTING -->
 
 <section id="votingScreen" class="card hidden">
 
@@ -559,7 +553,7 @@ Choose a player.
 
 
 
-<!-- ================= RESULTS ================= -->
+<!-- RESULTS -->
 
 <section id="resultsScreen" class="card hidden">
 
@@ -578,8 +572,7 @@ Calculating...
 Next Round
 </button>
 
-<button id="backLobbyButton"
-class="secondary">
+<button id="backLobbyButton" class="secondary">
 Back to Lobby
 </button>
 
@@ -599,9 +592,9 @@ Multiplayer powered by Supabase
 "use strict";
 
 
-/* =====================================
+/* ===============================
    SUPABASE
-===================================== */
+=============================== */
 
 const SUPABASE_URL =
 "https://rcpxsidynmfstsihqyfc.supabase.co";
@@ -616,10 +609,9 @@ SUPABASE_KEY
 );
 
 
-
-/* =====================================
+/* ===============================
    STATE
-===================================== */
+=============================== */
 
 let game=null;
 let player=null;
@@ -632,163 +624,74 @@ let clueTimerValue=60;
 let clueInterval=null;
 
 let selectedVote=null;
-
 let currentRound=1;
 
 
-
-/* =====================================
+/* ===============================
    ELEMENTS
-===================================== */
+=============================== */
 
-const home=
-document.getElementById("home");
+const home=document.getElementById("home");
+const lobby=document.getElementById("lobby");
+const roleScreen=document.getElementById("roleScreen");
+const clueScreen=document.getElementById("clueScreen");
+const votingScreen=document.getElementById("votingScreen");
+const resultsScreen=document.getElementById("resultsScreen");
 
-const lobby=
-document.getElementById("lobby");
+const createTab=document.getElementById("createTab");
+const joinTab=document.getElementById("joinTab");
 
-const roleScreen=
-document.getElementById("roleScreen");
+const createCard=document.getElementById("createCard");
+const joinCard=document.getElementById("joinCard");
 
-const orderScreen=
-document.getElementById("orderScreen");
+const createName=document.getElementById("createName");
+const joinName=document.getElementById("joinName");
+const joinCode=document.getElementById("joinCode");
 
-const clueScreen=
-document.getElementById("clueScreen");
+const createButton=document.getElementById("createButton");
+const joinButton=document.getElementById("joinButton");
 
-const votingScreen=
-document.getElementById("votingScreen");
+const createStatus=document.getElementById("createStatus");
+const joinStatus=document.getElementById("joinStatus");
 
-const resultsScreen=
-document.getElementById("resultsScreen");
+const roomCode=document.getElementById("roomCode");
+const players=document.getElementById("players");
+const hostControls=document.getElementById("hostControls");
+const category=document.getElementById("category");
+const clueTime=document.getElementById("clueTime");
+const startButton=document.getElementById("startButton");
+const leaveButton=document.getElementById("leaveButton");
+const lobbyStatus=document.getElementById("lobbyStatus");
 
-const createTab=
-document.getElementById("createTab");
+const roleCategory=document.getElementById("roleCategory");
+const roleTitle=document.getElementById("roleTitle");
+const roleWord=document.getElementById("roleWord");
+const roleDescription=document.getElementById("roleDescription");
+const readyButton=document.getElementById("readyButton");
 
-const joinTab=
-document.getElementById("joinTab");
+const clueTimer=document.getElementById("clueTimer");
+const clueOrderList=document.getElementById("clueOrderList");
+const clueTurnMessage=document.getElementById("clueTurnMessage");
+const clueDoneButton=document.getElementById("clueDoneButton");
 
-const createCard=
-document.getElementById("createCard");
+const votePlayers=document.getElementById("votePlayers");
+const submitVoteButton=document.getElementById("submitVoteButton");
+const voteStatus=document.getElementById("voteStatus");
 
-const joinCard=
-document.getElementById("joinCard");
+const resultText=document.getElementById("resultText");
+const voteResults=document.getElementById("voteResults");
 
-const createName=
-document.getElementById("createName");
-
-const joinName=
-document.getElementById("joinName");
-
-const joinCode=
-document.getElementById("joinCode");
-
-const createButton=
-document.getElementById("createButton");
-
-const joinButton=
-document.getElementById("joinButton");
-
-const createStatus=
-document.getElementById("createStatus");
-
-const joinStatus=
-document.getElementById("joinStatus");
-
-const roomCode=
-document.getElementById("roomCode");
-
-const players=
-document.getElementById("players");
-
-const hostControls=
-document.getElementById("hostControls");
-
-const category=
-document.getElementById("category");
-
-const clueTime=
-document.getElementById("clueTime");
-
-const startButton=
-document.getElementById("startButton");
-
-const leaveButton=
-document.getElementById("leaveButton");
-
-const lobbyStatus=
-document.getElementById("lobbyStatus");
-
-const roleCategory=
-document.getElementById("roleCategory");
-
-const roleTitle=
-document.getElementById("roleTitle");
-
-const roleWord=
-document.getElementById("roleWord");
-
-const roleDescription=
-document.getElementById("roleDescription");
-
-const readyButton=
-document.getElementById("readyButton");
-
-const orderPlayers=
-document.getElementById("orderPlayers");
-
-const orderStatus=
-document.getElementById("orderStatus");
-
-const continueOrderButton=
-document.getElementById("continueOrderButton");
-
-const clueTimer=
-document.getElementById("clueTimer");
-
-const currentCluePlayer=
-document.getElementById("currentCluePlayer");
-
-const clueInstruction=
-document.getElementById("clueInstruction");
-
-const clueDoneButton=
-document.getElementById("clueDoneButton");
-
-const skipClueButton=
-document.getElementById("skipClueButton");
-
-const votePlayers=
-document.getElementById("votePlayers");
-
-const submitVoteButton=
-document.getElementById("submitVoteButton");
-
-const voteStatus=
-document.getElementById("voteStatus");
-
-const resultText=
-document.getElementById("resultText");
-
-const voteResults=
-document.getElementById("voteResults");
-
-const nextRoundButton=
-document.getElementById("nextRoundButton");
-
-const backLobbyButton=
-document.getElementById("backLobbyButton");
+const nextRoundButton=document.getElementById("nextRoundButton");
+const backLobbyButton=document.getElementById("backLobbyButton");
 
 
-
-/* =====================================
+/* ===============================
    TOKEN
-===================================== */
+=============================== */
 
 function getToken(){
 
-let t=
-localStorage.getItem(
+let t=localStorage.getItem(
 "imposter_token"
 );
 
@@ -808,25 +711,9 @@ return t;
 }
 
 
-
-/* =====================================
-   STATUS
-===================================== */
-
-function setStatus(el,text,type=""){
-
-el.textContent=text;
-
-el.className=
-"status "+type;
-
-}
-
-
-
-/* =====================================
+/* ===============================
    SCREEN
-===================================== */
+=============================== */
 
 function show(screen){
 
@@ -834,7 +721,6 @@ function show(screen){
 home,
 lobby,
 roleScreen,
-orderScreen,
 clueScreen,
 votingScreen,
 resultsScreen
@@ -852,41 +738,46 @@ behavior:"smooth"
 }
 
 
+/* ===============================
+   STATUS
+=============================== */
 
-/* =====================================
+function setStatus(el,text,type=""){
+
+el.textContent=text;
+el.className="status "+type;
+
+}
+
+
+/* ===============================
    TABS
-===================================== */
+=============================== */
 
 createTab.onclick=()=>{
 
 createTab.classList.add("active");
-
 joinTab.classList.remove("active");
 
 createCard.classList.remove("hidden");
-
 joinCard.classList.add("hidden");
 
 };
 
-
 joinTab.onclick=()=>{
 
 joinTab.classList.add("active");
-
 createTab.classList.remove("active");
 
 joinCard.classList.remove("hidden");
-
 createCard.classList.add("hidden");
 
 };
 
 
-
-/* =====================================
+/* ===============================
    CONNECTION
-===================================== */
+=============================== */
 
 async function checkConnection(){
 
@@ -922,10 +813,9 @@ createStatus,
 }
 
 
-
-/* =====================================
+/* ===============================
    CATEGORIES
-===================================== */
+=============================== */
 
 async function loadCategories(){
 
@@ -944,24 +834,22 @@ category.innerHTML=
 
 (r.data||[]).forEach(c=>{
 
-const o=
+const option=
 document.createElement("option");
 
-o.value=c.id;
+option.value=c.id;
+option.textContent=c.name;
 
-o.textContent=c.name;
-
-category.appendChild(o);
+category.appendChild(option);
 
 });
 
 }
 
 
-
-/* =====================================
+/* ===============================
    CREATE
-===================================== */
+=============================== */
 
 async function createGame(){
 
@@ -1003,7 +891,6 @@ if(r.error)
 throw r.error;
 
 game=r.data.game;
-
 player=r.data.player;
 
 openLobby();
@@ -1027,10 +914,9 @@ createButton.disabled=false;
 }
 
 
-
-/* =====================================
+/* ===============================
    JOIN
-===================================== */
+=============================== */
 
 async function joinGame(){
 
@@ -1089,7 +975,6 @@ if(r.error)
 throw r.error;
 
 game=r.data.game;
-
 player=r.data.player;
 
 openLobby();
@@ -1111,10 +996,9 @@ joinButton.disabled=false;
 }
 
 
-
-/* =====================================
+/* ===============================
    LOBBY
-===================================== */
+=============================== */
 
 function openLobby(){
 
@@ -1129,11 +1013,9 @@ hostControls.classList.toggle(
 );
 
 loadPlayers();
-
 subscribe();
 
 }
-
 
 
 async function loadPlayers(){
@@ -1174,11 +1056,9 @@ r.data.forEach(p=>{
 const div=
 document.createElement("div");
 
-div.className=
-"player";
+div.className="player";
 
-div.textContent=
-p.display_name;
+div.textContent=p.display_name;
 
 if(p.is_host){
 
@@ -1186,7 +1066,6 @@ const h=
 document.createElement("span");
 
 h.className="host";
-
 h.textContent="HOST";
 
 div.appendChild(h);
@@ -1206,18 +1085,15 @@ r.data.length+
 }
 
 
-
-/* =====================================
+/* ===============================
    REALTIME
-===================================== */
+=============================== */
 
 function subscribe(){
 
 if(channel){
 
-db.removeChannel(
-channel
-);
+db.removeChannel(channel);
 
 }
 
@@ -1232,12 +1108,9 @@ db.channel(
 event:"*",
 schema:"public",
 table:"game_players",
-filter:
-"game_id=eq."+game.id
+filter:"game_id=eq."+game.id
 },
-()=>{
-loadPlayers();
-}
+()=>loadPlayers()
 )
 
 .on(
@@ -1246,8 +1119,7 @@ loadPlayers();
 event:"*",
 schema:"public",
 table:"games",
-filter:
-"id=eq."+game.id
+filter:"id=eq."+game.id
 },
 payload=>{
 
@@ -1270,10 +1142,9 @@ payload.new.status
 }
 
 
-
-/* =====================================
+/* ===============================
    START GAME
-===================================== */
+=============================== */
 
 async function startGame(){
 
@@ -1314,10 +1185,9 @@ startButton.disabled=false;
 }
 
 
-
-/* =====================================
+/* ===============================
    ROLE
-===================================== */
+=============================== */
 
 async function loadRole(){
 
@@ -1333,7 +1203,6 @@ p_player_token:getToken()
 if(r.error){
 
 alert(r.error.message);
-
 return;
 
 }
@@ -1343,7 +1212,6 @@ const data=r.data;
 if(data.status==="lobby"){
 
 openLobby();
-
 return;
 
 }
@@ -1359,8 +1227,7 @@ if(data.is_imposter){
 roleTitle.textContent=
 "YOU ARE THE IMPOSTER";
 
-roleWord.textContent=
-"";
+roleWord.textContent="";
 
 roleDescription.textContent=
 "You don't know the secret word. Listen carefully to everyone's clues and try to blend in.";
@@ -1385,37 +1252,22 @@ show(roleScreen);
 }
 
 
-
-/* =====================================
+/* ===============================
    READY
-===================================== */
+=============================== */
 
 readyButton.onclick=async()=>{
 
 readyButton.disabled=true;
 
-showClueOrder();
+await showClueOrder();
 
 };
 
 
-
-/* =====================================
-   RANDOM CLUE ORDER
-===================================== */
-
-/*
-The order is generated from the room code
-and round number.
-
-That means:
-
-Round 1 = one order
-Round 2 = a different order
-Round 3 = another order
-
-Every phone calculates the SAME order.
-*/
+/* ===============================
+   RANDOM ORDER
+=============================== */
 
 function makeSeed(){
 
@@ -1449,7 +1301,7 @@ function seededRandom(seed){
 
 return function(){
 
-let x=
+const x=
 Math.sin(seed++)*
 10000;
 
@@ -1519,16 +1371,17 @@ return list;
 }
 
 
-
-/* =====================================
-   CLUE ORDER SCREEN
-===================================== */
+/* ===============================
+   CLUE SCREEN
+=============================== */
 
 async function showClueOrder(){
 
-show(orderScreen);
+show(clueScreen);
 
-orderStatus.textContent=
+clueOrderList.innerHTML="";
+
+clueTurnMessage.textContent=
 "Randomizing clue order...";
 
 try{
@@ -1536,100 +1389,17 @@ try{
 clueOrder=
 await getClueOrder();
 
-orderPlayers.innerHTML="";
+currentTurn=0;
 
-clueOrder.forEach(
-(p,index)=>{
+renderClueList();
 
-const div=
-document.createElement("div");
-
-div.className=
-"player order";
-
-if(index===0)
-div.classList.add("first");
-
-const number=
-document.createElement("div");
-
-number.className=
-"number";
-
-number.textContent=
-index+1;
-
-div.appendChild(number);
-
-const name=
-document.createElement("span");
-
-name.textContent=
-p.display_name;
-
-div.appendChild(name);
-
-if(index===0){
-
-const first=
-document.createElement("span");
-
-first.className="turn";
-
-first.textContent=
-"GOES FIRST";
-
-div.appendChild(first);
-
-}
-
-if(
-player &&
-p.id===player.id
-){
-
-const you=
-document.createElement("span");
-
-you.className="turn";
-
-you.textContent=
-"YOU";
-
-div.appendChild(you);
-
-}
-
-orderPlayers.appendChild(div);
-
-});
-
-const firstPlayer=
-clueOrder[0];
-
-if(
-firstPlayer.id===player.id
-){
-
-orderStatus.textContent=
-"🔥 YOU GO FIRST!";
-
-}else{
-
-orderStatus.textContent=
-firstPlayer.display_name+
-" goes first.";
-
-}
-
-continueOrderButton.textContent=
-"Start Clues";
+startClueTurn();
 
 }catch(e){
 
 console.error(e);
 
-orderStatus.textContent=
+clueTurnMessage.textContent=
 "Could not create clue order.";
 
 }
@@ -1637,36 +1407,106 @@ orderStatus.textContent=
 }
 
 
+/* ===============================
+   RENDER FULL LIST
+=============================== */
 
-/* =====================================
-   BEGIN CLUES
-===================================== */
+function renderClueList(){
 
-continueOrderButton.onclick=()=>{
+clueOrderList.innerHTML="";
 
-currentTurn=0;
+clueOrder.forEach(
+(p,index)=>{
 
-startClueTurn();
+const row=
+document.createElement("div");
 
-};
+row.className=
+"orderRow";
+
+if(index===currentTurn)
+row.classList.add("current");
+
+if(index<currentTurn)
+row.classList.add("done");
 
 
+const number=
+document.createElement("div");
 
-/* =====================================
-   CLUE TURN
-===================================== */
+number.className=
+"orderNumber";
 
-function startClueTurn(){
+number.textContent=
+index+1;
 
-show(clueScreen);
+row.appendChild(number);
 
-if(!clueOrder.length){
 
-showClueOrder();
+const name=
+document.createElement("div");
 
-return;
+name.className=
+"orderName";
+
+name.textContent=
+p.display_name;
+
+
+if(p.id===player.id){
+
+const you=
+document.createElement("span");
+
+you.className="youBadge";
+
+you.textContent="YOU";
+
+name.appendChild(you);
 
 }
+
+row.appendChild(name);
+
+
+const status=
+document.createElement("div");
+
+status.className=
+"orderStatus";
+
+
+if(index<currentTurn){
+
+status.textContent=
+"✓ DONE";
+
+}else if(index===currentTurn){
+
+status.textContent=
+"NOW";
+
+}else{
+
+status.textContent=
+"WAITING";
+
+}
+
+row.appendChild(status);
+
+clueOrderList.appendChild(row);
+
+});
+
+}
+
+
+/* ===============================
+   CURRENT TURN
+=============================== */
+
+function startClueTurn(){
 
 if(
 currentTurn>=
@@ -1679,12 +1519,10 @@ return;
 
 }
 
+renderClueList();
+
 const current=
 clueOrder[currentTurn];
-
-currentCluePlayer.textContent=
-current.display_name+
-"'s turn";
 
 const isMe=
 current.id===
@@ -1692,15 +1530,15 @@ player.id;
 
 if(isMe){
 
-clueInstruction.textContent=
-"🔥 IT'S YOUR TURN — give your clue now!";
+clueTurnMessage.textContent=
+"🔥 IT'S YOUR TURN — GIVE YOUR CLUE!";
 
 clueDoneButton.style.display=
 "block";
 
 }else{
 
-clueInstruction.textContent=
+clueTurnMessage.textContent=
 "Waiting for "+
 current.display_name+
 " to give their clue...";
@@ -1715,16 +1553,13 @@ startTimer();
 }
 
 
-
-/* =====================================
+/* ===============================
    TIMER
-===================================== */
+=============================== */
 
 function startTimer(){
 
-clearInterval(
-clueInterval
-);
+clearInterval(clueInterval);
 
 clueTimerValue=
 parseInt(
@@ -1735,8 +1570,7 @@ clueTime.value ||
 clueTimer.textContent=
 clueTimerValue;
 
-clueTimer.className=
-"timer";
+clueTimer.className="timer";
 
 clueInterval=
 setInterval(()=>{
@@ -1755,9 +1589,7 @@ clueTimer.className=
 
 if(clueTimerValue<=0){
 
-clearInterval(
-clueInterval
-);
+clearInterval(clueInterval);
 
 nextClue();
 
@@ -1768,18 +1600,17 @@ nextClue();
 }
 
 
-
-/* =====================================
+/* ===============================
    NEXT CLUE
-===================================== */
+=============================== */
 
 function nextClue(){
 
-clearInterval(
-clueInterval
-);
+clearInterval(clueInterval);
 
 currentTurn++;
+
+renderClueList();
 
 if(
 currentTurn>=
@@ -1788,37 +1619,45 @@ clueOrder.length
 
 goToVoting();
 
-}else{
+return;
+
+}
 
 startClueTurn();
 
 }
 
-}
 
-
-
-/* =====================================
-   CLUE BUTTONS
-===================================== */
+/* ===============================
+   CLUE DONE
+=============================== */
 
 clueDoneButton.onclick=
-nextClue;
+()=>{
 
-skipClueButton.onclick=
-nextClue;
+const current=
+clueOrder[currentTurn];
+
+if(
+current &&
+current.id===
+player.id
+){
+
+nextClue();
+
+}
+
+};
 
 
-
-/* =====================================
+/* ===============================
    VOTING
-===================================== */
+=============================== */
 
 async function goToVoting(){
 
-clearInterval(
-clueInterval
-);
+clearInterval(clueInterval);
 
 try{
 
@@ -1846,7 +1685,6 @@ showVoting();
 }
 
 }
-
 
 
 async function showVoting(){
@@ -1877,7 +1715,7 @@ true
 
 if(r.error){
 
-votePlayers.innerHTML=
+votePlayers.textContent=
 "Could not load players.";
 
 return;
@@ -1894,8 +1732,7 @@ return;
 const b=
 document.createElement("button");
 
-b.className=
-"choice";
+b.className="choice";
 
 b.textContent=
 p.display_name;
@@ -1906,20 +1743,14 @@ document
 .querySelectorAll(".choice")
 .forEach(
 x=>
-x.classList.remove(
-"selected"
-)
+x.classList.remove("selected")
 );
 
-b.classList.add(
-"selected"
-);
+b.classList.add("selected");
 
-selectedVote=
-p.id;
+selectedVote=p.id;
 
-submitVoteButton.disabled=
-false;
+submitVoteButton.disabled=false;
 
 };
 
@@ -1930,10 +1761,9 @@ votePlayers.appendChild(b);
 }
 
 
-
-/* =====================================
-   SUBMIT VOTE
-===================================== */
+/* ===============================
+   VOTE
+=============================== */
 
 submitVoteButton.onclick=
 async()=>{
@@ -1958,8 +1788,7 @@ if(r.error){
 voteStatus.textContent=
 r.error.message;
 
-submitVoteButton.disabled=
-false;
+submitVoteButton.disabled=false;
 
 return;
 
@@ -1980,10 +1809,9 @@ finishVoting,
 };
 
 
-
-/* =====================================
+/* ===============================
    RESULTS
-===================================== */
+=============================== */
 
 async function finishVoting(){
 
@@ -1999,7 +1827,6 @@ p_host_token:getToken()
 if(r.error){
 
 console.error(r.error);
-
 return;
 
 }
@@ -2023,8 +1850,7 @@ results.forEach(p=>{
 const div=
 document.createElement("div");
 
-div.className=
-"player";
+div.className="player";
 
 div.textContent=
 p.name+
@@ -2034,9 +1860,7 @@ p.votes+
 " vote":
 " votes");
 
-voteResults.appendChild(
-div
-);
+voteResults.appendChild(div);
 
 });
 
@@ -2061,7 +1885,6 @@ showResults();
 }
 
 
-
 function showResults(){
 
 show(resultsScreen);
@@ -2074,10 +1897,9 @@ player.is_host?
 }
 
 
-
-/* =====================================
+/* ===============================
    NEXT ROUND
-===================================== */
+=============================== */
 
 nextRoundButton.onclick=
 async()=>{
@@ -2101,9 +1923,7 @@ p_host_token:getToken()
 if(r.error)
 throw r.error;
 
-handlePhase(
-"playing"
-);
+handlePhase("playing");
 
 }catch(e){
 
@@ -2121,10 +1941,9 @@ nextRoundButton.disabled=false;
 };
 
 
-
-/* =====================================
+/* ===============================
    BACK TO LOBBY
-===================================== */
+=============================== */
 
 backLobbyButton.onclick=
 ()=>{
@@ -2136,10 +1955,9 @@ loadPlayers();
 };
 
 
-
-/* =====================================
+/* ===============================
    PHASE HANDLER
-===================================== */
+=============================== */
 
 function handlePhase(phase){
 
@@ -2150,27 +1968,19 @@ if(phase==="lobby"){
 
 openLobby();
 
-}
-
-else if(phase==="playing"){
+}else if(phase==="playing"){
 
 loadRole();
 
-}
-
-else if(phase==="clues"){
+}else if(phase==="clues"){
 
 showClueOrder();
 
-}
-
-else if(phase==="voting"){
+}else if(phase==="voting"){
 
 showVoting();
 
-}
-
-else if(phase==="results"){
+}else if(phase==="results"){
 
 showResults();
 
@@ -2179,17 +1989,14 @@ showResults();
 }
 
 
-
-/* =====================================
+/* ===============================
    LEAVE
-===================================== */
+=============================== */
 
 leaveButton.onclick=
 async()=>{
 
-clearInterval(
-clueInterval
-);
+clearInterval(clueInterval);
 
 if(channel){
 
@@ -2202,7 +2009,6 @@ channel=null;
 }
 
 game=null;
-
 player=null;
 
 show(home);
@@ -2216,10 +2022,9 @@ createStatus,
 };
 
 
-
-/* =====================================
-   INPUT
-===================================== */
+/* ===============================
+   ROOM CODE INPUT
+=============================== */
 
 joinCode.addEventListener(
 "input",
@@ -2238,25 +2043,18 @@ joinCode.value
 );
 
 
-
-/* =====================================
+/* ===============================
    EVENTS
-===================================== */
+=============================== */
 
-createButton.onclick=
-createGame;
-
-joinButton.onclick=
-joinGame;
-
-startButton.onclick=
-startGame;
+createButton.onclick=createGame;
+joinButton.onclick=joinGame;
+startButton.onclick=startGame;
 
 
-
-/* =====================================
-   INITIALIZE
-===================================== */
+/* ===============================
+   INIT
+=============================== */
 
 checkConnection();
 
