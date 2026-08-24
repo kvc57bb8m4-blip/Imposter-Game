@@ -286,11 +286,25 @@ hr{
 
 .imposter{color:#ff8199}
 .normal{color:#7ee5a7}
+.similarRole{color:#c7c9ff}
 
 .roleDescription{
   color:#9da4b7;
   margin:10px 0 0;
   line-height:1.5
+}
+
+.similarWordsInfo{
+  margin:16px auto 0;
+  padding:15px;
+  max-width:500px;
+  background:#171a2b;
+  border:1px solid #44486f;
+  border-radius:14px;
+  text-align:center;
+  color:#b9bcff;
+  font-size:14px;
+  line-height:1.45
 }
 
 .imposterHint{
@@ -748,8 +762,6 @@ Bring Everyone Back To Lobby
 
 <h1>IMPOSTER</h1>
 
-<!-- HOME -->
-
 <section id="home">
 
 <div class="tabs">
@@ -805,8 +817,6 @@ Don't Rejoin
 
 </section>
 
-
-<!-- LOBBY -->
 
 <section id="lobby" class="card hidden">
 
@@ -867,10 +877,11 @@ Game Mode
 <select id="gameMode">
 <option value="classic">Classic — 1 Imposter</option>
 <option value="variable_imposters">Variable — 0–2 Imposters</option>
+<option value="similar_words">Similar Words — Hidden Roles</option>
 </select>
 
 <div id="modeDescription" class="status">
-Classic always has 1 Imposter.
+Classic always has exactly 1 Imposter.
 </div>
 
 <label style="display:block;margin-top:14px">
@@ -885,7 +896,7 @@ Clue time
 <option value="0">♾️ No Time Limit</option>
 </select>
 
-<div class="toggleRow">
+<div id="hintToggleRow" class="toggleRow">
 
 <div class="toggleInfo">
 
@@ -918,8 +929,6 @@ Waiting for players...
 </section>
 
 
-<!-- CLUE SCREEN -->
-
 <section id="clueScreen" class="card hidden">
 
 <div class="gameInfo">
@@ -931,6 +940,12 @@ Waiting for players...
 <div id="myWord" class="myWord">WORD</div>
 
 <div id="roleDescription" class="roleDescription"></div>
+
+<div id="similarWordsInfo" class="similarWordsInfo hidden">
+Everyone receives a word, but the Imposter receives a different word
+that is related to the civilian word. Your role is hidden, so figure out
+who has the different word from their clues.
+</div>
 
 <div id="imposterHint" class="imposterHint hidden">
 
@@ -975,18 +990,18 @@ Everyone sees the same order. Just follow the numbers.
 </section>
 
 
-<!-- VOTING -->
-
 <section id="votingScreen" class="card hidden">
 
 <h2 class="center">Vote</h2>
 
 <p id="voteInstructions" class="voteInstructions">
+Choose the player you believe is the Imposter.
 </p>
 
 <div id="votePlayers"></div>
 
 <div id="voteCounter" class="voteCounter">
+No player selected
 </div>
 
 <button id="submitVoteButton" disabled>
@@ -994,13 +1009,11 @@ Submit Vote
 </button>
 
 <div id="voteStatus" class="status center">
-Choose your vote.
+Choose a player.
 </div>
 
 </section>
 
-
-<!-- FINAL GUESS -->
 
 <section id="guessScreen" class="card hidden">
 
@@ -1037,6 +1050,7 @@ Think carefully...
 
 </div>
 
+
 <div id="guessWaitingPanel" class="guessWaiting hidden">
 
 <div class="guessWaitingIcon">⏳</div>
@@ -1051,6 +1065,7 @@ They now have one final chance to guess the secret word.
 </div>
 
 </div>
+
 
 <div id="guessVoteResults" class="guessReveal hidden">
 
@@ -1069,8 +1084,6 @@ Here is how everyone voted and who was actually an Imposter.
 </section>
 
 
-<!-- RESULTS -->
-
 <section id="resultsScreen" class="card hidden">
 
 <h2 class="center">Results</h2>
@@ -1081,6 +1094,10 @@ Calculating...
 
 <div id="actualWordBox" class="infoBox hidden">
 Secret Word: <strong id="actualWord"></strong>
+</div>
+
+<div id="similarWordsResultBox" class="infoBox hidden">
+The civilians' word and the Imposter's word were related.
 </div>
 
 <div id="finalGuessResult" class="finalGuessResult hidden">
@@ -1155,9 +1172,8 @@ let lastStatus=null;
 let selectedVotes=[];
 let nobodySelected=false;
 let syncing=false;
-let categoryNames=new Map();
 
-let lastPlayersSignature="";
+let categoryNames=new Map();
 
 
 /* =========================================================
@@ -1206,6 +1222,7 @@ const gameMode=document.getElementById("gameMode");
 const modeDescription=document.getElementById("modeDescription");
 const clueTime=document.getElementById("clueTime");
 const imposterHints=document.getElementById("imposterHints");
+const hintToggleRow=document.getElementById("hintToggleRow");
 const settingsSaveStatus=document.getElementById("settingsSaveStatus");
 const startButton=document.getElementById("startButton");
 const lobbyStatus=document.getElementById("lobbyStatus");
@@ -1214,6 +1231,8 @@ const gameCategory=document.getElementById("gameCategory");
 const myRole=document.getElementById("myRole");
 const myWord=document.getElementById("myWord");
 const roleDescription=document.getElementById("roleDescription");
+
+const similarWordsInfo=document.getElementById("similarWordsInfo");
 
 const imposterHint=document.getElementById("imposterHint");
 const imposterHintText=document.getElementById("imposterHintText");
@@ -1232,6 +1251,7 @@ const voteStatus=document.getElementById("voteStatus");
 
 const guessPanel=document.getElementById("imposterGuessPanel");
 const guessWaitingPanel=document.getElementById("guessWaitingPanel");
+
 const guessVoteResults=document.getElementById("guessVoteResults");
 const guessVoteResultsList=document.getElementById("guessVoteResultsList");
 
@@ -1244,6 +1264,8 @@ const voteResults=document.getElementById("voteResults");
 
 const actualWordBox=document.getElementById("actualWordBox");
 const actualWord=document.getElementById("actualWord");
+
+const similarWordsResultBox=document.getElementById("similarWordsResultBox");
 
 const finalGuessResult=document.getElementById("finalGuessResult");
 const finalGuessWord=document.getElementById("finalGuessWord");
@@ -1304,6 +1326,42 @@ function clearSavedRoom(){
 localStorage.removeItem(
 "imposter_room_code"
 );
+
+}
+
+
+/* =========================================================
+   MODE HELPERS
+========================================================= */
+
+function isSimilarWordsMode(){
+
+return game?.game_mode==="similar_words";
+
+}
+
+function isVariableMode(){
+
+return game?.game_mode==="variable_imposters";
+
+}
+
+function isClassicMode(){
+
+return !isSimilarWordsMode() &&
+!isVariableMode();
+
+}
+
+function gameModeText(value){
+
+if(value==="variable_imposters")
+return "Variable — 0–2 Imposters";
+
+if(value==="similar_words")
+return "Similar Words — Hidden Roles";
+
+return "Classic — 1 Imposter";
 
 }
 
@@ -1457,15 +1515,6 @@ return n+" seconds";
 
 }
 
-function gameModeText(value){
-
-if(value==="variable_imposters")
-return "Variable — 0–2 Imposters";
-
-return "Classic — 1 Imposter";
-
-}
-
 function categoryText(){
 
 if(!game)
@@ -1485,15 +1534,28 @@ String(game.category_id)
 
 function updateModeDescription(){
 
-if(gameMode.value==="variable_imposters"){
+const mode=gameMode.value;
+
+if(mode==="variable_imposters"){
 
 modeDescription.textContent=
-"Each round randomly has 0, 1, or 2 Imposters. With 0 Imposters, everyone must vote Nobody to win.";
+"Each round randomly has 0, 1, or 2 Imposters. Civilians must correctly identify the Imposters, or choose Nobody when there are none.";
+
+hintToggleRow.classList.remove("hidden");
+
+}else if(mode==="similar_words"){
+
+modeDescription.textContent=
+"Everyone gets a word. Civilians get the main word and Imposters get a related but different word. Nobody is told their role. Voting is for exactly one player.";
+
+hintToggleRow.classList.add("hidden");
 
 }else{
 
 modeDescription.textContent=
-"Classic mode always has exactly 1 Imposter. Each player votes for exactly one other player.";
+"Classic mode always has exactly 1 Imposter. Players know whether they are the Imposter or a civilian.";
+
+hintToggleRow.classList.remove("hidden");
 
 }
 
@@ -1514,18 +1576,11 @@ previewClueTime.textContent=
 clueTimeText(game.clue_time);
 
 previewHints.textContent=
-game.imposter_hints_enabled
+isSimilarWordsMode()
+?"OFF"
+:game.imposter_hints_enabled
 ?"ON"
 :"OFF";
-
-
-/*
- IMPORTANT HOST FIX:
-
-Do not only trust the original player object.
-loadPlayers() refreshes player.is_host whenever the
-database says the host changed.
-*/
 
 if(player?.is_host){
 
@@ -1611,7 +1666,9 @@ const time=
 parseInt(clueTime.value,10);
 
 const hints=
-imposterHints.checked;
+gameMode.value==="similar_words"
+?false
+:imposterHints.checked;
 
 const mode=
 gameMode.value;
@@ -1851,9 +1908,14 @@ show(lobby);
 roomCode.textContent=
 game.code;
 
-await loadPlayers();
+hostControls.classList.toggle(
+"hidden",
+!player.is_host
+);
 
 updateSettingsPreview();
+
+await loadPlayers();
 
 subscribeToGame();
 
@@ -1875,7 +1937,7 @@ const result=
 await db
 .from("game_players")
 .select(
-"id,display_name,is_host,is_alive,joined_at"
+"id,display_name,is_host,is_alive"
 )
 .eq("game_id",game.id)
 .order("joined_at");
@@ -1885,74 +1947,12 @@ throw result.error;
 
 const list=result.data||[];
 
-const me=list.find(
+const stillHere=
+list.some(
 p=>p.id===player.id
 );
 
-
-/*
- HOST TRANSFER FIX
-
-This is the important part.
-
-Previously the local `player.is_host`
-could remain false after the old host left.
-
-Now every player refresh checks the database
-and updates the local player object.
-*/
-
-if(me){
-
-const oldHost=!!player.is_host;
-const newHost=!!me.is_host;
-
-player.is_host=newHost;
-player.is_alive=me.is_alive;
-player.display_name=me.display_name;
-
-
-/*
- If host status changed, immediately update every
- host-only control without requiring a reload.
-*/
-
-if(oldHost!==newHost){
-
-updateLeaveUI();
-
-hostControls.classList.toggle(
-"hidden",
-!newHost
-);
-
-hostClueControls.classList.toggle(
-"hidden",
-!newHost
-);
-
-if(newHost){
-
-setStatus(
-lobbyStatus,
-"You are now the host. You can change the game settings.",
-"ok"
-);
-
-}else{
-
-setStatus(
-lobbyStatus,
-"Waiting for the host..."
-);
-
-}
-
-}
-
-}
-
-if(!me){
+if(!stillHere){
 
 await clearLocalGame();
 
@@ -1965,22 +1965,6 @@ createStatus,
 return;
 
 }
-
-
-/*
- Detect whether the actual player list changed.
- This forces the kick buttons to rebuild correctly.
-*/
-
-const signature=
-list.map(p=>
-p.id+":"+p.is_host+":"+p.is_alive
-).join("|");
-
-lastPlayersSignature=signature;
-
-
-/* Rebuild player list */
 
 players.innerHTML=
 "<h3>Players ("+
@@ -2028,14 +2012,7 @@ document.createElement("button");
 kick.className="kickButton";
 kick.textContent="Kick";
 
-kick.onclick=async(e)=>{
-
-e.preventDefault();
-e.stopPropagation();
-
-await kickPlayer(p);
-
-};
+kick.onclick=()=>kickPlayer(p);
 
 div.appendChild(kick);
 
@@ -2045,42 +2022,11 @@ players.appendChild(div);
 
 });
 
-
-/*
- Always refresh host controls after loading players.
- This makes host transfer immediate.
-*/
-
-hostControls.classList.toggle(
-"hidden",
-!player.is_host
-);
-
-updateLeaveUI();
-
-updateSettingsPreview();
-
-if(game.status==="lobby"){
-
-if(player.is_host){
-
 lobbyStatus.textContent=
 list.length+
 " player"+
 (list.length===1?"":"s")+
-" in the room. You are the host.";
-
-}else{
-
-lobbyStatus.textContent=
-list.length+
-" player"+
-(list.length===1?"":"s")+
-" in the room. Waiting for the host.";
-
-}
-
-}
+" in the room.";
 
 }
 
@@ -2092,9 +2038,6 @@ list.length+
 async function kickPlayer(target){
 
 if(!player?.is_host||!game)
-return;
-
-if(target.id===player.id)
 return;
 
 if(!confirm(
@@ -2117,17 +2060,9 @@ p_player_id:target.id
 if(result.error)
 throw result.error;
 
-
-/*
- Immediately reload the player list instead of
- waiting for a realtime event.
-*/
-
 await loadPlayers();
 
 }catch(error){
-
-console.error(error);
 
 alert(
 "Could not kick player:\n"+
@@ -2156,7 +2091,7 @@ db.removeChannel(channel);
 
 channel=
 db.channel(
-"imposter-"+game.id+"-"+getToken()
+"imposter-"+game.id
 )
 
 .on(
@@ -2181,19 +2116,7 @@ table:"game_players",
 filter:"game_id=eq."+game.id
 },
 async()=>{
-
-/*
- Do not merely update the visual player list.
- This refresh also updates player.is_host,
- which is what fixes host transfer.
-*/
-
-try{
 await loadPlayers();
-}catch(error){
-console.warn(error);
-}
-
 }
 )
 
@@ -2265,8 +2188,6 @@ throw result.error;
 if(!result.data)
 throw new Error("Game no longer exists.");
 
-const oldGame=game;
-
 game=result.data;
 
 saveRoom();
@@ -2278,24 +2199,6 @@ true,
 
 updateSettingsPreview();
 
-
-/*
- Always refresh players while in lobby.
- This catches host transfers even if a realtime
- event is missed.
-*/
-
-if(game.status==="lobby"){
-
-await loadPlayers();
-
-}
-
-
-/*
- Phase changes.
-*/
-
 if(game.status!==lastStatus){
 
 lastStatus=game.status;
@@ -2303,6 +2206,15 @@ lastStatus=game.status;
 await handlePhase(game.status);
 
 }else{
+
+if(game.status==="lobby"){
+
+if(lobby.classList.contains("hidden"))
+await openLobby();
+else
+await loadPlayers();
+
+}
 
 if(
 game.status==="playing"||
@@ -2361,9 +2273,7 @@ async function handlePhase(status){
 if(status==="lobby"){
 
 await loadPlayers();
-
 show(lobby);
-
 return;
 
 }
@@ -2374,7 +2284,6 @@ status==="clues"
 ){
 
 await showGameScreen();
-
 return;
 
 }
@@ -2382,14 +2291,21 @@ return;
 if(status==="voting"){
 
 await showVoting();
-
 return;
 
 }
 
 if(status==="imposter_guess"){
 
+if(isSimilarWordsMode()){
+
+await loadResults();
+
+}else{
+
 await showImposterGuess();
+
+}
 
 return;
 
@@ -2398,7 +2314,6 @@ return;
 if(status==="results"){
 
 await loadResults();
-
 return;
 
 }
@@ -2407,7 +2322,7 @@ return;
 
 
 /* =========================================================
-   ROLE
+   ROLE / WORD SCREEN
 ========================================================= */
 
 async function showGameScreen(){
@@ -2429,7 +2344,6 @@ const data=result.data;
 if(data.status==="lobby"){
 
 show(lobby);
-
 return;
 
 }
@@ -2441,8 +2355,32 @@ myWord.textContent="";
 
 imposterHint.classList.add("hidden");
 hintOffMessage.classList.add("hidden");
+similarWordsInfo.classList.add("hidden");
 
-if(data.is_imposter){
+
+/* =========================================================
+   SIMILAR WORDS MODE
+========================================================= */
+
+if(isSimilarWordsMode()){
+
+myRole.textContent=
+"YOUR WORD";
+
+myRole.className=
+"myRole similarRole";
+
+myWord.textContent=
+data.word||"";
+
+roleDescription.textContent=
+"Everyone has a word. Nobody is told whether they are the Imposter or a civilian. Give clues carefully and figure out who has the different word.";
+
+similarWordsInfo.classList.remove(
+"hidden"
+);
+
+}else if(data.is_imposter){
 
 myRole.textContent=
 "🚨 YOU ARE THE IMPOSTER";
@@ -2693,36 +2631,27 @@ nobodySelected=false;
 
 submitVoteButton.disabled=true;
 
-const isVariable=
-game.game_mode==="variable_imposters";
-
-
-/*
- MODE-SPECIFIC INSTRUCTIONS
-*/
-
-if(isVariable){
+if(isSimilarWordsMode()){
 
 voteInstructions.innerHTML=
-"You can vote for <strong>Nobody</strong>, <strong>one player</strong>, or <strong>two players</strong>.<br>"+
-"If you select two, both players must be the Imposters for the vote to succeed.";
+"Choose <strong>ONE</strong> player you believe has the different word.<br>There is no Nobody option in this mode.";
 
-voteCounter.textContent=
-"0 / 2 selected";
+}else if(isClassicMode()){
+
+voteInstructions.innerHTML=
+"Choose <strong>ONE</strong> of the other players you believe is the Imposter.";
 
 }else{
 
 voteInstructions.innerHTML=
-"Choose <strong>exactly one</strong> of the other players.<br>"+
-"Classic mode has exactly one Imposter.";
-
-voteCounter.textContent=
-"0 / 1 selected";
+"You can vote for <strong>one</strong> or <strong>two</strong> players.<br>If you select two, both players must be the Imposters for the vote to succeed.";
 
 }
 
 voteStatus.textContent=
-"Choose your vote.";
+"Choose a player.";
+
+updateVoteCounter();
 
 const result=
 await db
@@ -2738,17 +2667,13 @@ throw result.error;
 votePlayers.innerHTML="";
 
 
-/*
- ========================================================
- VARIABLE MODE ONLY — NOBODY BUTTON
- ========================================================
-*/
+/* =========================================================
+   NOBODY ONLY EXISTS IN VARIABLE MODE
+========================================================= */
 
-let nobodyButton=null;
+if(isVariableMode()){
 
-if(isVariable){
-
-nobodyButton=
+const nobodyButton=
 document.createElement("button");
 
 nobodyButton.className=
@@ -2778,24 +2703,16 @@ updateVoteCounter();
 
 };
 
-votePlayers.appendChild(
-nobodyButton
-);
+votePlayers.appendChild(nobodyButton);
 
 }
 
 
-/*
- ========================================================
- PLAYER VOTES
- ========================================================
-*/
+/* =========================================================
+   PLAYER VOTES
+========================================================= */
 
 (result.data||[]).forEach(p=>{
-
-/*
- Nobody can still never be used to vote for yourself.
-*/
 
 if(p.id===player.id)
 return;
@@ -2808,52 +2725,41 @@ button.textContent=p.display_name;
 
 button.onclick=()=>{
 
-/*
- If somebody was selected, selecting a player
- cancels Nobody.
-*/
-
 if(nobodySelected){
 
 nobodySelected=false;
 
-if(nobodyButton)
-nobodyButton.classList.remove(
-"selected"
+document.querySelectorAll(".voteSpecial")
+.forEach(
+b=>b.classList.remove("selected")
 );
 
 }
 
-
 /*
- CLASSIC:
- exactly one player.
- Clicking another player replaces the previous choice.
+ Classic + Similar Words:
+ exactly one vote.
 */
-
-if(!isVariable){
+if(
+isClassicMode() ||
+isSimilarWordsMode()
+){
 
 document.querySelectorAll(".choice")
-.forEach(b=>{
-if(b!==nobodyButton)
-b.classList.remove("selected");
-});
-
-selectedVotes=[
-p.id
-];
-
-button.classList.add(
-"selected"
+.forEach(
+b=>b.classList.remove("selected")
 );
+
+selectedVotes=[p.id];
+
+button.classList.add("selected");
 
 submitVoteButton.disabled=false;
 
-voteCounter.textContent=
-"1 / 1 selected";
-
 voteStatus.textContent=
 "You selected "+p.display_name+".";
+
+updateVoteCounter();
 
 return;
 
@@ -2861,8 +2767,8 @@ return;
 
 
 /*
- VARIABLE:
- maximum two players.
+ Variable mode:
+ up to two.
 */
 
 const index=
@@ -2907,7 +2813,7 @@ voteStatus.textContent=
 }else if(selectedVotes.length===0){
 
 voteStatus.textContent=
-"Choose nobody, one player, or two players.";
+"Choose a player.";
 
 }else{
 
@@ -2931,11 +2837,6 @@ votePlayers.appendChild(button);
 
 }
 
-
-/* =========================================================
-   VOTE COUNTER
-========================================================= */
-
 function updateVoteCounter(){
 
 if(nobodySelected){
@@ -2947,16 +2848,20 @@ return;
 
 }
 
-const max=
-game?.game_mode==="variable_imposters"
-?2
-:1;
+if(isClassicMode() || isSimilarWordsMode()){
+
+voteCounter.textContent=
+selectedVotes.length
+?"1 player selected"
+:"No player selected";
+
+return;
+
+}
 
 voteCounter.textContent=
 selectedVotes.length+
-" / "+
-max+
-" selected";
+" / 2 selected";
 
 }
 
@@ -2967,38 +2872,11 @@ max+
 
 submitVoteButton.onclick=async()=>{
 
-const isVariable=
-game.game_mode==="variable_imposters";
-
-
-/*
- Server-side validation also protects this,
- but keep the UI validation consistent.
-*/
-
-if(!isVariable){
-
-if(
-nobodySelected ||
-selectedVotes.length!==1
-){
-
-voteStatus.textContent=
-"Classic mode requires exactly one player.";
-
-return;
-
-}
-
-}else{
-
 if(
 selectedVotes.length===0 &&
 !nobodySelected
 )
 return;
-
-}
 
 submitVoteButton.disabled=true;
 
@@ -3051,6 +2929,13 @@ submitVoteButton.disabled=false;
 ========================================================= */
 
 async function showImposterGuess(){
+
+if(isSimilarWordsMode()){
+
+await loadResults();
+return;
+
+}
 
 show(guessScreen);
 
@@ -3367,6 +3252,7 @@ player.is_host?"block":"none";
 voteResults.innerHTML="";
 finalGuessResult.classList.add("hidden");
 actualWordBox.classList.add("hidden");
+similarWordsResultBox.classList.add("hidden");
 
 try{
 
@@ -3382,7 +3268,8 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-const data=result.data;
+const data=
+result.data;
 
 if(!data)
 throw new Error(
@@ -3397,9 +3284,29 @@ actualWordBox.classList.remove(
 );
 
 
-/* RESULT */
+/* =========================================================
+   SIMILAR WORDS RESULTS
+========================================================= */
 
-if(
+if(isSimilarWordsMode()){
+
+similarWordsResultBox.classList.remove(
+"hidden"
+);
+
+if(data.outcome==="civilians_win"){
+
+resultText.innerHTML=
+"🎉 <span class='resultCorrect'>Civilians Win!</span>";
+
+}else{
+
+resultText.innerHTML=
+"🚨 <span class='resultWrong'>Imposters Win!</span>";
+
+}
+
+}else if(
 data.outcome==="civilians_win_no_imposters"
 ){
 
@@ -3473,7 +3380,11 @@ resultText.innerHTML=
 }
 
 
-/* FINAL GUESSES */
+/* =========================================================
+   FINAL GUESSES — NOT FOR SIMILAR WORDS
+========================================================= */
+
+if(!isSimilarWordsMode()){
 
 const guesses=
 Array.isArray(data.guesses)
@@ -3563,8 +3474,12 @@ data.correct
 
 }
 
+}
 
-/* VOTES */
+
+/* =========================================================
+   VOTES + ROLES
+========================================================= */
 
 const nobodyInfo=
 document.createElement("div");
@@ -3598,7 +3513,9 @@ nobodyCount.className=
 "voteCount";
 
 const nobodyVotes=
-await getNobodyVoteCount();
+isSimilarWordsMode()
+?0
+:await getNobodyVoteCount();
 
 nobodyCount.textContent=
 nobodyVotes+
@@ -3616,10 +3533,20 @@ nobodyInfo.appendChild(
 nobodyCount
 );
 
+if(isSimilarWordsMode()){
+
+nobodyInfo.classList.add("hidden");
+
+}
+
 voteResults.appendChild(
 nobodyInfo
 );
 
+
+/* =========================================================
+   PLAYER RESULTS
+========================================================= */
 
 (data.players||[]).forEach(p=>{
 
@@ -3675,6 +3602,25 @@ p.votes===1
 div.appendChild(top);
 div.appendChild(votes);
 
+if(
+isSimilarWordsMode() &&
+p.word
+){
+
+const word=
+document.createElement("div");
+
+word.className="voteCount";
+
+word.innerHTML=
+"Word: <strong style='color:#fff'>"+
+escapeHtml(p.word)+
+"</strong>";
+
+div.appendChild(word);
+
+}
+
 voteResults.appendChild(div);
 
 });
@@ -3701,6 +3647,22 @@ error.message;
 voteResults.appendChild(errorBox);
 
 }
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHtml(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
@@ -3752,7 +3714,9 @@ const time=
 parseInt(clueTime.value,10);
 
 const hints=
-imposterHints.checked;
+gameMode.value==="similar_words"
+?false
+:imposterHints.checked;
 
 const mode=
 gameMode.value;
@@ -3819,7 +3783,9 @@ const time=
 parseInt(clueTime.value,10);
 
 const hints=
-imposterHints.checked;
+gameMode.value==="similar_words"
+?false
+:imposterHints.checked;
 
 const mode=
 gameMode.value;
@@ -4008,7 +3974,6 @@ clueOrder=[];
 lastStatus=null;
 selectedVotes=[];
 nobodySelected=false;
-lastPlayersSignature="";
 
 clearSavedRoom();
 
@@ -4285,6 +4250,8 @@ createStatus,
 "✓ Multiplayer server connected",
 "ok"
 );
+
+updateModeDescription();
 
 await checkForPreviousGame();
 
