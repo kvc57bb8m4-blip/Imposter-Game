@@ -495,6 +495,10 @@ button:disabled{
   font-weight:700
 }
 
+.guessSubmit{
+  margin-top:12px
+}
+
 .guessWaiting{
   text-align:center;
   padding:24px 12px
@@ -516,10 +520,6 @@ button:disabled{
   line-height:1.5
 }
 
-.guessSubmit{
-  margin-top:12px
-}
-
 .guessSubmitted{
   text-align:center;
   padding:20px 8px
@@ -538,6 +538,117 @@ button:disabled{
 .guessSubmittedText{
   color:#9299aa;
   margin-top:7px
+}
+
+/* =========================================================
+   VOTE REVEAL DURING FINAL GUESS
+========================================================= */
+
+.voteReveal{
+  margin-top:24px;
+  padding-top:22px;
+  border-top:1px solid #292f43
+}
+
+.voteRevealTitle{
+  text-align:center;
+  font-size:24px;
+  font-weight:900
+}
+
+.voteRevealSubtitle{
+  text-align:center;
+  color:#9299aa;
+  font-size:13px;
+  line-height:1.45;
+  margin:6px 0 16px
+}
+
+.voteRevealPlayer{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#0d111b;
+  border:1px solid #252b3c;
+  padding:13px;
+  border-radius:13px;
+  margin-top:8px
+}
+
+.voteRevealPlayer.imposterPlayer{
+  border-color:#8f354c;
+  background:#21151c
+}
+
+.voteRevealAvatar{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#282e41;
+  font-weight:900
+}
+
+.voteRevealPlayer.imposterPlayer
+.voteRevealAvatar{
+  background:#8f354c
+}
+
+.voteRevealName{
+  flex:1;
+  font-weight:800;
+  min-width:0
+}
+
+.voteRevealRole{
+  display:block;
+  margin-top:3px;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.5px
+}
+
+.voteRevealRole.imposterRole{
+  color:#ff8199
+}
+
+.voteRevealRole.civilianRole{
+  color:#7ee5a7
+}
+
+.voteRevealVotes{
+  text-align:right;
+  font-size:20px;
+  font-weight:900
+}
+
+.voteRevealVotesLabel{
+  display:block;
+  color:#888fa2;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:800
+}
+
+.voteRevealCaught{
+  margin-top:15px;
+  padding:14px;
+  border-radius:13px;
+  background:#171b27;
+  border:1px solid #30374c;
+  text-align:center;
+  color:#aeb4c4;
+  font-size:13px;
+  line-height:1.45
+}
+
+.voteRevealCaught strong{
+  color:#ff8199
 }
 
 /* RESULTS */
@@ -1023,6 +1134,28 @@ They now have one final chance to guess the secret word.
 
 </div>
 
+
+<!-- NEW: VOTE + ROLE REVEAL -->
+
+<div id="voteReveal"
+     class="voteReveal hidden">
+
+<div class="voteRevealTitle">
+🗳️ The Votes Are In
+</div>
+
+<div class="voteRevealSubtitle">
+Everyone can now see how the vote went and who each player really was.
+</div>
+
+<div id="voteRevealPlayers"></div>
+
+<div id="voteRevealCaught"
+     class="voteRevealCaught">
+</div>
+
+</div>
+
 </section>
 
 
@@ -1185,6 +1318,12 @@ const guessWaitingPanel=document.getElementById("guessWaitingPanel");
 const finalGuessInput=document.getElementById("finalGuessInput");
 const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
 const finalGuessStatus=document.getElementById("finalGuessStatus");
+
+/* NEW VOTE REVEAL ELEMENTS */
+
+const voteReveal=document.getElementById("voteReveal");
+const voteRevealPlayers=document.getElementById("voteRevealPlayers");
+const voteRevealCaught=document.getElementById("voteRevealCaught");
 
 const resultText=document.getElementById("resultText");
 const voteResults=document.getElementById("voteResults");
@@ -2209,10 +2348,21 @@ await showVoting();
 
 }
 
-if(status==="imposter_guess" &&
-guessScreen.classList.contains("hidden")){
+if(status==="imposter_guess"){
+
+/*
+ Keep the vote/role reveal visible for everyone
+ while the Imposter is making the final guess.
+*/
+if(guessScreen.classList.contains("hidden")){
 
 await showImposterGuess();
+
+}else{
+
+await loadVoteReveal();
+
+}
 
 }
 
@@ -2739,17 +2889,6 @@ throw result.error;
 voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
 
-/*
- The database now automatically decides whether
- the next phase is:
-
- voting
- results
- or imposter_guess
-
- Do NOT have the host manually force results here.
-*/
-
 await syncGame();
 
 }catch(error){
@@ -2765,6 +2904,178 @@ submitVoteButton.disabled=false;
 
 
 /* =========================================================
+   VOTE + ROLE REVEAL
+   SHOWN DURING IMPOSTER FINAL GUESS
+========================================================= */
+
+async function loadVoteReveal(){
+
+if(!game||!player)
+return;
+
+try{
+
+const result=
+await db.rpc(
+"get_vote_reveal_state",
+{
+p_code:game.code,
+p_player_token:getToken()
+}
+);
+
+if(result.error)
+throw result.error;
+
+const data=result.data;
+
+if(!data)
+throw new Error(
+"No vote reveal information."
+);
+
+const list=
+Array.isArray(data.players)
+?data.players
+:[];
+
+voteRevealPlayers.innerHTML="";
+
+if(!list.length){
+
+voteRevealPlayers.innerHTML=
+'<div class="infoBox">No vote information available.</div>';
+
+}else{
+
+list.forEach((p,index)=>{
+
+const row=
+document.createElement("div");
+
+row.className=
+"voteRevealPlayer"+
+(p.is_imposter
+?" imposterPlayer"
+:"");
+
+const avatar=
+document.createElement("div");
+
+avatar.className=
+"voteRevealAvatar";
+
+avatar.textContent=
+p.is_imposter
+?"🚨"
+:String(index+1);
+
+row.appendChild(avatar);
+
+const name=
+document.createElement("div");
+
+name.className=
+"voteRevealName";
+
+name.textContent=
+p.name||"Unknown";
+
+const role=
+document.createElement("span");
+
+role.className=
+"voteRevealRole "+
+(
+p.is_imposter
+?"imposterRole"
+:"civilianRole"
+);
+
+role.textContent=
+p.is_imposter
+?"IMPOSTER"
+:"CIVILIAN";
+
+name.appendChild(role);
+
+row.appendChild(name);
+
+const votes=
+document.createElement("div");
+
+votes.className=
+"voteRevealVotes";
+
+votes.textContent=
+Number(p.votes||0);
+
+const votesLabel=
+document.createElement("span");
+
+votesLabel.className=
+"voteRevealVotesLabel";
+
+votesLabel.textContent=
+Number(p.votes||0)===1
+?"vote"
+:"votes";
+
+votes.appendChild(votesLabel);
+
+row.appendChild(votes);
+
+voteRevealPlayers.appendChild(row);
+
+});
+
+}
+
+voteRevealCaught.innerHTML=
+"The votes are final.<br><br>"+
+"<strong>"+
+escapeHTML(data.imposter_name||"Unknown")+
+"</strong> was the Imposter.";
+
+voteReveal.classList.remove("hidden");
+
+}catch(error){
+
+console.error(
+"Vote reveal:",
+error
+);
+
+voteRevealPlayers.innerHTML=
+'<div class="infoBox">Could not load the vote reveal.</div>';
+
+voteRevealCaught.textContent=
+error.message||"Vote reveal unavailable.";
+
+voteReveal.classList.remove("hidden");
+
+}
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
    FINAL IMPOSTER GUESS
 ========================================================= */
 
@@ -2774,9 +3085,18 @@ clearInterval(clueTimerInterval);
 
 show(guessScreen);
 
+/*
+ Always show the vote/role reveal during this phase.
+ It is intentionally visible to BOTH civilians
+ and the Imposter.
+*/
+
+voteReveal.classList.remove("hidden");
+
 finalGuessInput.value="";
 
 submitFinalGuessButton.disabled=false;
+finalGuessInput.disabled=false;
 
 finalGuessStatus.textContent=
 "Think carefully...";
@@ -2823,6 +3143,13 @@ guessWaitingPanel.classList.remove(
 );
 
 }
+
+/*
+ Load the vote results AFTER the phase is
+ confirmed to be imposter_guess.
+*/
+
+await loadVoteReveal();
 
 }catch(error){
 
@@ -2966,10 +3293,6 @@ resultText.className="result";
 
 try{
 
-/*
- Get the vote results from the host RPC.
-*/
-
 const result=
 await db.rpc(
 "get_vote_result",
@@ -3052,7 +3375,6 @@ resultText.textContent=
 
 /*
  Load the final-guess result separately.
- This is available to everyone.
 */
 
 try{
@@ -3483,8 +3805,7 @@ await syncGame();
 
 }
 
-}
-);
+});
 
 
 /* =========================================================
