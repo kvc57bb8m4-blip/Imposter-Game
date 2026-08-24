@@ -160,57 +160,7 @@ button:disabled{
   font-weight:700
 }
 
-/* =========================================================
-   LOBBY SETTINGS DISPLAY
-========================================================= */
-
-.currentSettings{
-  margin-top:18px;
-  padding-top:18px;
-  border-top:1px solid #292f43
-}
-
-.currentSettingsTitle{
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:10px
-}
-
-.settingDisplay{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:13px 14px;
-  border-radius:12px;
-  margin-top:8px
-}
-
-.settingDisplayName{
-  color:#aeb4c4;
-  font-size:14px
-}
-
-.settingDisplayValue{
-  color:#9b9dff;
-  font-weight:800;
-  text-align:right;
-  word-break:break-word
-}
-
-.settingDisplayValue.enabled{
-  color:#7ee5a7
-}
-
-.settingDisplayValue.disabled{
-  color:#ff8199
-}
-
-/* =========================================================
-   GAME INFO
-========================================================= */
+/* GAME INFO */
 
 .gameInfo{
   text-align:center;
@@ -251,9 +201,7 @@ button:disabled{
   line-height:1.5
 }
 
-/* =========================================================
-   IMPOSTER HINT
-========================================================= */
+/* IMPOSTER HINT */
 
 .imposterHint{
   margin:16px auto 0;
@@ -291,9 +239,7 @@ button:disabled{
   font-size:14px
 }
 
-/* =========================================================
-   LOBBY SETTINGS
-========================================================= */
+/* LOBBY SETTINGS */
 
 .settingDescription{
   color:#9299aa;
@@ -364,9 +310,64 @@ button:disabled{
   transform:translateX(26px)
 }
 
-/* =========================================================
-   CLUE ORDER
-========================================================= */
+/* CURRENT SETTINGS FOR NON-HOST */
+
+.currentSettings{
+  margin-top:18px;
+  padding:17px;
+  background:#0d111b;
+  border:1px solid #30374c;
+  border-radius:16px
+}
+
+.currentSettingsTitle{
+  text-align:center;
+  font-size:12px;
+  font-weight:900;
+  color:#888fa2;
+  text-transform:uppercase;
+  letter-spacing:1.3px
+}
+
+.currentSettingsGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin-top:12px
+}
+
+.currentSetting{
+  background:#171c29;
+  border:1px solid #252b3c;
+  border-radius:12px;
+  padding:12px 7px;
+  text-align:center;
+  min-width:0
+}
+
+.currentSettingLabel{
+  color:#7f8799;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.7px
+}
+
+.currentSettingValue{
+  margin-top:5px;
+  font-size:14px;
+  font-weight:900;
+  word-break:break-word
+}
+
+.settingsUpdating{
+  text-align:center;
+  color:#8e95a8;
+  font-size:11px;
+  margin-top:10px
+}
+
+/* CLUE ORDER */
 
 .clueTitle{
   text-align:center;
@@ -464,9 +465,7 @@ button:disabled{
   text-align:center
 }
 
-/* =========================================================
-   LEAVE
-========================================================= */
+/* LEAVE */
 
 .gameLeaveButton{
   position:fixed;
@@ -499,9 +498,7 @@ button:disabled{
   font-size:13px
 }
 
-/* =========================================================
-   VOTING
-========================================================= */
+/* VOTING */
 
 .choice{
   background:#1d2332;
@@ -514,9 +511,7 @@ button:disabled{
   border-color:#6264ff
 }
 
-/* =========================================================
-   FINAL IMPOSTER GUESS
-========================================================= */
+/* FINAL IMPOSTER GUESS */
 
 .guessIcon{
   text-align:center;
@@ -557,6 +552,10 @@ button:disabled{
   font-weight:700
 }
 
+.guessSubmit{
+  margin-top:12px
+}
+
 .guessWaiting{
   text-align:center;
   padding:24px 12px
@@ -578,33 +577,7 @@ button:disabled{
   line-height:1.5
 }
 
-.guessSubmit{
-  margin-top:12px
-}
-
-.guessSubmitted{
-  text-align:center;
-  padding:20px 8px
-}
-
-.guessSubmittedIcon{
-  font-size:48px
-}
-
-.guessSubmittedTitle{
-  font-size:22px;
-  font-weight:900;
-  margin-top:8px
-}
-
-.guessSubmittedText{
-  color:#9299aa;
-  margin-top:7px
-}
-
-/* =========================================================
-   RESULTS
-========================================================= */
+/* RESULTS */
 
 .result{
   text-align:center;
@@ -693,6 +666,23 @@ hr{
   font-size:14px;
   line-height:1.5
 }
+
+@media(max-width:430px){
+  .currentSettingsGrid{
+    grid-template-columns:1fr
+  }
+
+  .currentSetting{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    text-align:left
+  }
+
+  .currentSettingValue{
+    margin-top:0
+  }
+}
 </style>
 </head>
 
@@ -717,9 +707,7 @@ hr{
 
 <h1>IMPOSTER</h1>
 
-<!-- =====================================================
-     HOME
-===================================================== -->
+<!-- HOME -->
 
 <section id="home">
 
@@ -810,9 +798,7 @@ Don't Rejoin
 </section>
 
 
-<!-- =====================================================
-     LOBBY
-===================================================== -->
+<!-- LOBBY -->
 
 <section id="lobby"
          class="card hidden">
@@ -836,63 +822,65 @@ Share this code with your friends.
 Loading players...
 </div>
 
-
-<!-- =====================================================
-     CURRENT SETTINGS
-===================================================== -->
+<!-- CURRENT SETTINGS FOR NON-HOST PLAYERS -->
 
 <div id="currentSettings"
-     class="currentSettings">
+     class="currentSettings hidden">
 
 <div class="currentSettingsTitle">
-Current Settings
+Current Game Settings
 </div>
 
-<div class="settingDisplay">
+<div class="currentSettingsGrid">
 
-<div class="settingDisplayName">
+<div class="currentSetting">
+
+<div class="currentSettingLabel">
 Category
 </div>
 
 <div id="currentCategory"
-     class="settingDisplayValue">
+     class="currentSettingValue">
 Random Category
 </div>
 
 </div>
 
-<div class="settingDisplay">
+<div class="currentSetting">
 
-<div class="settingDisplayName">
+<div class="currentSettingLabel">
 Clue Time
 </div>
 
 <div id="currentClueTime"
-     class="settingDisplayValue">
+     class="currentSettingValue">
 60 seconds
 </div>
 
 </div>
 
-<div class="settingDisplay">
+<div class="currentSetting">
 
-<div class="settingDisplayName">
+<div class="currentSettingLabel">
 Imposter Hints
 </div>
 
 <div id="currentHints"
-     class="settingDisplayValue enabled">
-Enabled
+     class="currentSettingValue">
+On
 </div>
 
 </div>
 
 </div>
 
+<div id="settingsUpdating"
+     class="settingsUpdating hidden">
+Updating...
+</div>
 
-<!-- =====================================================
-     HOST SETTINGS
-===================================================== -->
+</div>
+
 
 <div id="hostControls"
      class="hidden">
@@ -901,9 +889,7 @@ Enabled
 
 <h3>Game Settings</h3>
 
-<label>
-Category
-</label>
+<label>Category</label>
 
 <select id="category">
 
@@ -964,6 +950,11 @@ Give the Imposter a helpful hint about the secret word.
 
 </div>
 
+<div id="hostSettingsStatus"
+     class="status hidden">
+Saving settings...
+</div>
+
 <button id="startButton">
 Start Game
 </button>
@@ -978,9 +969,7 @@ Waiting for players...
 </section>
 
 
-<!-- =====================================================
-     GAME / CLUES
-===================================================== -->
+<!-- GAME / CLUES -->
 
 <section id="clueScreen"
          class="card hidden">
@@ -1064,9 +1053,7 @@ Everyone sees the same order. Just follow the numbers.
 </section>
 
 
-<!-- =====================================================
-     VOTING
-===================================================== -->
+<!-- VOTING -->
 
 <section id="votingScreen"
          class="card hidden">
@@ -1094,9 +1081,7 @@ Choose a player.
 </section>
 
 
-<!-- =====================================================
-     FINAL IMPOSTER GUESS
-===================================================== -->
+<!-- FINAL IMPOSTER GUESS -->
 
 <section id="guessScreen"
          class="card hidden">
@@ -1162,9 +1147,7 @@ They now have one final chance to guess the secret word.
 </section>
 
 
-<!-- =====================================================
-     RESULTS
-===================================================== -->
+<!-- RESULTS -->
 
 <section id="resultsScreen"
          class="card hidden">
@@ -1257,6 +1240,15 @@ let syncing=false;
 
 let savedRoster=[];
 
+/* Category names are cached here so the lobby can display
+   the actual category instead of just the category ID. */
+let categoryNames=new Map();
+
+/* Prevent excessive settings requests if the host changes
+   multiple settings quickly. */
+let settingsSaveTimer=null;
+let settingsSaveInProgress=false;
+
 
 /* =========================================================
    ELEMENTS
@@ -1293,28 +1285,19 @@ const forgetGameButton=document.getElementById("forgetGameButton");
 const roomCode=document.getElementById("roomCode");
 const players=document.getElementById("players");
 
-/* CURRENT SETTINGS */
-
-const currentSettings=
-document.getElementById("currentSettings");
-
-const currentCategory=
-document.getElementById("currentCategory");
-
-const currentClueTime=
-document.getElementById("currentClueTime");
-
-const currentHints=
-document.getElementById("currentHints");
-
-/* HOST SETTINGS */
-
 const hostControls=document.getElementById("hostControls");
 const category=document.getElementById("category");
 const clueTime=document.getElementById("clueTime");
 const imposterHints=document.getElementById("imposterHints");
 const startButton=document.getElementById("startButton");
 const lobbyStatus=document.getElementById("lobbyStatus");
+
+const currentSettings=document.getElementById("currentSettings");
+const currentCategory=document.getElementById("currentCategory");
+const currentClueTime=document.getElementById("currentClueTime");
+const currentHints=document.getElementById("currentHints");
+const settingsUpdating=document.getElementById("settingsUpdating");
+const hostSettingsStatus=document.getElementById("hostSettingsStatus");
 
 const gameCategory=document.getElementById("gameCategory");
 const myRole=document.getElementById("myRole");
@@ -1334,56 +1317,28 @@ const votePlayers=document.getElementById("votePlayers");
 const submitVoteButton=document.getElementById("submitVoteButton");
 const voteStatus=document.getElementById("voteStatus");
 
-const guessScreenPanel=
-document.getElementById("imposterGuessPanel");
+const guessScreenPanel=document.getElementById("imposterGuessPanel");
+const guessWaitingPanel=document.getElementById("guessWaitingPanel");
+const finalGuessInput=document.getElementById("finalGuessInput");
+const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
+const finalGuessStatus=document.getElementById("finalGuessStatus");
 
-const guessWaitingPanel=
-document.getElementById("guessWaitingPanel");
+const resultText=document.getElementById("resultText");
+const voteResults=document.getElementById("voteResults");
 
-const finalGuessInput=
-document.getElementById("finalGuessInput");
+const finalGuessResult=document.getElementById("finalGuessResult");
+const finalGuessWord=document.getElementById("finalGuessWord");
+const finalGuessOutcome=document.getElementById("finalGuessOutcome");
 
-const submitFinalGuessButton=
-document.getElementById("submitFinalGuessButton");
+const nextRoundButton=document.getElementById("nextRoundButton");
+const backLobbyButton=document.getElementById("backLobbyButton");
 
-const finalGuessStatus=
-document.getElementById("finalGuessStatus");
+const gameLeaveButton=document.getElementById("gameLeaveButton");
+const leaveControls=document.getElementById("leaveControls");
+const bringLobbyButton=document.getElementById("bringLobbyButton");
 
-const resultText=
-document.getElementById("resultText");
-
-const voteResults=
-document.getElementById("voteResults");
-
-const finalGuessResult=
-document.getElementById("finalGuessResult");
-
-const finalGuessWord=
-document.getElementById("finalGuessWord");
-
-const finalGuessOutcome=
-document.getElementById("finalGuessOutcome");
-
-const nextRoundButton=
-document.getElementById("nextRoundButton");
-
-const backLobbyButton=
-document.getElementById("backLobbyButton");
-
-const gameLeaveButton=
-document.getElementById("gameLeaveButton");
-
-const leaveControls=
-document.getElementById("leaveControls");
-
-const bringLobbyButton=
-document.getElementById("bringLobbyButton");
-
-const connectionDot=
-document.getElementById("connectionDot");
-
-const connectionText=
-document.getElementById("connectionText");
+const connectionDot=document.getElementById("connectionDot");
+const connectionText=document.getElementById("connectionText");
 
 
 /* =========================================================
@@ -1392,8 +1347,7 @@ document.getElementById("connectionText");
 
 function getToken(){
 
-let token=
-localStorage.getItem(
+let token=localStorage.getItem(
 "imposter_player_token"
 );
 
@@ -1476,8 +1430,7 @@ function loadSavedRoster(){
 
 try{
 
-const raw=
-localStorage.getItem(
+const raw=localStorage.getItem(
 "imposter_room_roster"
 );
 
@@ -1574,139 +1527,247 @@ bringLobbyButton.classList.toggle(
    LOBBY SETTINGS DISPLAY
 ========================================================= */
 
-function getCategoryDisplayName(){
+function getCategoryDisplay(gameData){
 
-if(!category)
+if(!gameData)
 return "Random Category";
 
-/*
- The host's current selection is the best
- representation of what the lobby is currently set to.
-*/
-
-const selectedValue=
-category.value;
-
-if(selectedValue==="random"||!selectedValue){
+if(
+gameData.category_id===null ||
+gameData.category_id===undefined
+){
 
 return "Random Category";
 
 }
 
-const selectedOption=
-[...category.options].find(
-option=>
-option.value===selectedValue
+const name=
+categoryNames.get(
+String(gameData.category_id)
 );
 
-if(selectedOption){
-
-return selectedOption.textContent;
+return name || "Selected Category";
 
 }
 
-return "Random Category";
+function getClueTimeDisplay(value){
+
+const time=Number(value);
+
+if(time===0)
+return "No Time Limit";
+
+if(
+time===30 ||
+time===45 ||
+time===60 ||
+time===90
+){
+
+return time+" seconds";
 
 }
 
+return "60 seconds";
 
-function updateLobbySettings(){
+}
+
+function renderCurrentLobbySettings(){
 
 if(!game)
 return;
 
-
 /*
- CATEGORY
-
- For the host, show the current dropdown selection.
-
- For other players, show the category stored
- on the game. This means everyone sees the
- currently active game setting.
+ Only non-host players need this separate display.
+ The host already has the editable controls.
 */
 
-let categoryText=
-"Random Category";
-
-if(player?.is_host){
-
-categoryText=
-getCategoryDisplayName();
-
-}else if(game.category_name){
-
-categoryText=
-game.category_name;
-
-}else if(game.category_id){
-
-const selected=
-[...category.options].find(
-option=>
-option.value===String(game.category_id)
+currentSettings.classList.toggle(
+"hidden",
+!!player?.is_host
 );
 
-if(selected){
-
-categoryText=
-selected.textContent;
-
-}
-
-}
+if(player?.is_host)
+return;
 
 currentCategory.textContent=
-categoryText;
-
-
-/*
- CLUE TIME
-*/
-
-const time=
-Number(
-player?.is_host
-?clueTime.value
-:game.clue_time
-);
-
-if(time===0){
+getCategoryDisplay(game);
 
 currentClueTime.textContent=
-"♾️ No Time Limit";
+getClueTimeDisplay(game.clue_time);
+
+currentHints.textContent=
+game.imposter_hints_enabled
+?"On"
+:"Off";
+
+}
+
+function syncHostControlsFromGame(){
+
+if(!game||!player?.is_host)
+return;
+
+/*
+ Do not overwrite a host's control while they are actively
+ changing it. This is mainly for realtime refreshes.
+*/
+
+if(game.category_id===null||
+game.category_id===undefined){
+
+if(category.value!=="random")
+category.value="random";
 
 }else{
 
-currentClueTime.textContent=
-time+" seconds";
+const id=String(game.category_id);
+
+if(
+Array.from(category.options)
+.some(o=>o.value===id)
+){
+
+category.value=id;
 
 }
 
+}
 
-/*
- IMPOSTER HINTS
-*/
-
-const hints=
-player?.is_host
-?imposterHints.checked
-:Boolean(game.imposter_hints_enabled);
-
-currentHints.textContent=
-hints
-?"Enabled"
-:"Disabled";
-
-currentHints.classList.toggle(
-"enabled",
-hints
+const time=String(
+game.clue_time ?? 60
 );
 
-currentHints.classList.toggle(
-"disabled",
-!hints
+if(
+Array.from(clueTime.options)
+.some(o=>o.value===time)
+){
+
+clueTime.value=time;
+
+}
+
+imposterHints.checked=
+game.imposter_hints_enabled!==false;
+
+}
+
+async function saveLobbySettings(){
+
+if(!game||!player?.is_host)
+return;
+
+if(game.status!=="lobby")
+return;
+
+const selectedCategory=
+category.value==="random"
+?null
+:parseInt(category.value,10);
+
+const selectedTime=
+parseInt(clueTime.value,10);
+
+const selectedHints=
+imposterHints.checked;
+
+settingsSaveInProgress=true;
+
+hostSettingsStatus.classList.remove(
+"hidden"
 );
+
+setStatus(
+hostSettingsStatus,
+"Saving settings..."
+);
+
+try{
+
+const result=
+await db.rpc(
+"update_lobby_settings",
+{
+p_code:game.code,
+p_host_token:getToken(),
+p_category_id:selectedCategory,
+p_clue_time:selectedTime,
+p_imposter_hints_enabled:selectedHints
+}
+);
+
+if(result.error)
+throw result.error;
+
+if(result.data?.game){
+
+game=result.data.game;
+
+}
+
+setStatus(
+hostSettingsStatus,
+"✓ Settings saved",
+"ok"
+);
+
+renderCurrentLobbySettings();
+
+setTimeout(()=>{
+
+if(hostSettingsStatus){
+
+hostSettingsStatus.classList.add(
+"hidden"
+);
+
+}
+
+},1000);
+
+}catch(error){
+
+console.error(
+"Saving lobby settings:",
+error
+);
+
+setStatus(
+hostSettingsStatus,
+"Could not save settings: "+
+error.message,
+"err"
+);
+
+}finally{
+
+settingsSaveInProgress=false;
+
+}
+
+}
+
+function queueLobbySettingsSave(){
+
+if(!player?.is_host||!game)
+return;
+
+settingsUpdating.classList.remove(
+"hidden"
+);
+
+clearTimeout(settingsSaveTimer);
+
+settingsSaveTimer=
+setTimeout(async()=>{
+
+await saveLobbySettings();
+
+settingsUpdating.classList.add(
+"hidden"
+);
+
+},150);
 
 }
 
@@ -1725,8 +1786,7 @@ throw new Error(
 
 }
 
-db=
-window.supabase.createClient(
+db=window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY,
 {
@@ -1819,10 +1879,17 @@ await db
 if(result.error)
 throw result.error;
 
+categoryNames.clear();
+
 category.innerHTML=
 '<option value="random">Random Category</option>';
 
 (result.data||[]).forEach(cat=>{
+
+categoryNames.set(
+String(cat.id),
+cat.name
+);
 
 const option=
 document.createElement("option");
@@ -1834,24 +1901,8 @@ category.appendChild(option);
 
 });
 
-/*
- If we're already in a game, update
- the displayed category now that the
- category list has loaded.
-*/
-
-if(game){
-
-if(game.category_id){
-
-category.value=
-String(game.category_id);
-
-}
-
-updateLobbySettings();
-
-}
+if(game)
+renderCurrentLobbySettings();
 
 }catch(error){
 
@@ -1893,8 +1944,7 @@ createCard.classList.add("hidden");
 
 async function createGame(){
 
-const name=
-createName.value.trim();
+const name=createName.value.trim();
 
 if(!name){
 
@@ -1975,11 +2025,9 @@ createButton.disabled=false;
 
 async function joinGame(){
 
-const name=
-joinName.value.trim();
+const name=joinName.value.trim();
 
-const code=
-joinCode.value
+const code=joinCode.value
 .trim()
 .toUpperCase();
 
@@ -2062,8 +2110,7 @@ joinButton.disabled=false;
 
 async function checkForPreviousGame(){
 
-const code=
-localStorage.getItem(
+const code=localStorage.getItem(
 "imposter_room_code"
 );
 
@@ -2087,11 +2134,8 @@ throw result.error;
 if(!result.data)
 throw new Error("Unavailable");
 
-const oldGame=
-result.data.game;
-
-const oldPlayer=
-result.data.player;
+const oldGame=result.data.game;
+const oldPlayer=result.data.player;
 
 if(!oldGame||!oldPlayer)
 throw new Error("Unavailable");
@@ -2099,9 +2143,7 @@ throw new Error("Unavailable");
 const playersResult=
 await db
 .from("game_players")
-.select(
-"id,display_name,is_alive"
-)
+.select("id,display_name,is_alive")
 .eq("game_id",oldGame.id);
 
 if(playersResult.error)
@@ -2135,16 +2177,13 @@ return;
 
 }
 
-let phase=
-"Game in progress.";
+let phase="Game in progress.";
 
 if(oldGame.status==="lobby")
 phase="The lobby is still open.";
 
-if(
-oldGame.status==="playing"||
-oldGame.status==="clues"
-)
+if(oldGame.status==="playing"||
+oldGame.status==="clues")
 phase="The clue round is active.";
 
 if(oldGame.status==="voting")
@@ -2185,11 +2224,9 @@ rejoinCard.classList.add("hidden");
    REJOIN
 ========================================================= */
 
-rejoinButton.onclick=
-async()=>{
+rejoinButton.onclick=async()=>{
 
-const code=
-localStorage.getItem(
+const code=localStorage.getItem(
 "imposter_room_code"
 );
 
@@ -2290,46 +2327,35 @@ return;
 
 show(lobby);
 
-roomCode.textContent=
-game.code;
+roomCode.textContent=game.code;
 
 hostControls.classList.toggle(
 "hidden",
 !player.is_host
 );
 
-if(typeof game.imposter_hints_enabled==="boolean"){
+/*
+ Host sees the editable settings.
+ Everyone else sees the read-only live settings.
+*/
 
-imposterHints.checked=
-game.imposter_hints_enabled;
+if(player.is_host){
+
+currentSettings.classList.add(
+"hidden"
+);
+
+syncHostControlsFromGame();
 
 }else{
 
-imposterHints.checked=true;
+currentSettings.classList.remove(
+"hidden"
+);
+
+renderCurrentLobbySettings();
 
 }
-
-if(
-player.is_host &&
-game.category_id
-){
-
-category.value=
-String(game.category_id);
-
-}
-
-if(
-game.clue_time!==null &&
-game.clue_time!==undefined
-){
-
-clueTime.value=
-String(game.clue_time);
-
-}
-
-updateLobbySettings();
 
 updateLeaveUI();
 
@@ -2365,8 +2391,7 @@ await db
 if(result.error)
 throw result.error;
 
-const list=
-result.data||[];
+const list=result.data||[];
 
 players.innerHTML=
 "<h3>Players ("+
@@ -2380,8 +2405,7 @@ document.createElement("div");
 
 div.className="player";
 
-div.textContent=
-p.display_name;
+div.textContent=p.display_name;
 
 if(player&&p.id===player.id){
 
@@ -2411,8 +2435,7 @@ list.length+
 (list.length===1?"":"s")+
 " in the room.";
 
-savedRoster=
-list.map(p=>({
+savedRoster=list.map(p=>({
 id:p.id,
 display_name:p.display_name
 }));
@@ -2421,13 +2444,6 @@ localStorage.setItem(
 "imposter_room_roster",
 JSON.stringify(savedRoster)
 );
-
-/*
- Make sure the visible settings are
- refreshed whenever the lobby refreshes.
-*/
-
-updateLobbySettings();
 
 }catch(error){
 
@@ -2469,9 +2485,7 @@ table:"games",
 filter:"id=eq."+game.id
 },
 async()=>{
-
 await syncGame();
-
 }
 )
 
@@ -2484,10 +2498,8 @@ table:"game_players",
 filter:"game_id=eq."+game.id
 },
 async()=>{
-
 await loadPlayers();
 await syncGame();
-
 }
 )
 
@@ -2537,8 +2549,7 @@ clearInterval(syncInterval);
 syncInterval=
 setInterval(
 ()=>{
-if(game)
-syncGame();
+if(game) syncGame();
 },
 1000
 );
@@ -2583,16 +2594,26 @@ true,
 "Multiplayer connected"
 );
 
-if(
-game.status==="lobby"
-){
+/*
+ IMPORTANT:
+ Always refresh the lobby settings even if the game
+ phase did not change. This fixes the old issue where
+ settings could be stale for other players.
+*/
 
-updateLobbySettings();
+if(game.status==="lobby"){
+
+renderCurrentLobbySettings();
+
+if(player?.is_host){
+
+syncHostControlsFromGame();
 
 }
 
-const status=
-game.status;
+}
+
+const status=game.status;
 
 if(status!==lastStatus){
 
@@ -2602,40 +2623,28 @@ await handlePhase(status);
 
 }else{
 
-if(status==="lobby"){
-
-updateLobbySettings();
-
-}
-
 if(status==="clues"){
 
 await showGameScreen();
 
 }
 
-if(
-status==="voting" &&
-votingScreen.classList.contains("hidden")
-){
+if(status==="voting" &&
+votingScreen.classList.contains("hidden")){
 
 await showVoting();
 
 }
 
-if(
-status==="imposter_guess" &&
-guessScreen.classList.contains("hidden")
-){
+if(status==="imposter_guess" &&
+guessScreen.classList.contains("hidden")){
 
 await showImposterGuess();
 
 }
 
-if(
-status==="results" &&
-resultsScreen.classList.contains("hidden")
-){
+if(status==="results" &&
+resultsScreen.classList.contains("hidden")){
 
 await loadResults();
 
@@ -2696,7 +2705,6 @@ return;
 if(status==="voting"){
 
 await showVoting();
-
 return;
 
 }
@@ -2704,7 +2712,6 @@ return;
 if(status==="imposter_guess"){
 
 await showImposterGuess();
-
 return;
 
 }
@@ -2712,7 +2719,6 @@ return;
 if(status==="results"){
 
 await loadResults();
-
 return;
 
 }
@@ -2753,7 +2759,6 @@ throw new Error(
 if(data.status==="lobby"){
 
 openLobby();
-
 return;
 
 }
@@ -2891,8 +2896,7 @@ const num=
 document.createElement("div");
 
 num.className="orderNumber";
-num.textContent=
-index+1;
+num.textContent=index+1;
 
 row.appendChild(num);
 
@@ -2900,8 +2904,7 @@ const name=
 document.createElement("div");
 
 name.className="orderName";
-name.textContent=
-p.display_name;
+name.textContent=p.display_name;
 
 if(p.id===player.id){
 
@@ -2944,9 +2947,7 @@ Number(game.clue_time);
 
 if(limit===0){
 
-clueTimer.className=
-"timer noTimer";
-
+clueTimer.className="timer noTimer";
 clueTimer.textContent=
 "♾️ No Time Limit";
 
@@ -2954,8 +2955,7 @@ return;
 
 }
 
-clueTimer.className=
-"timer";
+clueTimer.className="timer";
 
 const start=
 game.started_at||
@@ -2963,9 +2963,7 @@ game.clue_turn_started_at;
 
 if(!start){
 
-clueTimer.textContent=
-limit;
-
+clueTimer.textContent=limit;
 return;
 
 }
@@ -2996,9 +2994,7 @@ clueTimer.className=
 
 if(remaining<=0){
 
-clearInterval(
-clueTimerInterval
-);
+clearInterval(clueTimerInterval);
 
 if(player.is_host){
 
@@ -3015,10 +3011,7 @@ hostClueControls.classList.remove(
 tick();
 
 clueTimerInterval=
-setInterval(
-tick,
-250
-);
+setInterval(tick,250);
 
 }
 
@@ -3027,8 +3020,7 @@ tick,
    START VOTING
 ========================================================= */
 
-startVotingButton.onclick=
-async()=>{
+startVotingButton.onclick=async()=>{
 
 if(!player?.is_host)
 return;
@@ -3074,9 +3066,7 @@ startVotingButton.disabled=false;
 
 async function showVoting(){
 
-clearInterval(
-clueTimerInterval
-);
+clearInterval(clueTimerInterval);
 
 show(votingScreen);
 
@@ -3112,11 +3102,8 @@ return;
 const button=
 document.createElement("button");
 
-button.className=
-"choice";
-
-button.textContent=
-p.display_name;
+button.className="choice";
+button.textContent=p.display_name;
 
 button.onclick=()=>{
 
@@ -3126,21 +3113,15 @@ document
 b=>b.classList.remove("selected")
 );
 
-button.classList.add(
-"selected"
-);
+button.classList.add("selected");
 
-selectedVote=
-p.id;
+selectedVote=p.id;
 
-submitVoteButton.disabled=
-false;
+submitVoteButton.disabled=false;
 
 };
 
-votePlayers.appendChild(
-button
-);
+votePlayers.appendChild(button);
 
 });
 
@@ -3160,14 +3141,12 @@ voteStatus.textContent=
    SUBMIT VOTE
 ========================================================= */
 
-submitVoteButton.onclick=
-async()=>{
+submitVoteButton.onclick=async()=>{
 
 if(!selectedVote)
 return;
 
-submitVoteButton.disabled=
-true;
+submitVoteButton.disabled=true;
 
 try{
 
@@ -3187,11 +3166,6 @@ throw result.error;
 voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
 
-/*
- The database decides whether the next
- phase is voting, results, or imposter_guess.
-*/
-
 await syncGame();
 
 }catch(error){
@@ -3199,8 +3173,7 @@ await syncGame();
 voteStatus.textContent=
 error.message;
 
-submitVoteButton.disabled=
-false;
+submitVoteButton.disabled=false;
 
 }
 
@@ -3213,19 +3186,13 @@ false;
 
 async function showImposterGuess(){
 
-clearInterval(
-clueTimerInterval
-);
+clearInterval(clueTimerInterval);
 
 show(guessScreen);
 
 finalGuessInput.value="";
 
-submitFinalGuessButton.disabled=
-false;
-
-finalGuessInput.disabled=
-false;
+submitFinalGuessButton.disabled=false;
 
 finalGuessStatus.textContent=
 "Think carefully...";
@@ -3244,8 +3211,7 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-const data=
-result.data;
+const data=result.data;
 
 if(!data)
 throw new Error(
@@ -3310,11 +3276,9 @@ return;
 
 }
 
-submitFinalGuessButton.disabled=
-true;
+submitFinalGuessButton.disabled=true;
 
-finalGuessInput.disabled=
-true;
+finalGuessInput.disabled=true;
 
 finalGuessStatus.textContent=
 "Checking your guess...";
@@ -3334,8 +3298,7 @@ p_guess:guess
 if(result.error)
 throw result.error;
 
-const data=
-result.data;
+const data=result.data;
 
 if(data.correct){
 
@@ -3363,11 +3326,8 @@ error
 finalGuessStatus.textContent=
 error.message;
 
-submitFinalGuessButton.disabled=
-false;
-
-finalGuessInput.disabled=
-false;
+submitFinalGuessButton.disabled=false;
+finalGuessInput.disabled=false;
 
 }
 
@@ -3418,8 +3378,7 @@ finalGuessResult.classList.add(
 "hidden"
 );
 
-resultText.className=
-"result";
+resultText.className="result";
 
 try{
 
@@ -3449,8 +3408,7 @@ player.is_host &&
 Array.isArray(result.data)
 ){
 
-const list=
-result.data;
+const list=result.data;
 
 voteResults.innerHTML="";
 
@@ -3461,8 +3419,7 @@ resultText.textContent=
 
 }else{
 
-const winner=
-list[0];
+const winner=list[0];
 
 resultText.textContent=
 winner.votes>0
@@ -3475,20 +3432,15 @@ list.forEach(p=>{
 const div=
 document.createElement("div");
 
-div.className=
-"player";
+div.className="player";
 
 div.textContent=
 p.name+
 " — "+
 p.votes+
-(p.votes===1
-?" vote"
-:" votes");
+(p.votes===1?" vote":" votes");
 
-voteResults.appendChild(
-div
-);
+voteResults.appendChild(div);
 
 });
 
@@ -3510,11 +3462,6 @@ resultText.textContent=
 
 }
 
-
-/*
- Load the final guess result separately.
-*/
-
 try{
 
 const guessState=
@@ -3531,8 +3478,7 @@ if(
 guessState.data
 ){
 
-const data=
-guessState.data;
+const data=guessState.data;
 
 if(
 data.guess!==null &&
@@ -3584,30 +3530,29 @@ error.message
    NEXT ROUND
 ========================================================= */
 
-nextRoundButton.onclick=
-async()=>{
+nextRoundButton.onclick=async()=>{
 
 if(!player.is_host)
 return;
 
-nextRoundButton.disabled=
-true;
+nextRoundButton.disabled=true;
 
 try{
+
+/*
+ Make sure the latest settings are saved before starting
+ the next round.
+*/
+
+await saveLobbySettings();
 
 const cat=
 category.value==="random"
 ?null
-:parseInt(
-category.value,
-10
-);
+:parseInt(category.value,10);
 
 const time=
-parseInt(
-clueTime.value,
-10
-);
+parseInt(clueTime.value,10);
 
 const hints=
 imposterHints.checked;
@@ -3627,8 +3572,7 @@ p_imposter_hints_enabled:hints
 if(result.error)
 throw result.error;
 
-game=
-result.data.game;
+game=result.data.game;
 
 saveRoom();
 
@@ -3658,8 +3602,7 @@ error.message
 
 }finally{
 
-nextRoundButton.disabled=
-false;
+nextRoundButton.disabled=false;
 
 }
 
@@ -3670,30 +3613,29 @@ false;
    START GAME
 ========================================================= */
 
-startButton.onclick=
-async()=>{
+startButton.onclick=async()=>{
 
 if(!player?.is_host)
 return;
 
-startButton.disabled=
-true;
+startButton.disabled=true;
 
 try{
+
+/*
+ First save whatever the host currently has selected.
+ This guarantees everyone and start_game use the same values.
+*/
+
+await saveLobbySettings();
 
 const cat=
 category.value==="random"
 ?null
-:parseInt(
-category.value,
-10
-);
+:parseInt(category.value,10);
 
 const time=
-parseInt(
-clueTime.value,
-10
-);
+parseInt(clueTime.value,10);
 
 const hints=
 imposterHints.checked;
@@ -3713,8 +3655,7 @@ p_imposter_hints_enabled:hints
 if(result.error)
 throw result.error;
 
-game=
-result.data.game;
+game=result.data.game;
 
 saveRoom();
 
@@ -3746,8 +3687,7 @@ error.message
 
 }finally{
 
-startButton.disabled=
-false;
+startButton.disabled=false;
 
 }
 
@@ -3758,8 +3698,7 @@ false;
    BACK TO LOBBY
 ========================================================= */
 
-backLobbyButton.onclick=
-async()=>{
+backLobbyButton.onclick=async()=>{
 
 if(!player.is_host)
 return;
@@ -3798,8 +3737,7 @@ error.message
    BRING EVERYONE BACK
 ========================================================= */
 
-bringLobbyButton.onclick=
-async()=>{
+bringLobbyButton.onclick=async()=>{
 
 if(!player?.is_host)
 return;
@@ -3809,8 +3747,7 @@ if(!confirm(
 ))
 return;
 
-bringLobbyButton.disabled=
-true;
+bringLobbyButton.disabled=true;
 
 try{
 
@@ -3839,8 +3776,7 @@ error.message
 
 }finally{
 
-bringLobbyButton.disabled=
-false;
+bringLobbyButton.disabled=false;
 
 }
 
@@ -3851,8 +3787,7 @@ false;
    LEAVE GAME
 ========================================================= */
 
-gameLeaveButton.onclick=
-async()=>{
+gameLeaveButton.onclick=async()=>{
 
 if(!game||!player)
 return;
@@ -3863,8 +3798,7 @@ if(!confirm(
 ))
 return;
 
-gameLeaveButton.disabled=
-true;
+gameLeaveButton.disabled=true;
 
 try{
 
@@ -3891,8 +3825,7 @@ error.message
 
 }finally{
 
-gameLeaveButton.disabled=
-false;
+gameLeaveButton.disabled=false;
 
 }
 
@@ -3905,22 +3838,15 @@ false;
 
 async function clearLocalGame(){
 
-clearInterval(
-clueTimerInterval
-);
+clearInterval(clueTimerInterval);
+clearInterval(syncInterval);
 
-clearInterval(
-syncInterval
-);
+clearTimeout(settingsSaveTimer);
 
 if(channel){
 
 try{
-
-await db.removeChannel(
-channel
-);
-
+await db.removeChannel(channel);
 }catch{}
 
 channel=null;
@@ -3954,22 +3880,21 @@ true,
 
 
 /* =========================================================
-   HOST SETTING PREVIEW
+   HOST SETTING EVENTS
 ========================================================= */
 
 /*
- These only update the visible lobby preview.
- The database is still updated when the host
- actually starts the game.
+ These now save the setting immediately instead of waiting
+ for Start Game.
 */
 
 category.addEventListener(
 "change",
 ()=>{
 
-if(player?.is_host){
+if(player?.is_host&&game?.status==="lobby"){
 
-updateLobbySettings();
+queueLobbySettingsSave();
 
 }
 
@@ -3980,9 +3905,9 @@ clueTime.addEventListener(
 "change",
 ()=>{
 
-if(player?.is_host){
+if(player?.is_host&&game?.status==="lobby"){
 
-updateLobbySettings();
+queueLobbySettingsSave();
 
 }
 
@@ -3993,9 +3918,9 @@ imposterHints.addEventListener(
 "change",
 ()=>{
 
-if(player?.is_host){
+if(player?.is_host&&game?.status==="lobby"){
 
-updateLobbySettings();
+queueLobbySettingsSave();
 
 }
 
@@ -4045,10 +3970,7 @@ joinCode.addEventListener(
 joinCode.value=
 joinCode.value
 .toUpperCase()
-.replace(
-/[^A-Z0-9]/g,
-""
-)
+.replace(/[^A-Z0-9]/g,"")
 .slice(0,6);
 
 }
@@ -4057,30 +3979,24 @@ joinCode.value
 createName.addEventListener(
 "keydown",
 e=>{
-
 if(e.key==="Enter")
 createGame();
-
 }
 );
 
 joinName.addEventListener(
 "keydown",
 e=>{
-
 if(e.key==="Enter")
 joinGame();
-
 }
 );
 
 joinCode.addEventListener(
 "keydown",
 e=>{
-
 if(e.key==="Enter")
 joinGame();
-
 }
 );
 
@@ -4089,11 +4005,8 @@ joinGame();
    EVENTS
 ========================================================= */
 
-createButton.onclick=
-createGame;
-
-joinButton.onclick=
-joinGame;
+createButton.onclick=createGame;
+joinButton.onclick=joinGame;
 
 
 /* =========================================================
@@ -4102,8 +4015,7 @@ joinGame;
 
 function saveRoster(list){
 
-savedRoster=
-list.map(p=>({
+savedRoster=list.map(p=>({
 id:p.id,
 display_name:p.display_name
 }));
@@ -4113,10 +4025,7 @@ display_name:p.display_name
 function sleep(ms){
 
 return new Promise(
-resolve=>setTimeout(
-resolve,
-ms
-)
+resolve=>setTimeout(resolve,ms)
 );
 
 }
@@ -4152,6 +4061,8 @@ return;
 }
 
 await checkConnection();
+
+loadSavedRoster();
 
 await checkForPreviousGame();
 
