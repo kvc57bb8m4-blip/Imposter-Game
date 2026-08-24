@@ -748,8 +748,6 @@ Bring Everyone Back To Lobby
 
 <h1>IMPOSTER</h1>
 
-<!-- HOME -->
-
 <section id="home">
 
 <div class="tabs">
@@ -805,8 +803,6 @@ Don't Rejoin
 
 </section>
 
-
-<!-- LOBBY -->
 
 <section id="lobby" class="card hidden">
 
@@ -918,8 +914,6 @@ Waiting for players...
 </section>
 
 
-<!-- CLUE SCREEN -->
-
 <section id="clueScreen" class="card hidden">
 
 <div class="gameInfo">
@@ -975,8 +969,6 @@ Everyone sees the same order. Just follow the numbers.
 </section>
 
 
-<!-- VOTING -->
-
 <section id="votingScreen" class="card hidden">
 
 <h2 class="center">Vote</h2>
@@ -1003,8 +995,6 @@ Choose nobody, one player, or two players.
 
 </section>
 
-
-<!-- FINAL GUESS -->
 
 <section id="guessScreen" class="card hidden">
 
@@ -1058,8 +1048,6 @@ They now have one final chance to guess the secret word.
 </div>
 
 
-<!-- VOTE REVEAL DURING FINAL GUESS -->
-
 <div id="guessVoteResults" class="guessReveal hidden">
 
 <h3 class="guessRevealTitle">
@@ -1076,8 +1064,6 @@ Here is how everyone voted and who was actually an Imposter.
 
 </section>
 
-
-<!-- RESULTS -->
 
 <section id="resultsScreen" class="card hidden">
 
@@ -1134,10 +1120,6 @@ Connecting...
 <script>
 "use strict";
 
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 const SUPABASE_URL =
 "https://rcpxsidynmfstsihqyfc.supabase.co";
 
@@ -1145,12 +1127,6 @@ const SUPABASE_KEY =
 "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
 let db=null;
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
 let game=null;
 let player=null;
 let channel=null;
@@ -1166,10 +1142,6 @@ let syncing=false;
 
 let categoryNames=new Map();
 
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
 const home=document.getElementById("home");
 const lobby=document.getElementById("lobby");
@@ -1267,10 +1239,6 @@ const connectionDot=document.getElementById("connectionDot");
 const connectionText=document.getElementById("connectionText");
 
 
-/* =========================================================
-   TOKEN
-========================================================= */
-
 function getToken(){
 
 let token=localStorage.getItem("imposter_player_token");
@@ -1291,10 +1259,6 @@ return token;
 }
 
 
-/* =========================================================
-   SAVED ROOM
-========================================================= */
-
 function saveRoom(){
 
 if(!game)return;
@@ -1306,6 +1270,7 @@ game.code
 
 }
 
+
 function clearSavedRoom(){
 
 localStorage.removeItem(
@@ -1314,10 +1279,6 @@ localStorage.removeItem(
 
 }
 
-
-/* =========================================================
-   UI
-========================================================= */
 
 function show(screen){
 
@@ -1341,12 +1302,14 @@ behavior:"instant"
 
 }
 
+
 function setStatus(el,text,type=""){
 
 el.textContent=text;
 el.className="status "+type;
 
 }
+
 
 function setConnection(ok,text){
 
@@ -1358,6 +1321,7 @@ ok
 connectionText.textContent=text;
 
 }
+
 
 function updateLeaveUI(){
 
@@ -1381,10 +1345,6 @@ bringLobbyButton.classList.toggle(
 }
 
 
-/* =========================================================
-   INIT
-========================================================= */
-
 function initSupabase(){
 
 db=window.supabase.createClient(
@@ -1405,10 +1365,6 @@ eventsPerSecond:30
 
 }
 
-
-/* =========================================================
-   CATEGORIES
-========================================================= */
 
 async function loadCategories(){
 
@@ -1449,10 +1405,6 @@ updateSettingsPreview();
 }
 
 
-/* =========================================================
-   SETTINGS
-========================================================= */
-
 function clueTimeText(value){
 
 const n=Number(value);
@@ -1464,6 +1416,7 @@ return n+" seconds";
 
 }
 
+
 function gameModeText(value){
 
 if(value==="variable_imposters")
@@ -1472,6 +1425,7 @@ return "Variable — 0–2 Imposters";
 return "Classic — 1 Imposter";
 
 }
+
 
 function categoryText(){
 
@@ -1490,12 +1444,13 @@ String(game.category_id)
 
 }
 
+
 function updateModeDescription(){
 
 if(gameMode.value==="variable_imposters"){
 
 modeDescription.textContent=
-"Each round randomly has 0, 1, or 2 Imposters. If there are 0 Imposters, civilians must vote Nobody to win.";
+"Each round randomly has 0, 1, or 2 Imposters. With 0 Imposters, everyone must vote Nobody. With 1 or 2, the actual Imposters must be correctly identified.";
 
 }else{
 
@@ -1505,6 +1460,7 @@ modeDescription.textContent=
 }
 
 }
+
 
 function updateSettingsPreview(){
 
@@ -1571,10 +1527,6 @@ game.imposter_hints_enabled!==false;
 }
 
 
-/* =========================================================
-   SAVE SETTINGS
-========================================================= */
-
 let settingsSaveTimer=null;
 
 function scheduleSettingsSave(){
@@ -1591,6 +1543,7 @@ settingsSaveTimer=
 setTimeout(saveSettings,180);
 
 }
+
 
 async function saveSettings(){
 
@@ -1669,10 +1622,6 @@ error.message,
 }
 
 
-/* =========================================================
-   TABS
-========================================================= */
-
 createTab.onclick=()=>{
 
 createTab.classList.add("active");
@@ -1682,6 +1631,7 @@ createCard.classList.remove("hidden");
 joinCard.classList.add("hidden");
 
 };
+
 
 joinTab.onclick=()=>{
 
@@ -1693,10 +1643,6 @@ createCard.classList.add("hidden");
 
 };
 
-
-/* =========================================================
-   CREATE
-========================================================= */
 
 async function createGame(){
 
@@ -1757,10 +1703,6 @@ createButton.disabled=false;
 
 }
 
-
-/* =========================================================
-   JOIN
-========================================================= */
 
 async function joinGame(){
 
@@ -1835,10 +1777,6 @@ joinButton.disabled=false;
 }
 
 
-/* =========================================================
-   OPEN LOBBY
-========================================================= */
-
 async function openLobby(){
 
 if(!game||!player)
@@ -1864,10 +1802,6 @@ startSyncLoop();
 
 }
 
-
-/* =========================================================
-   LOAD PLAYERS
-========================================================= */
 
 async function loadPlayers(){
 
@@ -1972,10 +1906,6 @@ list.length+
 }
 
 
-/* =========================================================
-   KICK
-========================================================= */
-
 async function kickPlayer(target){
 
 if(!player?.is_host||!game)
@@ -2014,10 +1944,6 @@ error.message
 
 }
 
-
-/* =========================================================
-   REALTIME
-========================================================= */
 
 function subscribeToGame(){
 
@@ -2089,10 +2015,6 @@ false,
 }
 
 
-/* =========================================================
-   SYNC
-========================================================= */
-
 function startSyncLoop(){
 
 clearInterval(syncInterval);
@@ -2106,6 +2028,7 @@ if(game)syncGame();
 );
 
 }
+
 
 async function syncGame(){
 
@@ -2205,10 +2128,6 @@ syncing=false;
 }
 
 
-/* =========================================================
-   PHASE
-========================================================= */
-
 async function handlePhase(status){
 
 if(status==="lobby"){
@@ -2252,10 +2171,6 @@ return;
 
 }
 
-
-/* =========================================================
-   ROLE
-========================================================= */
 
 async function showGameScreen(){
 
@@ -2341,10 +2256,6 @@ startSharedTimer();
 }
 
 
-/* =========================================================
-   CLUE ORDER
-========================================================= */
-
 async function loadClueOrder(){
 
 const result=
@@ -2425,10 +2336,6 @@ hostClueControls.classList.toggle(
 }
 
 
-/* =========================================================
-   TIMER
-========================================================= */
-
 function startSharedTimer(){
 
 clearInterval(clueTimerInterval);
@@ -2483,10 +2390,6 @@ setInterval(tick,250);
 }
 
 
-/* =========================================================
-   START VOTING
-========================================================= */
-
 startVotingButton.onclick=async()=>{
 
 if(!player.is_host)
@@ -2524,10 +2427,6 @@ startVotingButton.disabled=false;
 };
 
 
-/* =========================================================
-   VOTING
-========================================================= */
-
 async function showVoting(){
 
 clearInterval(clueTimerInterval);
@@ -2557,8 +2456,6 @@ throw result.error;
 
 votePlayers.innerHTML="";
 
-
-/* NOBODY */
 
 const nobodyButton=
 document.createElement("button");
@@ -2592,8 +2489,6 @@ updateVoteCounter();
 
 votePlayers.appendChild(nobodyButton);
 
-
-/* PLAYERS */
 
 (result.data||[]).forEach(p=>{
 
@@ -2684,6 +2579,7 @@ votePlayers.appendChild(button);
 
 }
 
+
 function updateVoteCounter(){
 
 if(nobodySelected){
@@ -2701,10 +2597,6 @@ selectedVotes.length+
 
 }
 
-
-/* =========================================================
-   SUBMIT VOTE
-========================================================= */
 
 submitVoteButton.onclick=async()=>{
 
@@ -2760,10 +2652,6 @@ submitVoteButton.disabled=false;
 };
 
 
-/* =========================================================
-   FINAL GUESS
-========================================================= */
-
 async function showImposterGuess(){
 
 show(guessScreen);
@@ -2795,9 +2683,6 @@ throw stateResult.error;
 const data=
 stateResult.data;
 
-
-/* WHO IS ALLOWED TO GUESS */
-
 if(data.is_imposter){
 
 if(data.already_guessed){
@@ -2820,8 +2705,6 @@ guessWaitingPanel.classList.remove("hidden");
 }
 
 
-/* VOTE RESULTS + ROLE REVEAL */
-
 const revealResult=
 await db.rpc(
 "get_vote_reveal_state",
@@ -2839,8 +2722,6 @@ revealResult.data;
 
 guessVoteResultsList.innerHTML="";
 
-
-/* NOBODY VOTES */
 
 const nobodyVotes=
 Number(reveal.nobody_votes||0);
@@ -2895,8 +2776,6 @@ guessVoteResultsList.appendChild(
 nobodyDiv
 );
 
-
-/* EVERY PLAYER */
 
 (reveal.players||[]).forEach(p=>{
 
@@ -2995,10 +2874,6 @@ guessVoteResults.classList.remove(
 }
 
 
-/* =========================================================
-   SUBMIT FINAL GUESS
-========================================================= */
-
 submitFinalGuessButton.onclick=async()=>{
 
 const guess=
@@ -3077,10 +2952,6 @@ finalGuessInput.disabled=false;
 };
 
 
-/* =========================================================
-   PUBLIC RESULTS
-========================================================= */
-
 async function loadResults(){
 
 show(resultsScreen);
@@ -3125,9 +2996,7 @@ actualWordBox.classList.remove(
 );
 
 
-/* =========================================================
-   FIXED GAME RESULT LOGIC
-========================================================= */
+/* RESULT */
 
 if(
 data.outcome==="civilians_win_no_imposters"
@@ -3140,11 +3009,10 @@ const explanation=
 document.createElement("div");
 
 explanation.className="small";
-
 explanation.style.marginTop="8px";
 
 explanation.textContent=
-"There were no Imposters, and the civilians correctly chose Nobody.";
+"There were no Imposters, and every civilian correctly voted Nobody.";
 
 resultText.appendChild(
 explanation
@@ -3155,17 +3023,16 @@ data.outcome==="civilians_failed_no_imposter_vote"
 ){
 
 resultText.innerHTML=
-"❌ <span class='resultWrong'>Imposters Win!</span>";
+"🚨 <span class='resultWrong'>Imposters Win!</span>";
 
 const explanation=
 document.createElement("div");
 
 explanation.className="small";
-
 explanation.style.marginTop="8px";
 
 explanation.textContent=
-"There were no Imposters, but the civilians failed to choose Nobody.";
+"There were no Imposters, but the civilians did not all vote Nobody.";
 
 resultText.appendChild(
 explanation
@@ -3178,12 +3045,38 @@ data.outcome==="imposters_win_vote"
 resultText.innerHTML=
 "🚨 <span class='resultWrong'>Imposters Win!</span>";
 
+const explanation=
+document.createElement("div");
+
+explanation.className="small";
+explanation.style.marginTop="8px";
+
+explanation.textContent=
+"The civilians did not correctly identify all of the Imposters.";
+
+resultText.appendChild(
+explanation
+);
+
 }else if(
 data.outcome==="imposters_win_guess"
 ){
 
 resultText.innerHTML=
 "🚨 <span class='resultWrong'>Imposters Win!</span>";
+
+const explanation=
+document.createElement("div");
+
+explanation.className="small";
+explanation.style.marginTop="8px";
+
+explanation.textContent=
+"An Imposter correctly guessed the secret word.";
+
+resultText.appendChild(
+explanation
+);
 
 }else if(
 data.outcome==="civilians_win"
@@ -3192,22 +3085,28 @@ data.outcome==="civilians_win"
 resultText.innerHTML=
 "🎉 <span class='resultCorrect'>Civilians Win!</span>";
 
-}else if(data.correct===true){
+const explanation=
+document.createElement("div");
 
-resultText.innerHTML=
-"🎉 <span class='resultCorrect'>Civilians Win!</span>";
+explanation.className="small";
+explanation.style.marginTop="8px";
+
+explanation.textContent=
+"The Imposters were correctly identified but failed their final guess.";
+
+resultText.appendChild(
+explanation
+);
 
 }else{
 
 resultText.innerHTML=
-"❌ <span class='resultWrong'>Imposters Win!</span>";
+"🚨 <span class='resultWrong'>Imposters Win!</span>";
 
 }
 
 
-/* =========================================================
-   FINAL GUESSES
-========================================================= */
+/* FINAL GUESSES */
 
 const guesses=
 Array.isArray(data.guesses)
@@ -3298,9 +3197,7 @@ data.correct
 }
 
 
-/* =========================================================
-   VOTES + ROLES
-========================================================= */
+/* VOTE RESULTS */
 
 const nobodyInfo=
 document.createElement("div");
@@ -3333,13 +3230,10 @@ document.createElement("div");
 nobodyCount.className=
 "voteCount";
 
-const nobodyVotes=
-await getNobodyVoteCount();
-
 nobodyCount.textContent=
-nobodyVotes+
+Number(data.nobody_votes||0)+
 (
-nobodyVotes===1
+Number(data.nobody_votes||0)===1
 ?" vote"
 :" votes"
 );
@@ -3356,6 +3250,11 @@ voteResults.appendChild(
 nobodyInfo
 );
 
+
+/* IMPORTANT:
+   Roles are now supplied directly by the corrected
+   get_public_results Supabase function.
+*/
 
 (data.players||[]).forEach(p=>{
 
@@ -3441,35 +3340,6 @@ voteResults.appendChild(errorBox);
 }
 
 
-/* =========================================================
-   NOBODY VOTE COUNT
-========================================================= */
-
-async function getNobodyVoteCount(){
-
-if(!game)
-return 0;
-
-const result=
-await db
-.from("game_vote_selections")
-.select("id",{count:"exact",head:true})
-.eq("game_id",game.id)
-.eq("round_number",game.round_number)
-.eq("is_nobody",true);
-
-if(result.error)
-return 0;
-
-return Number(result.count||0);
-
-}
-
-
-/* =========================================================
-   NEXT ROUND
-========================================================= */
-
 nextRoundButton.onclick=async()=>{
 
 if(!player.is_host)
@@ -3530,10 +3400,6 @@ nextRoundButton.disabled=false;
 
 };
 
-
-/* =========================================================
-   START GAME
-========================================================= */
 
 startButton.onclick=async()=>{
 
@@ -3600,10 +3466,6 @@ startButton.disabled=false;
 };
 
 
-/* =========================================================
-   BACK TO LOBBY
-========================================================= */
-
 backLobbyButton.onclick=async()=>{
 
 if(!player.is_host)
@@ -3635,10 +3497,6 @@ alert(error.message);
 
 };
 
-
-/* =========================================================
-   BRING EVERYONE BACK
-========================================================= */
 
 bringLobbyButton.onclick=async()=>{
 
@@ -3676,10 +3534,6 @@ alert(error.message);
 
 };
 
-
-/* =========================================================
-   LEAVE
-========================================================= */
 
 gameLeaveButton.onclick=async()=>{
 
@@ -3719,10 +3573,6 @@ error.message
 };
 
 
-/* =========================================================
-   CLEAR LOCAL GAME
-========================================================= */
-
 async function clearLocalGame(){
 
 clearInterval(clueTimerInterval);
@@ -3756,10 +3606,6 @@ true,
 
 }
 
-
-/* =========================================================
-   REJOIN
-========================================================= */
 
 async function checkForPreviousGame(){
 
@@ -3813,6 +3659,7 @@ rejoinCard.classList.add(
 }
 
 }
+
 
 rejoinButton.onclick=async()=>{
 
@@ -3870,6 +3717,7 @@ rejoinButton.disabled=false;
 
 };
 
+
 forgetGameButton.onclick=()=>{
 
 clearSavedRoom();
@@ -3880,10 +3728,6 @@ rejoinCard.classList.add(
 
 };
 
-
-/* =========================================================
-   INPUTS
-========================================================= */
 
 category.addEventListener(
 "change",
@@ -3956,17 +3800,9 @@ submitFinalGuessButton.click();
 );
 
 
-/* =========================================================
-   BUTTONS
-========================================================= */
-
 createButton.onclick=createGame;
 joinButton.onclick=joinGame;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
 
 function sleep(ms){
 
@@ -3976,10 +3812,6 @@ resolve=>setTimeout(resolve,ms)
 
 }
 
-
-/* =========================================================
-   VISIBILITY
-========================================================= */
 
 document.addEventListener(
 "visibilitychange",
@@ -3997,10 +3829,6 @@ await syncGame();
 }
 );
 
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
 
 (async()=>{
 
