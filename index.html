@@ -536,6 +536,34 @@ hr{
   line-height:1.5
 }
 
+/* FINAL GUESS VOTE RESULTS */
+
+.guessVotePlayer{
+  background:#0d111b;
+  border:1px solid #252b3c;
+  padding:14px;
+  border-radius:13px;
+  margin-top:8px
+}
+
+.guessVotePlayerTop{
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+
+.guessVotePlayerName{
+  flex:1;
+  font-weight:800;
+  word-break:break-word
+}
+
+.guessVoteCount{
+  color:#9299aa;
+  font-size:13px;
+  margin-top:7px
+}
+
 /* RESULTS */
 
 .result{
@@ -745,8 +773,6 @@ Don't Rejoin
 
 <div id="players">Loading players...</div>
 
-<!-- EVERYONE CAN SEE THIS -->
-
 <div id="settingsPreview" class="settingsPreview">
 
 <div class="settingsPreviewTitle">
@@ -769,9 +795,6 @@ Current Game Settings
 </div>
 
 </div>
-
-
-<!-- HOST SETTINGS -->
 
 <div id="hostControls" class="hidden">
 
@@ -964,6 +987,16 @@ They now have one final chance to guess the secret word.
 
 </div>
 
+<hr>
+
+<div id="guessVoteResults" class="hidden">
+
+<h3 class="center">Vote Results</h3>
+
+<div id="guessVoteResultsList"></div>
+
+</div>
+
 </section>
 
 
@@ -1127,6 +1160,9 @@ const guessWaitingPanel=document.getElementById("guessWaitingPanel");
 const finalGuessInput=document.getElementById("finalGuessInput");
 const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
 const finalGuessStatus=document.getElementById("finalGuessStatus");
+
+const guessVoteResults=document.getElementById("guessVoteResults");
+const guessVoteResultsList=document.getElementById("guessVoteResultsList");
 
 const resultText=document.getElementById("resultText");
 const voteResults=document.getElementById("voteResults");
@@ -2454,7 +2490,12 @@ finalGuessInput.value="";
 finalGuessInput.disabled=false;
 submitFinalGuessButton.disabled=false;
 
-const result=
+guessVoteResults.classList.add("hidden");
+guessVoteResultsList.innerHTML="";
+
+try{
+
+const stateResult=
 await db.rpc(
 "get_imposter_guess_state",
 {
@@ -2463,10 +2504,10 @@ p_player_token:getToken()
 }
 );
 
-if(result.error)
-throw result.error;
+if(stateResult.error)
+throw stateResult.error;
 
-const data=result.data;
+const data=stateResult.data;
 
 if(data.is_imposter){
 
@@ -2480,7 +2521,110 @@ guessWaitingPanel.classList.remove("hidden");
 
 }
 
+/* GET PUBLIC VOTE RESULTS */
+
+const resultsResult=
+await db.rpc(
+"get_public_results",
+{
+p_code:game.code,
+p_player_token:getToken()
 }
+);
+
+if(resultsResult.error)
+throw resultsResult.error;
+
+const results=
+resultsResult.data;
+
+guessVoteResultsList.innerHTML="";
+
+(results.players||[]).forEach(p=>{
+
+const div=
+document.createElement("div");
+
+div.className="guessVotePlayer";
+
+const top=
+document.createElement("div");
+
+top.className="guessVotePlayerTop";
+
+const name=
+document.createElement("div");
+
+name.className="guessVotePlayerName";
+name.textContent=p.name;
+
+const badge=
+document.createElement("span");
+
+badge.className=
+"roleBadge "+
+(
+p.is_imposter
+?"imposterBadge"
+:"civilianBadge"
+);
+
+badge.textContent=
+p.is_imposter
+?"IMPOSTER"
+:"CIVILIAN";
+
+top.appendChild(name);
+top.appendChild(badge);
+
+const votes=
+document.createElement("div");
+
+votes.className="guessVoteCount";
+
+votes.textContent=
+p.votes+
+(
+p.votes===1
+?" vote"
+:" votes"
+);
+
+div.appendChild(top);
+div.appendChild(votes);
+
+guessVoteResultsList.appendChild(div);
+
+});
+
+guessVoteResults.classList.remove("hidden");
+
+}catch(error){
+
+console.error(
+"Final guess screen:",
+error
+);
+
+guessVoteResultsList.innerHTML="";
+
+const errorBox=
+document.createElement("div");
+
+errorBox.className="status err";
+
+errorBox.textContent=
+"Could not load vote results: "+
+error.message;
+
+guessVoteResultsList.appendChild(errorBox);
+
+guessVoteResults.classList.remove("hidden");
+
+}
+
+}
+
 
 submitFinalGuessButton.onclick=async()=>{
 
@@ -2517,7 +2661,7 @@ p_guess:guess
 if(result.error)
 throw result.error;
 
-await sleep(1000);
+await sleep(500);
 
 await syncGame();
 
@@ -2553,12 +2697,6 @@ finalGuessResult.classList.add("hidden");
 actualWordBox.classList.add("hidden");
 
 try{
-
-/*
- IMPORTANT FIX:
- Every player now uses get_public_results.
- This is NOT host-only.
-*/
 
 const result=
 await db.rpc(
@@ -2605,6 +2743,7 @@ resultText.innerHTML=
 
 }
 
+
 /* FINAL GUESS */
 
 if(
@@ -2638,6 +2777,7 @@ finalGuessOutcome.className=
 }
 
 }
+
 
 /* VOTES + ROLES */
 
@@ -2700,7 +2840,8 @@ voteResults.appendChild(div);
 
 });
 
-/* CLEAR WINNER MESSAGE */
+
+/* WINNER MESSAGE */
 
 const imposter=
 data.imposter_name;
@@ -3259,16 +3400,14 @@ document.addEventListener(
 async()=>{
 if(!document.hidden&&game)
 await syncGame();
-}
-);
+});
 
 window.addEventListener(
 "pageshow",
 async()=>{
 if(game)
 await syncGame();
-}
-);
+});
 
 
 /* =========================================================
