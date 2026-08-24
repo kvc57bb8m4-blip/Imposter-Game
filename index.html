@@ -2736,10 +2736,6 @@ b=>b.classList.remove("selected")
 
 }
 
-/*
- Classic + Similar Words:
- exactly one vote.
-*/
 if(
 isClassicMode() ||
 isSimilarWordsMode()
@@ -2764,12 +2760,6 @@ updateVoteCounter();
 return;
 
 }
-
-
-/*
- Variable mode:
- up to two.
-*/
 
 const index=
 selectedVotes.indexOf(p.id);
@@ -3283,11 +3273,6 @@ actualWordBox.classList.remove(
 "hidden"
 );
 
-
-/* =========================================================
-   SIMILAR WORDS RESULTS
-========================================================= */
-
 if(isSimilarWordsMode()){
 
 similarWordsResultBox.classList.remove(
@@ -3378,11 +3363,6 @@ resultText.innerHTML=
 "❌ <span class='resultWrong'>Imposters Win!</span>";
 
 }
-
-
-/* =========================================================
-   FINAL GUESSES — NOT FOR SIMILAR WORDS
-========================================================= */
 
 if(!isSimilarWordsMode()){
 
@@ -3476,11 +3456,6 @@ data.correct
 
 }
 
-
-/* =========================================================
-   VOTES + ROLES
-========================================================= */
-
 const nobodyInfo=
 document.createElement("div");
 
@@ -3542,11 +3517,6 @@ nobodyInfo.classList.add("hidden");
 voteResults.appendChild(
 nobodyInfo
 );
-
-
-/* =========================================================
-   PLAYER RESULTS
-========================================================= */
 
 (data.players||[]).forEach(p=>{
 
@@ -4044,6 +4014,7 @@ rejoinCard.classList.add(
 
 }
 
+
 rejoinButton.onclick=async()=>{
 
 const code=
@@ -4100,13 +4071,126 @@ rejoinButton.disabled=false;
 
 };
 
-forgetGameButton.onclick=()=>{
 
-clearSavedRoom();
+/* =========================================================
+   DON'T REJOIN
+   IMPORTANT:
+   This now actually removes the player from the game.
+   Previously it only deleted the local room code.
+========================================================= */
 
-rejoinCard.classList.add(
-"hidden"
+forgetGameButton.onclick=async()=>{
+
+const code=
+localStorage.getItem(
+"imposter_room_code"
 );
+
+/*
+ If there is no saved room, simply clear the card.
+*/
+if(!code){
+
+rejoinCard.classList.add("hidden");
+return;
+
+}
+
+forgetGameButton.disabled=true;
+rejoinButton.disabled=true;
+
+rejoinInfo.innerHTML=
+"Removing you from the previous game...";
+
+try{
+
+/*
+ If checkForPreviousGame() successfully resumed the
+ player, game/player already contain the correct data.
+
+ If they don't, resume the game one last time so we
+ can safely call leave_game with the correct room.
+*/
+if(!game||!player){
+
+const resumeResult=
+await db.rpc(
+"resume_game",
+{
+p_code:code,
+p_player_token:getToken()
+}
+);
+
+if(resumeResult.error)
+throw resumeResult.error;
+
+if(!resumeResult.data)
+throw new Error(
+"That previous game is no longer available."
+);
+
+game=resumeResult.data.game;
+player=resumeResult.data.player;
+
+}
+
+/*
+ THIS is the important part:
+ actually remove this player's row from the lobby/game.
+*/
+const leaveResult=
+await db.rpc(
+"leave_game",
+{
+p_code:code,
+p_player_token:getToken()
+}
+);
+
+if(leaveResult.error)
+throw leaveResult.error;
+
+/*
+ Now clear the local saved-game information.
+*/
+await clearLocalGame();
+
+rejoinCard.classList.add("hidden");
+
+setStatus(
+createStatus,
+"✓ You left the previous game.",
+"ok"
+);
+
+}catch(error){
+
+console.error(
+"Don't Rejoin / leave_game:",
+error
+);
+
+rejoinInfo.innerHTML=
+"Could not remove you from the previous game.<br><br>"+
+escapeHtml(error.message);
+
+setTimeout(()=>{
+
+rejoinInfo.innerHTML=
+"Room <strong>"+
+escapeHtml(code)+
+"</strong><br><br>"+
+"Your previous game is still active.";
+
+},2500);
+
+}finally{
+
+forgetGameButton.disabled=false;
+rejoinButton.disabled=false;
+
+}
 
 };
 
@@ -4216,16 +4300,14 @@ document.addEventListener(
 async()=>{
 if(!document.hidden&&game)
 await syncGame();
-}
-);
+});
 
 window.addEventListener(
 "pageshow",
 async()=>{
 if(game)
 await syncGame();
-}
-);
+});
 
 
 /* =========================================================
