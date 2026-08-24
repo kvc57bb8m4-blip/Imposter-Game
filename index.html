@@ -454,6 +454,92 @@ button:disabled{
   border-color:#6264ff
 }
 
+/* FINAL IMPOSTER GUESS */
+
+.guessIcon{
+  text-align:center;
+  font-size:58px;
+  margin:5px 0 8px
+}
+
+.guessTitle{
+  text-align:center;
+  font-size:29px;
+  font-weight:900;
+  margin:0
+}
+
+.guessSubtitle{
+  text-align:center;
+  color:#9da4b7;
+  line-height:1.5;
+  margin:10px auto 18px;
+  max-width:480px
+}
+
+.guessWarning{
+  background:#211c2b;
+  border:1px solid #59406b;
+  border-radius:14px;
+  padding:15px;
+  text-align:center;
+  color:#c7a5ff;
+  font-weight:800;
+  line-height:1.4;
+  margin-bottom:15px
+}
+
+.guessInput{
+  text-align:center;
+  font-size:21px;
+  font-weight:700
+}
+
+.guessWaiting{
+  text-align:center;
+  padding:24px 12px
+}
+
+.guessWaitingIcon{
+  font-size:52px;
+  margin-bottom:10px
+}
+
+.guessWaitingTitle{
+  font-size:23px;
+  font-weight:900
+}
+
+.guessWaitingText{
+  color:#9299aa;
+  margin-top:8px;
+  line-height:1.5
+}
+
+.guessSubmit{
+  margin-top:12px
+}
+
+.guessSubmitted{
+  text-align:center;
+  padding:20px 8px
+}
+
+.guessSubmittedIcon{
+  font-size:48px
+}
+
+.guessSubmittedTitle{
+  font-size:22px;
+  font-weight:900;
+  margin-top:8px
+}
+
+.guessSubmittedText{
+  color:#9299aa;
+  margin-top:7px
+}
+
 /* RESULTS */
 
 .result{
@@ -461,6 +547,44 @@ button:disabled{
   font-size:25px;
   font-weight:900;
   padding:18px
+}
+
+.resultCorrect{
+  color:#7ee5a7
+}
+
+.resultWrong{
+  color:#ff8199
+}
+
+.finalGuessResult{
+  background:#101522;
+  border:1px solid #292f43;
+  border-radius:15px;
+  padding:17px;
+  margin:8px 0 16px;
+  text-align:center
+}
+
+.finalGuessLabel{
+  color:#888fa2;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:11px;
+  font-weight:900
+}
+
+.finalGuessWord{
+  font-size:26px;
+  font-weight:900;
+  margin-top:6px;
+  word-break:break-word
+}
+
+.finalGuessOutcome{
+  margin-top:9px;
+  font-size:17px;
+  font-weight:800
 }
 
 .small{
@@ -836,6 +960,72 @@ Choose a player.
 </section>
 
 
+<!-- FINAL IMPOSTER GUESS -->
+
+<section id="guessScreen"
+         class="card hidden">
+
+<div id="imposterGuessPanel">
+
+<div class="guessIcon">
+🚨
+</div>
+
+<h2 class="guessTitle">
+Final Guess
+</h2>
+
+<p class="guessSubtitle">
+You were caught as the Imposter — but you get one last chance to steal the win.
+</p>
+
+<div class="guessWarning">
+You only get ONE guess.<br>
+Enter the secret word exactly or as close as you can.
+</div>
+
+<input
+  id="finalGuessInput"
+  class="guessInput"
+  maxlength="100"
+  autocomplete="off"
+  placeholder="What is the secret word?"
+>
+
+<button id="submitFinalGuessButton"
+        class="guessSubmit">
+Make Final Guess
+</button>
+
+<div id="finalGuessStatus"
+     class="status center">
+Think carefully...
+</div>
+
+</div>
+
+
+<div id="guessWaitingPanel"
+     class="guessWaiting hidden">
+
+<div class="guessWaitingIcon">
+⏳
+</div>
+
+<div class="guessWaitingTitle">
+The Imposter Is Making Their Final Guess
+</div>
+
+<div class="guessWaitingText">
+The Imposter was correctly identified.<br>
+They now have one final chance to guess the secret word.
+</div>
+
+</div>
+
+</section>
+
+
 <!-- RESULTS -->
 
 <section id="resultsScreen"
@@ -848,6 +1038,23 @@ Results
 <div id="resultText"
      class="result">
 Calculating...
+</div>
+
+<div id="finalGuessResult"
+     class="finalGuessResult hidden">
+
+<div class="finalGuessLabel">
+Imposter Final Guess
+</div>
+
+<div id="finalGuessWord"
+     class="finalGuessWord">
+</div>
+
+<div id="finalGuessOutcome"
+     class="finalGuessOutcome">
+</div>
+
 </div>
 
 <div id="voteResults"></div>
@@ -921,6 +1128,7 @@ const home=document.getElementById("home");
 const lobby=document.getElementById("lobby");
 const clueScreen=document.getElementById("clueScreen");
 const votingScreen=document.getElementById("votingScreen");
+const guessScreen=document.getElementById("guessScreen");
 const resultsScreen=document.getElementById("resultsScreen");
 
 const createTab=document.getElementById("createTab");
@@ -972,8 +1180,18 @@ const votePlayers=document.getElementById("votePlayers");
 const submitVoteButton=document.getElementById("submitVoteButton");
 const voteStatus=document.getElementById("voteStatus");
 
+const guessScreenPanel=document.getElementById("imposterGuessPanel");
+const guessWaitingPanel=document.getElementById("guessWaitingPanel");
+const finalGuessInput=document.getElementById("finalGuessInput");
+const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
+const finalGuessStatus=document.getElementById("finalGuessStatus");
+
 const resultText=document.getElementById("resultText");
 const voteResults=document.getElementById("voteResults");
+
+const finalGuessResult=document.getElementById("finalGuessResult");
+const finalGuessWord=document.getElementById("finalGuessWord");
+const finalGuessOutcome=document.getElementById("finalGuessOutcome");
 
 const nextRoundButton=document.getElementById("nextRoundButton");
 const backLobbyButton=document.getElementById("backLobbyButton");
@@ -1111,6 +1329,7 @@ home,
 lobby,
 clueScreen,
 votingScreen,
+guessScreen,
 resultsScreen
 ].forEach(
 x=>x.classList.add("hidden")
@@ -1550,6 +1769,7 @@ const active=[
 "playing",
 "clues",
 "voting",
+"imposter_guess",
 "results"
 ];
 
@@ -1572,6 +1792,9 @@ phase="The clue round is active.";
 
 if(oldGame.status==="voting")
 phase="Voting is active.";
+
+if(oldGame.status==="imposter_guess")
+phase="The Imposter has one final guess.";
 
 if(oldGame.status==="results")
 phase="The results are showing.";
@@ -1714,11 +1937,6 @@ hostControls.classList.toggle(
 "hidden",
 !player.is_host
 );
-
-/*
- Preserve the current game's hint setting
- when returning to the lobby.
-*/
 
 if(typeof game.imposter_hints_enabled==="boolean"){
 
@@ -1991,6 +2209,13 @@ await showVoting();
 
 }
 
+if(status==="imposter_guess" &&
+guessScreen.classList.contains("hidden")){
+
+await showImposterGuess();
+
+}
+
 if(status==="results" &&
 resultsScreen.classList.contains("hidden")){
 
@@ -2057,6 +2282,13 @@ return;
 
 }
 
+if(status==="imposter_guess"){
+
+await showImposterGuess();
+return;
+
+}
+
 if(status==="results"){
 
 await loadResults();
@@ -2107,11 +2339,6 @@ return;
 gameCategory.textContent=
 data.category||
 "CATEGORY";
-
-/*
- Always clear previous hint/word state
- before rendering the new player's role.
-*/
 
 myWord.textContent="";
 imposterHint.classList.add("hidden");
@@ -2512,11 +2739,18 @@ throw result.error;
 voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
 
-if(player.is_host){
+/*
+ The database now automatically decides whether
+ the next phase is:
 
-await finishVotesWhenReady();
+ voting
+ results
+ or imposter_guess
 
-}
+ Do NOT have the host manually force results here.
+*/
+
+await syncGame();
 
 }catch(error){
 
@@ -2531,75 +2765,180 @@ submitVoteButton.disabled=false;
 
 
 /* =========================================================
-   FINISH VOTES
+   FINAL IMPOSTER GUESS
 ========================================================= */
 
-async function finishVotesWhenReady(){
+async function showImposterGuess(){
 
-for(let i=0;i<40;i++){
+clearInterval(clueTimerInterval);
 
-if(
-!game||
-game.status!=="voting"
-)
-return;
+show(guessScreen);
+
+finalGuessInput.value="";
+
+submitFinalGuessButton.disabled=false;
+
+finalGuessStatus.textContent=
+"Think carefully...";
 
 try{
 
-const alive=
-await db
-.from("game_players")
-.select("id")
-.eq("game_id",game.id)
-.eq("is_alive",true);
-
-const votes=
-await db
-.from("game_votes")
-.select(
-"id",
-{count:"exact",head:true}
-)
-.eq("game_id",game.id)
-.eq("round_number",game.round_number);
-
-if(
-!alive.error &&
-!votes.error &&
-votes.count>=alive.data.length
-){
-
-const phase=
+const result=
 await db.rpc(
-"set_phase",
+"get_imposter_guess_state",
 {
 p_code:game.code,
-p_host_token:getToken(),
-p_phase:"results"
+p_player_token:getToken()
 }
 );
 
-if(!phase.error){
+if(result.error)
+throw result.error;
 
-await syncGame();
+const data=result.data;
 
-}
+if(!data)
+throw new Error(
+"No final guess information."
+);
 
-return;
+if(data.is_imposter){
+
+guessScreenPanel.classList.remove(
+"hidden"
+);
+
+guessWaitingPanel.classList.add(
+"hidden"
+);
+
+}else{
+
+guessScreenPanel.classList.add(
+"hidden"
+);
+
+guessWaitingPanel.classList.remove(
+"hidden"
+);
 
 }
 
 }catch(error){
 
-console.warn(error);
+console.error(
+"Final guess:",
+error
+);
+
+finalGuessStatus.textContent=
+error.message;
 
 }
 
-await sleep(500);
+}
+
+
+/* =========================================================
+   SUBMIT FINAL GUESS
+========================================================= */
+
+submitFinalGuessButton.onclick=
+async()=>{
+
+const guess=
+finalGuessInput.value.trim();
+
+if(!guess){
+
+finalGuessStatus.textContent=
+"Enter your guess first.";
+
+finalGuessInput.focus();
+
+return;
+
+}
+
+submitFinalGuessButton.disabled=true;
+
+finalGuessInput.disabled=true;
+
+finalGuessStatus.textContent=
+"Checking your guess...";
+
+try{
+
+const result=
+await db.rpc(
+"submit_imposter_guess",
+{
+p_code:game.code,
+p_player_token:getToken(),
+p_guess:guess
+}
+);
+
+if(result.error)
+throw result.error;
+
+const data=result.data;
+
+if(data.correct){
+
+finalGuessStatus.innerHTML=
+"🎉 <strong>You guessed it!</strong><br>You stole the win.";
+
+}else{
+
+finalGuessStatus.innerHTML=
+"❌ <strong>Wrong guess.</strong><br>The game is over.";
+
+}
+
+await sleep(1200);
+
+await syncGame();
+
+}catch(error){
+
+console.error(
+"Final guess submission:",
+error
+);
+
+finalGuessStatus.textContent=
+error.message;
+
+submitFinalGuessButton.disabled=false;
+finalGuessInput.disabled=false;
+
+}
+
+};
+
+
+/* =========================================================
+   FINAL GUESS ENTER KEY
+========================================================= */
+
+finalGuessInput.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Enter"){
+
+e.preventDefault();
+
+if(!submitFinalGuessButton.disabled){
+
+submitFinalGuessButton.click();
 
 }
 
 }
+
+});
 
 
 /* =========================================================
@@ -2619,7 +2958,17 @@ player.is_host?"block":"none";
 backLobbyButton.style.display=
 player.is_host?"block":"none";
 
+finalGuessResult.classList.add(
+"hidden"
+);
+
+resultText.className="result";
+
 try{
+
+/*
+ Get the vote results from the host RPC.
+*/
 
 const result=
 await db.rpc(
@@ -2656,9 +3005,7 @@ if(!list.length){
 resultText.textContent=
 "No votes.";
 
-return;
-
-}
+}else{
 
 const winner=list[0];
 
@@ -2685,10 +3032,9 @@ voteResults.appendChild(div);
 
 });
 
-}else{
+}
 
-resultText.textContent=
-"Voting complete.";
+}else{
 
 voteResults.innerHTML=
 '<div class="infoBox">The host is showing the final results.</div>';
@@ -2700,7 +3046,73 @@ voteResults.innerHTML=
 console.error(error);
 
 resultText.textContent=
-"Results are complete.";
+"Voting complete.";
+
+}
+
+/*
+ Load the final-guess result separately.
+ This is available to everyone.
+*/
+
+try{
+
+const guessState=
+await db.rpc(
+"get_imposter_guess_state",
+{
+p_code:game.code,
+p_player_token:getToken()
+}
+);
+
+if(
+!guessState.error &&
+guessState.data
+){
+
+const data=guessState.data;
+
+if(
+data.guess!==null &&
+data.guess!==undefined
+){
+
+finalGuessResult.classList.remove(
+"hidden"
+);
+
+finalGuessWord.textContent=
+data.guess;
+
+if(data.correct===true){
+
+finalGuessOutcome.textContent=
+"🎉 The Imposter guessed the word correctly!";
+
+finalGuessOutcome.className=
+"finalGuessOutcome resultCorrect";
+
+}else if(data.correct===false){
+
+finalGuessOutcome.textContent=
+"❌ The Imposter guessed incorrectly.";
+
+finalGuessOutcome.className=
+"finalGuessOutcome resultWrong";
+
+}
+
+}
+
+}
+
+}catch(error){
+
+console.warn(
+"Could not load final guess result:",
+error.message
+);
 
 }
 
