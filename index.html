@@ -201,6 +201,115 @@ button:disabled{
   line-height:1.5
 }
 
+/* IMPOSTER HINT */
+
+.imposterHint{
+  margin:16px auto 0;
+  padding:15px;
+  max-width:500px;
+  background:#211c2b;
+  border:1px solid #59406b;
+  border-radius:14px;
+  text-align:center
+}
+
+.imposterHintTitle{
+  color:#c7a5ff;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1px
+}
+
+.imposterHintText{
+  margin-top:6px;
+  font-size:20px;
+  font-weight:800;
+  color:#fff
+}
+
+.hintOffMessage{
+  margin:16px auto 0;
+  padding:13px;
+  max-width:500px;
+  background:#171b27;
+  border:1px solid #30374c;
+  border-radius:14px;
+  color:#9299aa;
+  font-size:14px
+}
+
+/* LOBBY SETTINGS */
+
+.settingDescription{
+  color:#9299aa;
+  font-size:13px;
+  line-height:1.4;
+  margin:6px 0 0
+}
+
+.toggleRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:10px;
+  padding:14px;
+  background:#0d111b;
+  border:1px solid #252b3c;
+  border-radius:14px
+}
+
+.toggleInfo{
+  flex:1
+}
+
+.toggleTitle{
+  font-weight:800;
+  font-size:16px
+}
+
+.toggleSubtitle{
+  color:#9299aa;
+  font-size:12px;
+  line-height:1.35;
+  margin-top:3px
+}
+
+.switch{
+  position:relative;
+  width:58px!important;
+  min-width:58px;
+  height:32px!important;
+  margin:0!important;
+  appearance:none;
+  -webkit-appearance:none;
+  background:#343a4c!important;
+  border:0!important;
+  border-radius:20px!important;
+  cursor:pointer
+}
+
+.switch::after{
+  content:"";
+  position:absolute;
+  top:4px;
+  left:4px;
+  width:24px;
+  height:24px;
+  background:#fff;
+  border-radius:50%;
+  transition:.2s
+}
+
+.switch:checked{
+  background:#6264ff!important
+}
+
+.switch:checked::after{
+  transform:translateX(26px)
+}
+
 /* CLUE ORDER */
 
 .clueTitle{
@@ -578,6 +687,29 @@ Clue time
 
 </select>
 
+<div class="toggleRow">
+
+<div class="toggleInfo">
+
+<div class="toggleTitle">
+Imposter Hints
+</div>
+
+<div class="toggleSubtitle">
+Give the Imposter a helpful hint about the secret word.
+</div>
+
+</div>
+
+<input
+  id="imposterHints"
+  class="switch"
+  type="checkbox"
+  checked
+>
+
+</div>
+
 <button id="startButton">
 Start Game
 </button>
@@ -616,6 +748,24 @@ WORD
 
 <div id="roleDescription"
      class="roleDescription">
+</div>
+
+<div id="imposterHint"
+     class="imposterHint hidden">
+
+<div class="imposterHintTitle">
+💡 Imposter Hint
+</div>
+
+<div id="imposterHintText"
+     class="imposterHintText">
+</div>
+
+</div>
+
+<div id="hintOffMessage"
+     class="hintOffMessage hidden">
+Hints are turned off for this game. You'll have to figure it out yourself.
 </div>
 
 </div>
@@ -800,6 +950,7 @@ const players=document.getElementById("players");
 const hostControls=document.getElementById("hostControls");
 const category=document.getElementById("category");
 const clueTime=document.getElementById("clueTime");
+const imposterHints=document.getElementById("imposterHints");
 const startButton=document.getElementById("startButton");
 const lobbyStatus=document.getElementById("lobbyStatus");
 
@@ -807,6 +958,10 @@ const gameCategory=document.getElementById("gameCategory");
 const myRole=document.getElementById("myRole");
 const myWord=document.getElementById("myWord");
 const roleDescription=document.getElementById("roleDescription");
+
+const imposterHint=document.getElementById("imposterHint");
+const imposterHintText=document.getElementById("imposterHintText");
+const hintOffMessage=document.getElementById("hintOffMessage");
 
 const clueTimer=document.getElementById("clueTimer");
 const clueOrderList=document.getElementById("clueOrderList");
@@ -873,90 +1028,6 @@ token
 }
 
 return token;
-
-}
-
-
-/* =========================================================
-   CURRENT PLAYER / HOST AUTHORIZATION
-========================================================= */
-
-/*
- IMPORTANT:
-
-The game's host_token can change when:
-- the original host leaves
-- another player becomes host
-- the player reconnects/rejoins
-- the browser has an older player token
-
-The old version always sent getToken() to host-only
-RPCs. That could cause "Not authorized".
-
-We now refresh the current player and use the room's
-CURRENT host token for host actions.
-*/
-
-async function refreshCurrentPlayer(){
-
-if(!game||!player)
-return false;
-
-try{
-
-const result=
-await db
-.from("game_players")
-.select(
-"id,display_name,is_host,is_alive,player_token"
-)
-.eq("id",player.id)
-.eq("game_id",game.id)
-.maybeSingle();
-
-if(result.error)
-throw result.error;
-
-if(!result.data)
-return false;
-
-player=result.data;
-
-return true;
-
-}catch(error){
-
-console.error(
-"Could not refresh player:",
-error
-);
-
-return false;
-
-}
-
-}
-
-
-/*
- Use the current game's host token.
-
- This fixes host authorization after reconnects
- or host transfers.
-*/
-
-function getHostToken(){
-
-if(
-game &&
-game.host_token
-){
-
-return game.host_token;
-
-}
-
-return getToken();
 
 }
 
@@ -1495,10 +1566,8 @@ let phase="Game in progress.";
 if(oldGame.status==="lobby")
 phase="The lobby is still open.";
 
-if(
-oldGame.status==="playing"||
-oldGame.status==="clues"
-)
+if(oldGame.status==="playing"||
+oldGame.status==="clues")
 phase="The clue round is active.";
 
 if(oldGame.status==="voting")
@@ -1645,6 +1714,22 @@ hostControls.classList.toggle(
 "hidden",
 !player.is_host
 );
+
+/*
+ Preserve the current game's hint setting
+ when returning to the lobby.
+*/
+
+if(typeof game.imposter_hints_enabled==="boolean"){
+
+imposterHints.checked=
+game.imposter_hints_enabled;
+
+}else{
+
+imposterHints.checked=true;
+
+}
 
 updateLeaveUI();
 
@@ -1899,19 +1984,15 @@ await showGameScreen();
 
 }
 
-if(
-status==="voting" &&
-votingScreen.classList.contains("hidden")
-){
+if(status==="voting" &&
+votingScreen.classList.contains("hidden")){
 
 await showVoting();
 
 }
 
-if(
-status==="results" &&
-resultsScreen.classList.contains("hidden")
-){
+if(status==="results" &&
+resultsScreen.classList.contains("hidden")){
 
 await loadResults();
 
@@ -2027,6 +2108,15 @@ gameCategory.textContent=
 data.category||
 "CATEGORY";
 
+/*
+ Always clear previous hint/word state
+ before rendering the new player's role.
+*/
+
+myWord.textContent="";
+imposterHint.classList.add("hidden");
+hintOffMessage.classList.add("hidden");
+
 if(data.is_imposter){
 
 myRole.textContent=
@@ -2035,11 +2125,27 @@ myRole.textContent=
 myRole.className=
 "myRole imposter";
 
-myWord.textContent=
-"";
+myWord.textContent="";
 
 roleDescription.textContent=
 "You don't know the word. Listen to the clues and try to blend in.";
+
+if(data.hint){
+
+imposterHintText.textContent=
+data.hint;
+
+imposterHint.classList.remove(
+"hidden"
+);
+
+}else{
+
+hintOffMessage.classList.remove(
+"hidden"
+);
+
+}
 
 }else{
 
@@ -2262,43 +2368,19 @@ setInterval(tick,250);
 
 startVotingButton.onclick=async()=>{
 
-if(!game||!player)
+if(!player?.is_host)
 return;
 
 startVotingButton.disabled=true;
 
 try{
 
-/*
- Make sure the browser knows whether
- this player is still the host.
-*/
-
-const refreshed=
-await refreshCurrentPlayer();
-
-if(!refreshed){
-
-throw new Error(
-"Could not verify your player account."
-);
-
-}
-
-if(!player.is_host){
-
-throw new Error(
-"You are no longer the host."
-);
-
-}
-
 const result=
 await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getHostToken(),
+p_host_token:getToken(),
 p_phase:"voting"
 }
 );
@@ -2492,7 +2574,7 @@ await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getHostToken(),
+p_host_token:getToken(),
 p_phase:"results"
 }
 );
@@ -2546,7 +2628,7 @@ await db.rpc(
 p_code:game.code,
 p_host_token:
 player.is_host
-?getHostToken()
+?getToken()
 :null
 }
 );
@@ -2631,31 +2713,12 @@ resultText.textContent=
 
 nextRoundButton.onclick=async()=>{
 
-if(!game||!player)
+if(!player.is_host)
 return;
 
 nextRoundButton.disabled=true;
 
 try{
-
-const refreshed=
-await refreshCurrentPlayer();
-
-if(!refreshed){
-
-throw new Error(
-"Could not verify your player account."
-);
-
-}
-
-if(!player.is_host){
-
-throw new Error(
-"You are no longer the host."
-);
-
-}
 
 const cat=
 category.value==="random"
@@ -2665,14 +2728,18 @@ category.value==="random"
 const time=
 parseInt(clueTime.value,10);
 
+const hints=
+imposterHints.checked;
+
 const result=
 await db.rpc(
 "start_game",
 {
 p_code:game.code,
-p_host_token:getHostToken(),
+p_host_token:getToken(),
 p_category_id:cat,
-p_clue_time:time
+p_clue_time:time,
+p_imposter_hints_enabled:hints
 }
 );
 
@@ -2688,7 +2755,7 @@ await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getHostToken(),
+p_host_token:getToken(),
 p_phase:"clues"
 }
 );
@@ -2722,37 +2789,12 @@ nextRoundButton.disabled=false;
 
 startButton.onclick=async()=>{
 
-if(!game||!player)
+if(!player?.is_host)
 return;
 
 startButton.disabled=true;
 
 try{
-
-/*
- Refresh the player first.
- This handles host transfers and
- stale/rejoined browser sessions.
-*/
-
-const refreshed=
-await refreshCurrentPlayer();
-
-if(!refreshed){
-
-throw new Error(
-"Could not verify your player account."
-);
-
-}
-
-if(!player.is_host){
-
-throw new Error(
-"You are no longer the host. Another player is now host."
-);
-
-}
 
 const cat=
 category.value==="random"
@@ -2762,14 +2804,18 @@ category.value==="random"
 const time=
 parseInt(clueTime.value,10);
 
+const hints=
+imposterHints.checked;
+
 const result=
 await db.rpc(
 "start_game",
 {
 p_code:game.code,
-p_host_token:getHostToken(),
+p_host_token:getToken(),
 p_category_id:cat,
-p_clue_time:time
+p_clue_time:time,
+p_imposter_hints_enabled:hints
 }
 );
 
@@ -2780,16 +2826,12 @@ game=result.data.game;
 
 saveRoom();
 
-/*
- Immediately move from playing to clues.
-*/
-
 const phase=
 await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getHostToken(),
+p_host_token:getToken(),
 p_phase:"clues"
 }
 );
@@ -2803,10 +2845,7 @@ await syncGame();
 
 }catch(error){
 
-console.error(
-"Could not start game:",
-error
-);
+console.error(error);
 
 alert(
 "Could not start game:\n"+
@@ -2828,36 +2867,17 @@ startButton.disabled=false;
 
 backLobbyButton.onclick=async()=>{
 
-if(!game||!player)
+if(!player.is_host)
 return;
 
 try{
-
-const refreshed=
-await refreshCurrentPlayer();
-
-if(!refreshed){
-
-throw new Error(
-"Could not verify your player account."
-);
-
-}
-
-if(!player.is_host){
-
-throw new Error(
-"You are no longer the host."
-);
-
-}
 
 const result=
 await db.rpc(
 "reset_to_lobby",
 {
 p_code:game.code,
-p_host_token:getHostToken()
+p_host_token:getToken()
 }
 );
 
@@ -2886,7 +2906,7 @@ error.message
 
 bringLobbyButton.onclick=async()=>{
 
-if(!game||!player)
+if(!player?.is_host)
 return;
 
 if(!confirm(
@@ -2898,31 +2918,12 @@ bringLobbyButton.disabled=true;
 
 try{
 
-const refreshed=
-await refreshCurrentPlayer();
-
-if(!refreshed){
-
-throw new Error(
-"Could not verify your player account."
-);
-
-}
-
-if(!player.is_host){
-
-throw new Error(
-"You are no longer the host."
-);
-
-}
-
 const result=
 await db.rpc(
 "reset_to_lobby",
 {
 p_code:game.code,
-p_host_token:getHostToken()
+p_host_token:getToken()
 }
 );
 
@@ -3176,11 +3177,6 @@ return;
 }
 
 await checkConnection();
-
-/*
- Only SHOW rejoin.
- Do not automatically reconnect.
-*/
 
 await checkForPreviousGame();
 
