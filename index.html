@@ -10,70 +10,70 @@
 
 <style>
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
 }
 
 html,body{
-  margin:0;
-  min-height:100%;
-  background:#090b12;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+margin:0;
+min-height:100%;
+background:#090b12;
+color:#fff;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
 
 body{
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
+padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
 }
 
 .app{
-  width:100%;
-  max-width:620px;
-  margin:auto;
-  padding:20px 16px 60px
+width:100%;
+max-width:620px;
+margin:auto;
+padding:20px 16px 60px
 }
 
 h1{
-  text-align:center;
-  font-size:46px;
-  margin:18px 0 25px;
-  letter-spacing:3px;
-  font-weight:900
+text-align:center;
+font-size:46px;
+margin:18px 0 25px;
+letter-spacing:3px;
+font-weight:900
 }
 
 h2{margin-top:0}
 
 .card{
-  background:#131724;
-  border:1px solid #292f43;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.18)
+background:#131724;
+border:1px solid #292f43;
+border-radius:20px;
+padding:20px;
+margin-bottom:16px;
+box-shadow:0 10px 30px rgba(0,0,0,.18)
 }
 
 input,button,select{
-  width:100%;
-  height:54px;
-  border-radius:14px;
-  font-size:17px;
-  margin-top:10px
+width:100%;
+height:54px;
+border-radius:14px;
+font-size:17px;
+margin-top:10px
 }
 
 input,select{
-  padding:0 15px;
-  background:#090c14;
-  border:1px solid #353c51;
-  color:#fff;
-  outline:none
+padding:0 15px;
+background:#090c14;
+border:1px solid #353c51;
+color:#fff;
+outline:none
 }
 
 button{
-  border:0;
-  background:#6264ff;
-  color:#fff;
-  font-weight:800;
-  cursor:pointer
+border:0;
+background:#6264ff;
+color:#fff;
+font-weight:800;
+cursor:pointer
 }
 
 button:active{transform:scale(.98)}
@@ -85,623 +85,596 @@ button:disabled{opacity:.5}
 .center{text-align:center}
 
 .status{
-  margin-top:13px;
-  padding:13px;
-  border-radius:12px;
-  background:#1c2130;
-  font-size:14px;
-  line-height:1.4;
-  word-break:break-word
+margin-top:13px;
+padding:13px;
+border-radius:12px;
+background:#1c2130;
+font-size:14px;
+line-height:1.4;
+word-break:break-word
 }
 
 .ok{color:#7ee5a7}
 .err{color:#ff8199}
 
 .tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px
+display:flex;
+gap:8px;
+margin-bottom:12px
 }
 
 .tab{
-  margin:0;
-  background:#242a3b
+margin:0;
+background:#242a3b
 }
 
 .tab.active{background:#6264ff}
 
 .code{
-  text-align:center;
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:12px 0
+text-align:center;
+font-size:42px;
+font-weight:900;
+letter-spacing:7px;
+margin:12px 0
 }
 
 .player{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:12px;
-  border-radius:12px;
-  margin-top:8px;
-  min-height:50px;
-  display:flex;
-  align-items:center;
-  gap:10px
+background:#0d111b;
+border:1px solid #252b3c;
+padding:12px;
+border-radius:12px;
+margin-top:8px;
+min-height:50px;
+display:flex;
+align-items:center;
+gap:10px
 }
 
 .playerName{
-  flex:1;
-  min-width:0;
-  word-break:break-word
+flex:1;
+min-width:0;
+word-break:break-word
 }
 
 .kickButton{
-  width:auto;
-  min-width:68px;
-  height:38px;
-  margin:0;
-  padding:0 12px;
-  border-radius:10px;
-  background:#8f354c;
-  font-size:13px;
-  flex-shrink:0
+width:auto;
+min-width:68px;
+height:38px;
+margin:0;
+padding:0 12px;
+border-radius:10px;
+background:#8f354c;
+font-size:13px;
+flex-shrink:0
 }
 
 .host{
-  margin-left:auto;
-  color:#8c8fff;
-  font-size:13px;
-  font-weight:700
+margin-left:auto;
+color:#8c8fff;
+font-size:13px;
+font-weight:700
 }
 
 hr{
-  border:0;
-  border-top:1px solid #292f43;
-  margin:20px 0
+border:0;
+border-top:1px solid #292f43;
+margin:20px 0
 }
 
-/* LOBBY SETTINGS */
-
 .settingsPreview{
-  margin-top:18px;
-  padding:16px;
-  background:#0d111b;
-  border:1px solid #252b3c;
-  border-radius:15px
+margin-top:18px;
+padding:16px;
+background:#0d111b;
+border:1px solid #252b3c;
+border-radius:15px
 }
 
 .settingsPreviewTitle{
-  text-align:center;
-  color:#8c8fff;
-  font-size:12px;
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  margin-bottom:12px
+text-align:center;
+color:#8c8fff;
+font-size:12px;
+font-weight:900;
+text-transform:uppercase;
+letter-spacing:1px;
+margin-bottom:12px
 }
 
 .settingItem{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  padding:9px 0;
-  border-bottom:1px solid #22283a
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+padding:9px 0;
+border-bottom:1px solid #22283a
 }
 
 .settingItem:last-child{border-bottom:0}
 
 .settingLabel{
-  color:#9299aa;
-  font-size:14px
+color:#9299aa;
+font-size:14px
 }
 
 .settingValue{
-  font-weight:800;
-  text-align:right
-}
-
-.settingDescription{
-  color:#9299aa;
-  font-size:13px;
-  line-height:1.4;
-  margin:6px 0 0
+font-weight:800;
+text-align:right
 }
 
 .toggleRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  margin-top:10px;
-  padding:14px;
-  background:#0d111b;
-  border:1px solid #252b3c;
-  border-radius:14px
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+margin-top:10px;
+padding:14px;
+background:#0d111b;
+border:1px solid #252b3c;
+border-radius:14px
 }
 
-.toggleInfo{
-  flex:1
-}
+.toggleInfo{flex:1}
 
 .toggleTitle{
-  font-weight:800;
-  font-size:16px
+font-weight:800;
+font-size:16px
 }
 
 .toggleSubtitle{
-  color:#9299aa;
-  font-size:12px;
-  line-height:1.35;
-  margin-top:3px
+color:#9299aa;
+font-size:12px;
+line-height:1.35;
+margin-top:3px
 }
 
 .switch{
-  position:relative;
-  width:58px!important;
-  min-width:58px;
-  height:32px!important;
-  margin:0!important;
-  appearance:none;
-  -webkit-appearance:none;
-  background:#343a4c!important;
-  border:0!important;
-  border-radius:20px!important;
-  cursor:pointer
+position:relative;
+width:58px!important;
+min-width:58px;
+height:32px!important;
+margin:0!important;
+appearance:none;
+-webkit-appearance:none;
+background:#343a4c!important;
+border:0!important;
+border-radius:20px!important;
+cursor:pointer
 }
 
 .switch::after{
-  content:"";
-  position:absolute;
-  top:4px;
-  left:4px;
-  width:24px;
-  height:24px;
-  background:#fff;
-  border-radius:50%;
-  transition:.2s
+content:"";
+position:absolute;
+top:4px;
+left:4px;
+width:24px;
+height:24px;
+background:#fff;
+border-radius:50%;
+transition:.2s
 }
 
 .switch:checked{background:#6264ff!important}
 .switch:checked::after{transform:translateX(26px)}
 
-/* GAME */
-
 .gameInfo{
-  text-align:center;
-  padding:4px 0 18px
+text-align:center;
+padding:4px 0 18px
 }
 
 .gameCategory{
-  color:#9da4b7;
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:1px
+color:#9da4b7;
+font-size:14px;
+text-transform:uppercase;
+letter-spacing:1px
 }
 
 .myRole{
-  margin-top:8px;
-  font-size:30px;
-  font-weight:900
+margin-top:8px;
+font-size:30px;
+font-weight:900
 }
 
 .myWord{
-  margin-top:10px;
-  font-size:40px;
-  font-weight:900;
-  word-break:break-word
+margin-top:10px;
+font-size:40px;
+font-weight:900;
+word-break:break-word
 }
 
 .imposter{color:#ff8199}
 .normal{color:#7ee5a7}
 
 .roleDescription{
-  color:#9da4b7;
-  margin:10px 0 0;
-  line-height:1.5
+color:#9da4b7;
+margin:10px 0 0;
+line-height:1.5
 }
 
 .imposterHint{
-  margin:16px auto 0;
-  padding:15px;
-  max-width:500px;
-  background:#211c2b;
-  border:1px solid #59406b;
-  border-radius:14px;
-  text-align:center
+margin:16px auto 0;
+padding:15px;
+max-width:500px;
+background:#211c2b;
+border:1px solid #59406b;
+border-radius:14px;
+text-align:center
 }
 
 .imposterHintTitle{
-  color:#c7a5ff;
-  font-size:12px;
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:1px
+color:#c7a5ff;
+font-size:12px;
+font-weight:900;
+text-transform:uppercase;
+letter-spacing:1px
 }
 
 .imposterHintText{
-  margin-top:6px;
-  font-size:20px;
-  font-weight:800
+margin-top:6px;
+font-size:20px;
+font-weight:800
 }
 
 .hintOffMessage{
-  margin:16px auto 0;
-  padding:13px;
-  max-width:500px;
-  background:#171b27;
-  border:1px solid #30374c;
-  border-radius:14px;
-  color:#9299aa;
-  font-size:14px
+margin:16px auto 0;
+padding:13px;
+max-width:500px;
+background:#171b27;
+border:1px solid #30374c;
+border-radius:14px;
+color:#9299aa;
+font-size:14px
 }
 
-/* CLUES */
-
 .clueTitle{
-  text-align:center;
-  font-size:25px;
-  font-weight:900;
-  margin:0
+text-align:center;
+font-size:25px;
+font-weight:900;
+margin:0
 }
 
 .clueSubtitle{
-  text-align:center;
-  color:#9299aa;
-  font-size:14px;
-  margin:7px 0 18px
+text-align:center;
+color:#9299aa;
+font-size:14px;
+margin:7px 0 18px
 }
 
 .timer{
-  text-align:center;
-  font-size:60px;
-  line-height:1;
-  font-weight:900;
-  margin:8px 0 20px
+text-align:center;
+font-size:60px;
+line-height:1;
+font-weight:900;
+margin:8px 0 20px
 }
 
 .timerWarning{color:#ff8199}
 .noTimer{font-size:20px;color:#9b9dff}
 
 .orderRow{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:13px;
-  border-radius:13px;
-  margin-top:8px
+display:flex;
+align-items:center;
+gap:12px;
+background:#0d111b;
+border:1px solid #252b3c;
+padding:13px;
+border-radius:13px;
+margin-top:8px
 }
 
 .orderNumber{
-  width:38px;
-  height:38px;
-  min-width:38px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#282e41;
-  font-weight:900
+width:38px;
+height:38px;
+min-width:38px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#282e41;
+font-weight:900
 }
 
 .orderName{
-  font-size:17px;
-  font-weight:700;
-  flex:1
+font-size:17px;
+font-weight:700;
+flex:1
 }
 
 .youBadge{
-  display:inline-block;
-  font-size:11px;
-  font-weight:800;
-  background:#6264ff;
-  padding:4px 7px;
-  border-radius:7px;
-  margin-left:7px
+display:inline-block;
+font-size:11px;
+font-weight:800;
+background:#6264ff;
+padding:4px 7px;
+border-radius:7px;
+margin-left:7px
 }
 
 .infoBox{
-  background:#101522;
-  border:1px solid #292f43;
-  border-radius:12px;
-  padding:13px;
-  margin-top:15px;
-  font-size:13px;
-  color:#aeb4c4;
-  text-align:center;
-  line-height:1.5
+background:#101522;
+border:1px solid #292f43;
+border-radius:12px;
+padding:13px;
+margin-top:15px;
+font-size:13px;
+color:#aeb4c4;
+text-align:center;
+line-height:1.5
 }
 
 .hostControls{
-  margin-top:18px;
-  padding-top:18px;
-  border-top:1px solid #292f43
+margin-top:18px;
+padding-top:18px;
+border-top:1px solid #292f43
 }
 
 .hostLabel{
-  font-size:12px;
-  font-weight:800;
-  color:#888fa2;
-  text-align:center
+font-size:12px;
+font-weight:800;
+color:#888fa2;
+text-align:center
 }
 
-/* LEAVE */
-
 .gameLeaveButton{
-  position:fixed;
-  top:calc(env(safe-area-inset-top) + 10px);
-  left:12px;
-  z-index:9999;
-  width:auto;
-  min-width:110px;
-  height:42px;
-  padding:0 14px;
-  margin:0;
-  border-radius:12px;
-  background:#242a3b;
-  border:1px solid #353c51;
-  font-size:14px;
-  box-shadow:0 5px 18px rgba(0,0,0,.25)
+position:fixed;
+top:calc(env(safe-area-inset-top) + 10px);
+left:12px;
+z-index:9999;
+width:auto;
+min-width:110px;
+height:42px;
+padding:0 14px;
+margin:0;
+border-radius:12px;
+background:#242a3b;
+border:1px solid #353c51;
+font-size:14px;
+box-shadow:0 5px 18px rgba(0,0,0,.25)
 }
 
 .leaveControls{
-  position:fixed;
-  top:calc(env(safe-area-inset-top) + 58px);
-  left:12px;
-  z-index:9998;
-  width:190px
+position:fixed;
+top:calc(env(safe-area-inset-top) + 58px);
+left:12px;
+z-index:9998;
+width:190px
 }
 
 .leaveControls button{
-  height:42px;
-  margin-top:7px;
-  font-size:13px
+height:42px;
+margin-top:7px;
+font-size:13px
 }
 
-/* VOTING */
-
 .choice{
-  background:#1d2332;
-  border:1px solid #30384d;
-  margin-top:8px
+background:#1d2332;
+border:1px solid #30384d;
+margin-top:8px
 }
 
 .choice.selected{
-  background:#6264ff;
-  border-color:#6264ff
+background:#6264ff;
+border-color:#6264ff
 }
 
-/* GUESS */
+.choice.nobody{
+background:#252b3c
+}
+
+.choice.nobody.selected{
+background:#6264ff
+}
+
+.voteSelectionInfo{
+margin:12px 0;
+padding:12px;
+border-radius:12px;
+background:#101522;
+border:1px solid #292f43;
+text-align:center;
+color:#aeb4c4;
+font-size:14px
+}
 
 .guessIcon{
-  text-align:center;
-  font-size:58px;
-  margin:5px 0 8px
+text-align:center;
+font-size:58px;
+margin:5px 0 8px
 }
 
 .guessTitle{
-  text-align:center;
-  font-size:29px;
-  font-weight:900;
-  margin:0
+text-align:center;
+font-size:29px;
+font-weight:900;
+margin:0
 }
 
 .guessSubtitle{
-  text-align:center;
-  color:#9da4b7;
-  line-height:1.5;
-  margin:10px auto 18px;
-  max-width:480px
+text-align:center;
+color:#9da4b7;
+line-height:1.5;
+margin:10px auto 18px;
+max-width:480px
 }
 
 .guessWarning{
-  background:#211c2b;
-  border:1px solid #59406b;
-  border-radius:14px;
-  padding:15px;
-  text-align:center;
-  color:#c7a5ff;
-  font-weight:800;
-  line-height:1.4;
-  margin-bottom:15px
+background:#211c2b;
+border:1px solid #59406b;
+border-radius:14px;
+padding:15px;
+text-align:center;
+color:#c7a5ff;
+font-weight:800;
+line-height:1.4;
+margin-bottom:15px
 }
 
 .guessInput{
-  text-align:center;
-  font-size:21px;
-  font-weight:700
+text-align:center;
+font-size:21px;
+font-weight:700
 }
 
 .guessWaiting{
-  text-align:center;
-  padding:24px 12px
+text-align:center;
+padding:24px 12px
 }
 
 .guessWaitingIcon{
-  font-size:52px;
-  margin-bottom:10px
+font-size:52px;
+margin-bottom:10px
 }
 
 .guessWaitingTitle{
-  font-size:23px;
-  font-weight:900
+font-size:23px;
+font-weight:900
 }
 
 .guessWaitingText{
-  color:#9299aa;
-  margin-top:8px;
-  line-height:1.5
+color:#9299aa;
+margin-top:8px;
+line-height:1.5
 }
 
-/* FINAL GUESS VOTE REVEAL */
-
-.guessReveal{
-  margin-top:22px;
-  padding-top:20px;
-  border-top:1px solid #292f43
+.revealTitle{
+font-size:13px;
+font-weight:900;
+color:#8c8fff;
+text-transform:uppercase;
+letter-spacing:1px;
+text-align:center;
+margin:0 0 12px
 }
 
-.guessRevealTitle{
-  text-align:center;
-  font-size:22px;
-  font-weight:900;
-  margin:0
+.revealPlayer{
+display:flex;
+align-items:center;
+gap:10px;
+background:#0d111b;
+border:1px solid #252b3c;
+padding:12px;
+border-radius:12px;
+margin-top:8px
 }
 
-.guessRevealSubtitle{
-  text-align:center;
-  color:#9299aa;
-  font-size:13px;
-  line-height:1.4;
-  margin:6px 0 14px
+.revealName{
+flex:1;
+font-weight:800
 }
 
-.guessVotePlayer{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:14px;
-  border-radius:13px;
-  margin-top:8px
+.roleBadge{
+font-size:11px;
+font-weight:900;
+padding:5px 8px;
+border-radius:8px
 }
 
-.guessVotePlayerTop{
-  display:flex;
-  align-items:center;
-  gap:10px
+.imposterBadge{
+background:#542538;
+color:#ff8199
 }
 
-.guessVotePlayerName{
-  flex:1;
-  font-weight:800;
-  word-break:break-word
+.civilianBadge{
+background:#173b2c;
+color:#7ee5a7
 }
-
-.guessVoteCount{
-  color:#9299aa;
-  font-size:13px;
-  margin-top:7px
-}
-
-/* RESULTS */
 
 .result{
-  text-align:center;
-  font-size:25px;
-  font-weight:900;
-  padding:18px
+text-align:center;
+font-size:25px;
+font-weight:900;
+padding:18px
 }
 
 .resultCorrect{color:#7ee5a7}
 .resultWrong{color:#ff8199}
 
 .resultPlayer{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:14px;
-  border-radius:13px;
-  margin-top:8px
+background:#0d111b;
+border:1px solid #252b3c;
+padding:14px;
+border-radius:13px;
+margin-top:8px
 }
 
 .resultPlayerTop{
-  display:flex;
-  align-items:center;
-  gap:10px
+display:flex;
+align-items:center;
+gap:10px
 }
 
 .resultPlayerName{
-  flex:1;
-  font-weight:800
-}
-
-.roleBadge{
-  font-size:11px;
-  font-weight:900;
-  padding:5px 8px;
-  border-radius:8px
-}
-
-.imposterBadge{
-  background:#542538;
-  color:#ff8199
-}
-
-.civilianBadge{
-  background:#173b2c;
-  color:#7ee5a7
+flex:1;
+font-weight:800
 }
 
 .voteCount{
-  color:#9299aa;
-  font-size:13px;
-  margin-top:7px
+color:#9299aa;
+font-size:13px;
+margin-top:7px
 }
 
 .finalGuessResult{
-  background:#101522;
-  border:1px solid #292f43;
-  border-radius:15px;
-  padding:17px;
-  margin:8px 0 16px;
-  text-align:center
+background:#101522;
+border:1px solid #292f43;
+border-radius:15px;
+padding:17px;
+margin:8px 0 16px;
+text-align:center
 }
 
 .finalGuessLabel{
-  color:#888fa2;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  font-size:11px;
-  font-weight:900
+color:#888fa2;
+text-transform:uppercase;
+letter-spacing:1px;
+font-size:11px;
+font-weight:900
 }
 
 .finalGuessWord{
-  font-size:26px;
-  font-weight:900;
-  margin-top:6px;
-  word-break:break-word
+font-size:26px;
+font-weight:900;
+margin-top:6px;
+word-break:break-word
 }
 
 .finalGuessOutcome{
-  margin-top:9px;
-  font-size:17px;
-  font-weight:800
+margin-top:9px;
+font-size:17px;
+font-weight:800
 }
 
 .small{
-  text-align:center;
-  color:#8e95a8;
-  font-size:13px
+text-align:center;
+color:#8e95a8;
+font-size:13px
 }
 
 .connectionDot{
-  display:inline-block;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#ff8199;
-  margin-right:7px
+display:inline-block;
+width:8px;
+height:8px;
+border-radius:50%;
+background:#ff8199;
+margin-right:7px
 }
 
 .connectionDot.okDot{background:#70d89a}
 
 .rejoinCard{
-  margin-top:12px;
-  border:1px solid #6264ff;
-  background:#171a2b
+margin-top:12px;
+border:1px solid #6264ff;
+background:#171a2b
 }
 
 .rejoinTitle{
-  font-size:19px;
-  font-weight:900;
-  margin-bottom:7px
+font-size:19px;
+font-weight:900;
+margin-bottom:7px
 }
 
 .rejoinInfo{
-  color:#9da4b7;
-  font-size:14px;
-  line-height:1.5
+color:#9da4b7;
+font-size:14px;
+line-height:1.5
 }
 </style>
 </head>
@@ -713,16 +686,14 @@ hr{
 </button>
 
 <div id="leaveControls" class="leaveControls hidden">
-  <button id="bringLobbyButton" class="secondary hidden">
-    Bring Everyone Back To Lobby
-  </button>
+<button id="bringLobbyButton" class="secondary hidden">
+Bring Everyone Back To Lobby
+</button>
 </div>
 
 <main class="app">
 
 <h1>IMPOSTER</h1>
-
-<!-- HOME -->
 
 <section id="home">
 
@@ -779,9 +750,6 @@ Don't Rejoin
 
 </section>
 
-
-<!-- LOBBY -->
-
 <section id="lobby" class="card hidden">
 
 <h2 class="center">Game Lobby</h2>
@@ -798,6 +766,11 @@ Don't Rejoin
 
 <div class="settingsPreviewTitle">
 Current Game Settings
+</div>
+
+<div class="settingItem">
+<div class="settingLabel">Game Mode</div>
+<div id="previewGameMode" class="settingValue">Classic</div>
 </div>
 
 <div class="settingItem">
@@ -822,6 +795,19 @@ Current Game Settings
 <hr>
 
 <h3>Game Settings</h3>
+
+<label>Game Mode</label>
+
+<select id="gameMode">
+
+<option value="classic">Classic — 1 Imposter</option>
+<option value="variable_imposters">Variable Imposters — 0–2</option>
+
+</select>
+
+<p style="color:#9299aa;font-size:13px;line-height:1.4">
+Variable Imposters randomly chooses 0, 1, or 2 Imposters each round. The number is hidden from players.
+</p>
 
 <label>Category</label>
 
@@ -872,9 +858,6 @@ Waiting for players...
 </div>
 
 </section>
-
-
-<!-- CLUE SCREEN -->
 
 <section id="clueScreen" class="card hidden">
 
@@ -930,16 +913,17 @@ Everyone sees the same order. Just follow the numbers.
 
 </section>
 
-
-<!-- VOTING -->
-
 <section id="votingScreen" class="card hidden">
 
 <h2 class="center">Vote</h2>
 
 <p class="center">
-Who do you think the Imposter is?
+Who do you think the Imposter(s) are?
 </p>
+
+<div class="voteSelectionInfo" id="voteSelectionInfo">
+Choose Nobody or up to 2 players.
+</div>
 
 <div id="votePlayers"></div>
 
@@ -948,15 +932,22 @@ Submit Vote
 </button>
 
 <div id="voteStatus" class="status center">
-Choose a player.
+Choose Nobody or up to 2 players.
 </div>
 
 </section>
 
-
-<!-- FINAL GUESS -->
-
 <section id="guessScreen" class="card hidden">
+
+<div class="revealTitle">
+The Vote Is In
+</div>
+
+<div id="guessRevealList"></div>
+
+<div id="guessVoteResults"></div>
+
+<hr>
 
 <div id="imposterGuessPanel">
 
@@ -964,7 +955,7 @@ Choose a player.
 
 <h2 class="guessTitle">Final Guess</h2>
 
-<p class="guessSubtitle">
+<p id="guessSubtitle" class="guessSubtitle">
 You were caught as the Imposter — but you get one last chance to steal the win.
 </p>
 
@@ -991,7 +982,6 @@ Think carefully...
 
 </div>
 
-
 <div id="guessWaitingPanel" class="guessWaiting hidden">
 
 <div class="guessWaitingIcon">⏳</div>
@@ -1000,34 +990,14 @@ Think carefully...
 The Imposter Is Making Their Final Guess
 </div>
 
-<div class="guessWaitingText">
+<div id="guessWaitingText" class="guessWaitingText">
 The Imposter was correctly identified.<br>
 They now have one final chance to guess the secret word.
 </div>
 
 </div>
 
-
-<!-- VOTE REVEAL DURING FINAL GUESS -->
-
-<div id="guessVoteResults" class="guessReveal hidden">
-
-<h3 class="guessRevealTitle">
-Vote Results
-</h3>
-
-<div class="guessRevealSubtitle">
-The Imposter was correctly identified. Here is how everyone voted.
-</div>
-
-<div id="guessVoteResultsList"></div>
-
-</div>
-
 </section>
-
-
-<!-- RESULTS -->
 
 <section id="resultsScreen" class="card hidden">
 
@@ -1044,7 +1014,7 @@ Secret Word: <strong id="actualWord"></strong>
 <div id="finalGuessResult" class="finalGuessResult hidden">
 
 <div class="finalGuessLabel">
-Imposter Final Guess
+Imposter Final Guesses
 </div>
 
 <div id="finalGuessWord" class="finalGuessWord"></div>
@@ -1067,7 +1037,6 @@ Back To Lobby
 
 </section>
 
-
 <p class="small">
 
 <span id="connectionDot" class="connectionDot"></span>
@@ -1080,45 +1049,25 @@ Connecting...
 
 </main>
 
-
 <script>
 "use strict";
 
-/* =========================================================
-   SUPABASE
-========================================================= */
-
-const SUPABASE_URL =
-"https://rcpxsidynmfstsihqyfc.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
+const SUPABASE_URL="https://rcpxsidynmfstsihqyfc.supabase.co";
+const SUPABASE_KEY="sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
 let db=null;
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
 let game=null;
 let player=null;
 let channel=null;
-
 let clueOrder=[];
 let clueTimerInterval=null;
 let syncInterval=null;
-
 let lastStatus=null;
-let selectedVote=null;
+let selectedVotes=[];
+let votingNobody=false;
 let syncing=false;
-
 let categoryNames=new Map();
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
+let settingsSaveTimer=null;
 
 const home=document.getElementById("home");
 const lobby=document.getElementById("lobby");
@@ -1129,17 +1078,13 @@ const resultsScreen=document.getElementById("resultsScreen");
 
 const createTab=document.getElementById("createTab");
 const joinTab=document.getElementById("joinTab");
-
 const createCard=document.getElementById("createCard");
 const joinCard=document.getElementById("joinCard");
-
 const createName=document.getElementById("createName");
 const joinName=document.getElementById("joinName");
 const joinCode=document.getElementById("joinCode");
-
 const createButton=document.getElementById("createButton");
 const joinButton=document.getElementById("joinButton");
-
 const createStatus=document.getElementById("createStatus");
 const joinStatus=document.getElementById("joinStatus");
 
@@ -1152,11 +1097,13 @@ const roomCode=document.getElementById("roomCode");
 const players=document.getElementById("players");
 
 const settingsPreview=document.getElementById("settingsPreview");
+const previewGameMode=document.getElementById("previewGameMode");
 const previewCategory=document.getElementById("previewCategory");
 const previewClueTime=document.getElementById("previewClueTime");
 const previewHints=document.getElementById("previewHints");
 
 const hostControls=document.getElementById("hostControls");
+const gameMode=document.getElementById("gameMode");
 const category=document.getElementById("category");
 const clueTime=document.getElementById("clueTime");
 const imposterHints=document.getElementById("imposterHints");
@@ -1168,7 +1115,6 @@ const gameCategory=document.getElementById("gameCategory");
 const myRole=document.getElementById("myRole");
 const myWord=document.getElementById("myWord");
 const roleDescription=document.getElementById("roleDescription");
-
 const imposterHint=document.getElementById("imposterHint");
 const imposterHintText=document.getElementById("imposterHintText");
 const hintOffMessage=document.getElementById("hintOffMessage");
@@ -1181,23 +1127,22 @@ const startVotingButton=document.getElementById("startVotingButton");
 const votePlayers=document.getElementById("votePlayers");
 const submitVoteButton=document.getElementById("submitVoteButton");
 const voteStatus=document.getElementById("voteStatus");
+const voteSelectionInfo=document.getElementById("voteSelectionInfo");
 
+const guessRevealList=document.getElementById("guessRevealList");
+const guessVoteResults=document.getElementById("guessVoteResults");
 const guessPanel=document.getElementById("imposterGuessPanel");
 const guessWaitingPanel=document.getElementById("guessWaitingPanel");
-
-const guessVoteResults=document.getElementById("guessVoteResults");
-const guessVoteResultsList=document.getElementById("guessVoteResultsList");
-
+const guessSubtitle=document.getElementById("guessSubtitle");
+const guessWaitingText=document.getElementById("guessWaitingText");
 const finalGuessInput=document.getElementById("finalGuessInput");
 const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
 const finalGuessStatus=document.getElementById("finalGuessStatus");
 
 const resultText=document.getElementById("resultText");
 const voteResults=document.getElementById("voteResults");
-
 const actualWordBox=document.getElementById("actualWordBox");
 const actualWord=document.getElementById("actualWord");
-
 const finalGuessResult=document.getElementById("finalGuessResult");
 const finalGuessWord=document.getElementById("finalGuessWord");
 const finalGuessOutcome=document.getElementById("finalGuessOutcome");
@@ -1212,1280 +1157,697 @@ const bringLobbyButton=document.getElementById("bringLobbyButton");
 const connectionDot=document.getElementById("connectionDot");
 const connectionText=document.getElementById("connectionText");
 
-
-/* =========================================================
-   TOKEN
-========================================================= */
-
 function getToken(){
-
-let token=localStorage.getItem(
-"imposter_player_token"
-);
-
+let token=localStorage.getItem("imposter_player_token");
 if(!token){
-
 token=crypto.randomUUID();
-
-localStorage.setItem(
-"imposter_player_token",
-token
-);
-
+localStorage.setItem("imposter_player_token",token);
 }
-
 return token;
-
 }
-
-
-/* =========================================================
-   SAVED ROOM
-========================================================= */
 
 function saveRoom(){
-
-if(!game)return;
-
-localStorage.setItem(
-"imposter_room_code",
-game.code
-);
-
+if(game)localStorage.setItem("imposter_room_code",game.code);
 }
 
 function clearSavedRoom(){
-
-localStorage.removeItem(
-"imposter_room_code"
-);
-
+localStorage.removeItem("imposter_room_code");
 }
 
-
-/* =========================================================
-   UI
-========================================================= */
-
 function show(screen){
-
-[
-home,
-lobby,
-clueScreen,
-votingScreen,
-guessScreen,
-resultsScreen
-].forEach(x=>x.classList.add("hidden"));
-
+[home,lobby,clueScreen,votingScreen,guessScreen,resultsScreen]
+.forEach(x=>x.classList.add("hidden"));
 screen.classList.remove("hidden");
-
 updateLeaveUI();
-
-window.scrollTo({
-top:0,
-behavior:"instant"
-});
-
+window.scrollTo({top:0,behavior:"instant"});
 }
 
 function setStatus(el,text,type=""){
-
 el.textContent=text;
 el.className="status "+type;
-
 }
 
 function setConnection(ok,text){
-
-connectionDot.classList.toggle(
-"okDot",
-ok
-);
-
+connectionDot.classList.toggle("okDot",ok);
 connectionText.textContent=text;
-
 }
 
 function updateLeaveUI(){
-
 if(!game||!player){
-
 gameLeaveButton.classList.add("hidden");
 leaveControls.classList.add("hidden");
-
 return;
-
 }
-
 gameLeaveButton.classList.remove("hidden");
 leaveControls.classList.remove("hidden");
-
-bringLobbyButton.classList.toggle(
-"hidden",
-!player.is_host
-);
-
+bringLobbyButton.classList.toggle("hidden",!player.is_host);
 }
 
-
-/* =========================================================
-   INIT
-========================================================= */
-
 function initSupabase(){
-
 db=window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY,
 {
-auth:{
-persistSession:false,
-autoRefreshToken:false
-},
-realtime:{
-params:{
-eventsPerSecond:30
+auth:{persistSession:false,autoRefreshToken:false},
+realtime:{params:{eventsPerSecond:30}}
 }
 }
-}
-);
-
-}
-
-
-/* =========================================================
-   CATEGORIES
-========================================================= */
 
 async function loadCategories(){
-
-const result=
-await db
-.from("game_categories")
+const result=await db.from("game_categories")
 .select("id,name")
 .eq("active",true)
 .order("name");
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 categoryNames.clear();
-
-category.innerHTML=
-'<option value="random">Random Category</option>';
+category.innerHTML='<option value="random">Random Category</option>';
 
 (result.data||[]).forEach(cat=>{
-
-categoryNames.set(
-String(cat.id),
-cat.name
-);
-
-const option=
-document.createElement("option");
-
+categoryNames.set(String(cat.id),cat.name);
+const option=document.createElement("option");
 option.value=cat.id;
 option.textContent=cat.name;
-
 category.appendChild(option);
-
 });
 
 updateSettingsPreview();
-
 }
 
-
-/* =========================================================
-   SETTINGS DISPLAY
-========================================================= */
-
 function clueTimeText(value){
-
 const n=Number(value);
+return n===0?"♾️ No Time Limit":n+" seconds";
+}
 
-if(n===0)
-return "♾️ No Time Limit";
-
-return n+" seconds";
-
+function gameModeText(mode){
+return mode==="variable_imposters"
+?"Variable Imposters — 0–2"
+:"Classic — 1 Imposter";
 }
 
 function categoryText(){
-
-if(!game)
+if(!game)return "Random Category";
+if(game.category_id===null||game.category_id===undefined)
 return "Random Category";
-
-if(game.category_id===null||
-game.category_id===undefined)
-return "Random Category";
-
-return categoryNames.get(
-String(game.category_id)
-)||"Selected Category";
-
+return categoryNames.get(String(game.category_id))||"Selected Category";
 }
 
 function updateSettingsPreview(){
+if(!game)return;
 
-if(!game)
-return;
+previewGameMode.textContent=gameModeText(game.game_mode);
+previewCategory.textContent=categoryText();
+previewClueTime.textContent=clueTimeText(game.clue_time);
+previewHints.textContent=game.imposter_hints_enabled?"ON":"OFF";
 
-previewCategory.textContent=
-categoryText();
+if(player?.is_host&&game.status==="lobby"){
+if(document.activeElement!==gameMode)
+gameMode.value=game.game_mode||"classic";
 
-previewClueTime.textContent=
-clueTimeText(game.clue_time);
+if(document.activeElement!==category)
+category.value=game.category_id==null?"random":String(game.category_id);
 
-previewHints.textContent=
-game.imposter_hints_enabled
-?"ON"
-:"OFF";
+if(document.activeElement!==clueTime)
+clueTime.value=String(game.clue_time??60);
 
-if(player?.is_host){
-
-if(
-document.activeElement!==category &&
-game.status==="lobby"
-){
-
-category.value=
-game.category_id===null||
-game.category_id===undefined
-?"random"
-:String(game.category_id);
-
+imposterHints.checked=game.imposter_hints_enabled!==false;
 }
-
-if(
-document.activeElement!==clueTime &&
-game.status==="lobby"
-){
-
-clueTime.value=
-String(game.clue_time ?? 60);
-
 }
-
-imposterHints.checked=
-game.imposter_hints_enabled!==false;
-
-}
-
-}
-
-
-/* =========================================================
-   SAVE SETTINGS
-========================================================= */
-
-let settingsSaveTimer=null;
 
 function scheduleSettingsSave(){
-
-if(!player?.is_host||!game)
-return;
-
-if(game.status!=="lobby")
-return;
+if(!player?.is_host||!game||game.status!=="lobby")return;
 
 clearTimeout(settingsSaveTimer);
-
-settingsSaveTimer=
-setTimeout(
-saveSettings,
-180
-);
-
+settingsSaveTimer=setTimeout(saveSettings,180);
 }
 
 async function saveSettings(){
+if(!player?.is_host||!game||game.status!=="lobby")return;
 
-if(!player?.is_host||!game)
-return;
+const cat=category.value==="random"?null:parseInt(category.value,10);
+const time=parseInt(clueTime.value,10);
+const hints=imposterHints.checked;
+const mode=gameMode.value;
 
-const cat=
-category.value==="random"
-?null
-:parseInt(category.value,10);
-
-const time=
-parseInt(clueTime.value,10);
-
-const hints=
-imposterHints.checked;
-
-settingsSaveStatus.classList.remove(
-"hidden"
-);
-
-setStatus(
-settingsSaveStatus,
-"Saving settings..."
-);
+settingsSaveStatus.classList.remove("hidden");
+setStatus(settingsSaveStatus,"Saving settings...");
 
 try{
-
-const result=
-await db.rpc(
-"update_game_settings",
-{
+const result=await db.rpc("update_game_settings",{
 p_code:game.code,
 p_host_token:getToken(),
 p_category_id:cat,
 p_clue_time:time,
-p_imposter_hints_enabled:hints
-}
-);
+p_imposter_hints_enabled:hints,
+p_game_mode:mode
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 game=result.data;
-
 updateSettingsPreview();
 
-setStatus(
-settingsSaveStatus,
-"✓ Settings updated",
-"ok"
-);
+setStatus(settingsSaveStatus,"✓ Settings updated","ok");
 
 setTimeout(()=>{
 settingsSaveStatus.classList.add("hidden");
 },1000);
 
 }catch(error){
-
 console.error(error);
-
-setStatus(
-settingsSaveStatus,
-"Could not save settings: "+
-error.message,
-"err"
-);
-
+setStatus(settingsSaveStatus,"Could not save settings: "+error.message,"err");
 }
-
 }
-
-
-/* =========================================================
-   TABS
-========================================================= */
 
 createTab.onclick=()=>{
-
 createTab.classList.add("active");
 joinTab.classList.remove("active");
-
 createCard.classList.remove("hidden");
 joinCard.classList.add("hidden");
-
 };
 
 joinTab.onclick=()=>{
-
 joinTab.classList.add("active");
 createTab.classList.remove("active");
-
 joinCard.classList.remove("hidden");
 createCard.classList.add("hidden");
-
 };
 
-
-/* =========================================================
-   CREATE
-========================================================= */
-
 async function createGame(){
-
 const name=createName.value.trim();
 
 if(!name){
-
-setStatus(
-createStatus,
-"Enter your name.",
-"err"
-);
-
+setStatus(createStatus,"Enter your name.","err");
 return;
-
 }
 
 createButton.disabled=true;
 
 try{
-
-const result=
-await db.rpc(
-"create_game",
-{
+const result=await db.rpc("create_game",{
 p_host_token:getToken(),
 p_name:name,
 p_max_players:12
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 game=result.data.game;
 player=result.data.player;
 
 saveRoom();
-
 openLobby();
 
 }catch(error){
-
 console.error(error);
-
-setStatus(
-createStatus,
-"Could not create room: "+
-error.message,
-"err"
-);
-
+setStatus(createStatus,"Could not create room: "+error.message,"err");
 }finally{
-
 createButton.disabled=false;
-
 }
-
 }
-
-
-/* =========================================================
-   JOIN
-========================================================= */
 
 async function joinGame(){
-
 const name=joinName.value.trim();
 const code=joinCode.value.trim().toUpperCase();
 
 if(!name){
-
 setStatus(joinStatus,"Enter your name.","err");
 return;
-
 }
 
 if(!/^[A-Z0-9]{6}$/.test(code)){
-
-setStatus(
-joinStatus,
-"Enter the 6-character room code.",
-"err"
-);
-
+setStatus(joinStatus,"Enter the 6-character room code.","err");
 return;
-
 }
 
 joinButton.disabled=true;
 
 try{
-
-const result=
-await db.rpc(
-"join_game",
-{
+const result=await db.rpc("join_game",{
 p_code:code,
 p_player_token:getToken(),
 p_name:name
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 game=result.data.game;
 player=result.data.player;
 
 saveRoom();
-
 openLobby();
 
 }catch(error){
-
 console.error(error);
-
-setStatus(
-joinStatus,
-"Could not join room: "+
-error.message,
-"err"
-);
-
+setStatus(joinStatus,"Could not join room: "+error.message,"err");
 }finally{
-
 joinButton.disabled=false;
-
 }
-
 }
-
-
-/* =========================================================
-   OPEN LOBBY
-========================================================= */
 
 async function openLobby(){
-
-if(!game||!player)
-return;
+if(!game||!player)return;
 
 show(lobby);
+roomCode.textContent=game.code;
 
-roomCode.textContent=
-game.code;
-
-hostControls.classList.toggle(
-"hidden",
-!player.is_host
-);
+hostControls.classList.toggle("hidden",!player.is_host);
 
 updateSettingsPreview();
 
 await loadPlayers();
-
 subscribeToGame();
 startSyncLoop();
-
 }
 
-
-/* =========================================================
-   LOAD PLAYERS
-========================================================= */
-
 async function loadPlayers(){
+if(!game||!player)return;
 
-if(!game||!player)
-return;
-
-const result=
-await db
-.from("game_players")
-.select(
-"id,display_name,is_host,is_alive"
-)
+const result=await db.from("game_players")
+.select("id,display_name,is_host,is_alive")
 .eq("game_id",game.id)
 .order("joined_at");
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 const list=result.data||[];
 
-const stillHere=
-list.some(
-p=>p.id===player.id
-);
-
-if(!stillHere){
-
+if(!list.some(p=>p.id===player.id)){
 await clearLocalGame();
-
-setStatus(
-createStatus,
-"You were removed from the game.",
-"err"
-);
-
+setStatus(createStatus,"You were removed from the game.","err");
 return;
-
 }
 
-players.innerHTML=
-"<h3>Players ("+
-list.length+
-")</h3>";
+players.innerHTML="<h3>Players ("+list.length+")</h3>";
 
 list.forEach(p=>{
-
-const div=
-document.createElement("div");
-
+const div=document.createElement("div");
 div.className="player";
 
-const name=
-document.createElement("div");
-
+const name=document.createElement("div");
 name.className="playerName";
-name.textContent=p.display_name;
-
-if(p.id===player.id)
-name.textContent+=" (You)";
+name.textContent=p.display_name+(p.id===player.id?" (You)":"");
 
 div.appendChild(name);
 
 if(p.is_host){
-
-const host=
-document.createElement("span");
-
+const host=document.createElement("span");
 host.className="host";
 host.textContent="HOST";
-
 div.appendChild(host);
-
 }
 
-if(
-player.is_host &&
-p.id!==player.id
-){
-
-const kick=
-document.createElement("button");
-
+if(player.is_host&&p.id!==player.id){
+const kick=document.createElement("button");
 kick.className="kickButton";
 kick.textContent="Kick";
-
 kick.onclick=()=>kickPlayer(p);
-
 div.appendChild(kick);
-
 }
 
 players.appendChild(div);
-
 });
 
-lobbyStatus.textContent=
-list.length+
-" player"+
-(list.length===1?"":"s")+
-" in the room.";
-
+lobbyStatus.textContent=list.length+" player"+(list.length===1?"":"s")+" in the room.";
 }
 
-
-/* =========================================================
-   KICK
-========================================================= */
-
 async function kickPlayer(target){
+if(!player?.is_host||!game)return;
 
-if(!player?.is_host||!game)
-return;
-
-if(!confirm(
-"Kick "+target.display_name+" from the game?"
-))
-return;
+if(!confirm("Kick "+target.display_name+" from the game?"))return;
 
 try{
-
-const result=
-await db.rpc(
-"kick_player",
-{
+const result=await db.rpc("kick_player",{
 p_code:game.code,
 p_host_token:getToken(),
 p_player_id:target.id
-}
-);
+});
 
-if(result.error)
-throw result.error;
-
+if(result.error)throw result.error;
 await loadPlayers();
 
 }catch(error){
-
-alert(
-"Could not kick player:\n"+
-error.message
-);
-
+alert("Could not kick player:\n"+error.message);
 }
-
 }
-
-
-/* =========================================================
-   REALTIME
-========================================================= */
 
 function subscribeToGame(){
+if(!game)return;
 
-if(!game)
-return;
+if(channel)db.removeChannel(channel);
 
-if(channel){
-
-db.removeChannel(channel);
-
-}
-
-channel=
-db.channel(
-"imposter-"+game.id
-)
-
-.on(
-"postgres_changes",
-{
+channel=db.channel("imposter-"+game.id)
+.on("postgres_changes",{
 event:"*",
 schema:"public",
 table:"games",
 filter:"id=eq."+game.id
-},
-async()=>{
-await syncGame();
-}
-)
-
-.on(
-"postgres_changes",
-{
+},async()=>await syncGame())
+.on("postgres_changes",{
 event:"*",
 schema:"public",
 table:"game_players",
 filter:"game_id=eq."+game.id
-},
-async()=>{
-await loadPlayers();
-}
-)
-
+},async()=>await loadPlayers())
 .subscribe(status=>{
-
-if(status==="SUBSCRIBED"){
-
-setConnection(
-true,
-"Multiplayer connected"
-);
-
-}
-
+if(status==="SUBSCRIBED")
+setConnection(true,"Multiplayer connected");
 });
-
 }
-
-
-/* =========================================================
-   SYNC
-========================================================= */
 
 function startSyncLoop(){
-
 clearInterval(syncInterval);
-
-syncInterval=
-setInterval(
-()=>{
-if(game)syncGame();
-},
-1000
-);
-
+syncInterval=setInterval(()=>{if(game)syncGame()},1000);
 }
 
 async function syncGame(){
-
-if(!game||syncing)
-return;
+if(!game||syncing)return;
 
 syncing=true;
 
 try{
-
-const result=
-await db
-.from("games")
+const result=await db.from("games")
 .select("*")
 .eq("id",game.id)
 .maybeSingle();
 
-if(result.error)
-throw result.error;
-
-if(!result.data)
-throw new Error("Game no longer exists.");
+if(result.error)throw result.error;
+if(!result.data)throw new Error("Game no longer exists.");
 
 game=result.data;
-
 saveRoom();
 
-setConnection(
-true,
-"Multiplayer connected"
-);
-
+setConnection(true,"Multiplayer connected");
 updateSettingsPreview();
 
 if(game.status!==lastStatus){
-
 lastStatus=game.status;
-
 await handlePhase(game.status);
-
 }else{
-
 if(game.status==="lobby"){
-
-if(lobby.classList.contains("hidden"))
-await openLobby();
-else
-await loadPlayers();
-
+if(lobby.classList.contains("hidden"))await openLobby();
+else await loadPlayers();
 }
 
-if(game.status==="clues")
+if(game.status==="playing"||game.status==="clues")
 await showGameScreen();
 
-if(
-game.status==="voting" &&
-votingScreen.classList.contains("hidden")
-)
+if(game.status==="voting"&&votingScreen.classList.contains("hidden"))
 await showVoting();
 
-if(
-game.status==="imposter_guess" &&
-guessScreen.classList.contains("hidden")
-)
+if(game.status==="imposter_guess"&&guessScreen.classList.contains("hidden"))
 await showImposterGuess();
 
-if(
-game.status==="results" &&
-resultsScreen.classList.contains("hidden")
-)
+if(game.status==="results"&&resultsScreen.classList.contains("hidden"))
 await loadResults();
-
 }
 
 }catch(error){
-
 console.warn(error.message);
-
-setConnection(
-false,
-"Reconnecting..."
-);
-
+setConnection(false,"Reconnecting...");
 }finally{
-
 syncing=false;
-
 }
-
 }
-
-
-/* =========================================================
-   PHASE
-========================================================= */
 
 async function handlePhase(status){
-
 if(status==="lobby"){
-
 await loadPlayers();
 show(lobby);
 return;
-
 }
 
 if(status==="playing"||status==="clues"){
-
 await showGameScreen();
 return;
-
 }
 
 if(status==="voting"){
-
 await showVoting();
 return;
-
 }
 
 if(status==="imposter_guess"){
-
 await showImposterGuess();
 return;
-
 }
 
 if(status==="results"){
-
 await loadResults();
 return;
-
 }
-
 }
-
-
-/* =========================================================
-   ROLE
-========================================================= */
 
 async function showGameScreen(){
-
-const result=
-await db.rpc(
-"get_role",
-{
+const result=await db.rpc("get_role",{
 p_code:game.code,
 p_player_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 const data=result.data;
 
 if(data.status==="lobby"){
-
 show(lobby);
 return;
-
 }
 
-gameCategory.textContent=
-data.category||"CATEGORY";
-
+gameCategory.textContent=data.category||"CATEGORY";
 myWord.textContent="";
 
 imposterHint.classList.add("hidden");
 hintOffMessage.classList.add("hidden");
 
 if(data.is_imposter){
-
 myRole.textContent=
-"🚨 YOU ARE THE IMPOSTER";
+"🚨 YOU ARE "+(data.imposter_count>1?"AN IMPOSTER":"THE IMPOSTER");
 
-myRole.className=
-"myRole imposter";
+myRole.className="myRole imposter";
 
 roleDescription.textContent=
-"You don't know the word. Listen to the clues and try to blend in.";
+data.imposter_count>1
+?"You are one of the Imposters. Work together without revealing yourselves."
+:"You don't know the word. Listen to the clues and try to blend in.";
 
 if(data.hint){
-
-imposterHintText.textContent=
-data.hint;
-
-imposterHint.classList.remove(
-"hidden"
-);
-
+imposterHintText.textContent=data.hint;
+imposterHint.classList.remove("hidden");
 }else{
-
-hintOffMessage.classList.remove(
-"hidden"
-);
-
+hintOffMessage.classList.remove("hidden");
 }
 
 }else{
-
-myRole.textContent=
-"✓ YOU ARE NOT THE IMPOSTER";
-
-myRole.className=
-"myRole normal";
-
-myWord.textContent=
-data.word||"";
-
+myRole.textContent="✓ YOU ARE NOT AN IMPOSTER";
+myRole.className="myRole normal";
+myWord.textContent=data.word||"";
 roleDescription.textContent=
 "Give a clue about the word without making it too obvious.";
-
 }
 
 await loadClueOrder();
-
 show(clueScreen);
-
 startSharedTimer();
-
 }
 
-
-/* =========================================================
-   CLUE ORDER
-========================================================= */
-
 async function loadClueOrder(){
-
-const result=
-await db
-.from("game_players")
+const result=await db.from("game_players")
 .select("id,display_name,is_alive")
 .eq("game_id",game.id)
 .eq("is_alive",true)
 .order("joined_at");
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
-const map=new Map(
-(result.data||[]).map(
-p=>[p.id,p]
-)
-);
+const map=new Map((result.data||[]).map(p=>[p.id,p]));
+const ids=Array.isArray(game.clue_order)?game.clue_order:[];
 
-const ids=
-Array.isArray(game.clue_order)
-?game.clue_order
-:[];
+clueOrder=ids.map(id=>map.get(id)).filter(Boolean);
 
-clueOrder=
-ids.map(
-id=>map.get(id)
-).filter(Boolean);
-
-if(!clueOrder.length)
-clueOrder=result.data||[];
+if(!clueOrder.length)clueOrder=result.data||[];
 
 clueOrderList.innerHTML="";
 
 clueOrder.forEach((p,index)=>{
-
-const row=
-document.createElement("div");
-
+const row=document.createElement("div");
 row.className="orderRow";
 
-const num=
-document.createElement("div");
-
+const num=document.createElement("div");
 num.className="orderNumber";
 num.textContent=index+1;
 
-const name=
-document.createElement("div");
-
+const name=document.createElement("div");
 name.className="orderName";
 name.textContent=p.display_name;
 
 if(p.id===player.id){
-
-const badge=
-document.createElement("span");
-
+const badge=document.createElement("span");
 badge.className="youBadge";
 badge.textContent="YOU";
-
 name.appendChild(badge);
-
 }
 
 row.appendChild(num);
 row.appendChild(name);
-
 clueOrderList.appendChild(row);
-
 });
 
-hostClueControls.classList.toggle(
-"hidden",
-!player.is_host
-);
-
+hostClueControls.classList.toggle("hidden",!player.is_host);
 }
 
-
-/* =========================================================
-   TIMER
-========================================================= */
-
 function startSharedTimer(){
-
 clearInterval(clueTimerInterval);
 
 const limit=Number(game.clue_time);
 
 if(limit===0){
-
-clueTimer.className=
-"timer noTimer";
-
-clueTimer.textContent=
-"♾️ No Time Limit";
-
+clueTimer.className="timer noTimer";
+clueTimer.textContent="♾️ No Time Limit";
 return;
-
 }
 
-const start=
-game.clue_turn_started_at||
-game.started_at;
+const start=game.clue_turn_started_at||game.started_at;
 
 function tick(){
+const elapsed=(Date.now()-new Date(start).getTime())/1000;
+const remaining=Math.max(0,Math.ceil(limit-elapsed));
 
-const elapsed=
-(Date.now()-
-new Date(start).getTime())/1000;
+clueTimer.textContent=remaining;
 
-const remaining=
-Math.max(
-0,
-Math.ceil(limit-elapsed)
-);
+if(remaining<=10)clueTimer.className="timer timerWarning";
 
-clueTimer.textContent=
-remaining;
-
-if(remaining<=10)
-clueTimer.className=
-"timer timerWarning";
-
-if(remaining<=0)
-clearInterval(clueTimerInterval);
-
+if(remaining<=0)clearInterval(clueTimerInterval);
 }
 
 tick();
-
-clueTimerInterval=
-setInterval(tick,250);
-
+clueTimerInterval=setInterval(tick,250);
 }
 
-
-/* =========================================================
-   START VOTING
-========================================================= */
-
 startVotingButton.onclick=async()=>{
-
-if(!player.is_host)
-return;
+if(!player.is_host)return;
 
 startVotingButton.disabled=true;
 
 try{
-
-const result=
-await db.rpc(
-"set_phase",
-{
+const result=await db.rpc("set_phase",{
 p_code:game.code,
 p_host_token:getToken(),
 p_phase:"voting"
-}
-);
+});
 
-if(result.error)
-throw result.error;
-
+if(result.error)throw result.error;
 await syncGame();
 
 }catch(error){
-
 alert(error.message);
-
 }finally{
-
 startVotingButton.disabled=false;
-
 }
-
 };
 
+function updateVoteSelectionUI(){
+if(votingNobody){
+voteSelectionInfo.textContent="Nobody selected.";
+submitVoteButton.disabled=false;
+return;
+}
 
-/* =========================================================
-   VOTING
-========================================================= */
+const count=selectedVotes.length;
+
+if(count===0){
+voteSelectionInfo.textContent="Choose Nobody or up to 2 players.";
+submitVoteButton.disabled=true;
+}else{
+voteSelectionInfo.textContent=
+count+" player"+(count===1?"":"s")+" selected.";
+submitVoteButton.disabled=false;
+}
+}
 
 async function showVoting(){
-
 clearInterval(clueTimerInterval);
-
 show(votingScreen);
 
-selectedVote=null;
-submitVoteButton.disabled=true;
+selectedVotes=[];
+votingNobody=false;
 
-voteStatus.textContent=
-"Choose a player.";
+votePlayers.innerHTML="";
+updateVoteSelectionUI();
 
-const result=
-await db
-.from("game_players")
+voteStatus.textContent="Choose Nobody or up to 2 players.";
+
+const nobody=document.createElement("button");
+nobody.className="choice nobody";
+nobody.textContent="🚫 Nobody";
+
+nobody.onclick=()=>{
+votingNobody=true;
+selectedVotes=[];
+
+document.querySelectorAll(".choice").forEach(b=>b.classList.remove("selected"));
+nobody.classList.add("selected");
+
+updateVoteSelectionUI();
+};
+
+votePlayers.appendChild(nobody);
+
+const result=await db.from("game_players")
 .select("id,display_name,is_alive")
 .eq("game_id",game.id)
 .eq("is_alive",true)
 .order("joined_at");
 
-if(result.error)
-throw result.error;
-
-votePlayers.innerHTML="";
+if(result.error)throw result.error;
 
 (result.data||[]).forEach(p=>{
+if(p.id===player.id)return;
 
-if(p.id===player.id)
-return;
-
-const button=
-document.createElement("button");
-
+const button=document.createElement("button");
 button.className="choice";
 button.textContent=p.display_name;
 
 button.onclick=()=>{
+if(votingNobody){
+votingNobody=false;
+nobody.classList.remove("selected");
+}
 
-document.querySelectorAll(".choice")
-.forEach(
-b=>b.classList.remove("selected")
-);
+if(selectedVotes.includes(p.id)){
+selectedVotes=selectedVotes.filter(id=>id!==p.id);
+button.classList.remove("selected");
+}else{
+if(selectedVotes.length>=2){
+voteStatus.textContent="You can select a maximum of 2 players.";
+return;
+}
 
+selectedVotes.push(p.id);
 button.classList.add("selected");
+}
 
-selectedVote=p.id;
-
-submitVoteButton.disabled=false;
-
+updateVoteSelectionUI();
 };
 
 votePlayers.appendChild(button);
-
 });
-
 }
 
-
-/* =========================================================
-   SUBMIT VOTE
-========================================================= */
-
 submitVoteButton.onclick=async()=>{
-
-if(!selectedVote)
-return;
+if(votingNobody===false&&selectedVotes.length===0)return;
 
 submitVoteButton.disabled=true;
 
 try{
-
-const result=
-await db.rpc(
-"cast_vote",
-{
+const result=await db.rpc("cast_vote",{
 p_code:game.code,
 p_voter_token:getToken(),
-p_target_id:selectedVote
-}
-);
+p_target_ids:votingNobody?[]:selectedVotes,
+p_nobody:votingNobody
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
@@ -2493,980 +1855,539 @@ voteStatus.textContent=
 await syncGame();
 
 }catch(error){
-
-voteStatus.textContent=
-error.message;
-
+voteStatus.textContent=error.message;
 submitVoteButton.disabled=false;
-
 }
-
 };
 
+async function loadGuessReveal(){
+guessRevealList.innerHTML="";
+guessVoteResults.innerHTML="";
 
-/* =========================================================
-   FINAL GUESS
-========================================================= */
+const result=await db.rpc("get_public_results",{
+p_code:game.code,
+p_player_token:getToken()
+});
+
+if(result.error)throw result.error;
+
+const data=result.data;
+
+const title=document.createElement("div");
+title.className="infoBox";
+title.innerHTML=
+"<strong>Secret Word:</strong> "+
+escapeHtml(data.word||"");
+guessVoteResults.appendChild(title);
+
+const playersList=data.players||[];
+
+playersList.forEach(p=>{
+const row=document.createElement("div");
+row.className="revealPlayer";
+
+const name=document.createElement("div");
+name.className="revealName";
+name.textContent=p.name;
+
+const badge=document.createElement("span");
+badge.className="roleBadge "+(p.is_imposter?"imposterBadge":"civilianBadge");
+badge.textContent=p.is_imposter?"IMPOSTER":"CIVILIAN";
+
+row.appendChild(name);
+row.appendChild(badge);
+guessRevealList.appendChild(row);
+});
+
+const heading=document.createElement("div");
+heading.className="revealTitle";
+heading.style.marginTop="18px";
+heading.textContent="Vote Results";
+
+guessVoteResults.appendChild(heading);
+
+playersList.forEach(p=>{
+const row=document.createElement("div");
+row.className="resultPlayer";
+
+const top=document.createElement("div");
+top.className="resultPlayerTop";
+
+const name=document.createElement("div");
+name.className="resultPlayerName";
+name.textContent=p.name;
+
+const votes=document.createElement("span");
+votes.className="roleBadge";
+votes.textContent=p.votes+" vote"+(p.votes===1?"":"s");
+
+top.appendChild(name);
+top.appendChild(votes);
+row.appendChild(top);
+guessVoteResults.appendChild(row);
+});
+
+const nobodyBox=document.createElement("div");
+nobodyBox.className="infoBox";
+nobodyBox.textContent=
+"Nobody votes are also counted. The Imposter(s) were correctly identified, so the final guess begins below.";
+guessVoteResults.appendChild(nobodyBox);
+
+return data;
+}
 
 async function showImposterGuess(){
-
 show(guessScreen);
+
+guessPanel.classList.add("hidden");
+guessWaitingPanel.classList.add("hidden");
+
+await loadGuessReveal();
+
+const result=await db.rpc("get_imposter_guess_state",{
+p_code:game.code,
+p_player_token:getToken()
+});
+
+if(result.error)throw result.error;
+
+const data=result.data;
+
+if(data.imposter_count===0){
+guessWaitingPanel.classList.remove("hidden");
+guessWaitingText.innerHTML=
+"No Imposter exists this round.<br>The civilians correctly identified that there was nobody.";
+return;
+}
+
+if(data.is_imposter){
+if(data.already_guessed){
+guessPanel.classList.add("hidden");
+guessWaitingPanel.classList.remove("hidden");
+guessWaitingText.innerHTML=
+"✓ You already made your final guess.<br>Waiting for the other Imposter(s).";
+}else{
+guessPanel.classList.remove("hidden");
+
+guessSubtitle.textContent=
+data.imposter_count>1
+?"You were caught as an Imposter — you get one last chance to steal the win."
+:"You were caught as the Imposter — you get one last chance to steal the win.";
 
 finalGuessInput.value="";
 finalGuessInput.disabled=false;
 submitFinalGuessButton.disabled=false;
-
-guessVoteResults.classList.add("hidden");
-guessVoteResultsList.innerHTML="";
-
-try{
-
-/* CHECK WHETHER THIS PLAYER IS THE IMPOSTER */
-
-const stateResult=
-await db.rpc(
-"get_imposter_guess_state",
-{
-p_code:game.code,
-p_player_token:getToken()
+finalGuessStatus.textContent="Think carefully...";
 }
-);
-
-if(stateResult.error)
-throw stateResult.error;
-
-const data=
-stateResult.data;
-
-if(data.is_imposter){
-
-guessPanel.classList.remove("hidden");
-guessWaitingPanel.classList.add("hidden");
-
 }else{
-
 guessPanel.classList.add("hidden");
 guessWaitingPanel.classList.remove("hidden");
 
+guessWaitingText.innerHTML=
+data.imposter_count>1
+?"The Imposters were correctly identified.<br>Each Imposter gets one final chance to guess the secret word."
+:"The Imposter was correctly identified.<br>They now have one final chance to guess the secret word.";
 }
-
-
-/* =====================================================
-   GET VOTE RESULTS + ROLE REVEAL
-===================================================== */
-
-const revealResult=
-await db.rpc(
-"get_vote_reveal_state",
-{
-p_code:game.code,
-p_player_token:getToken()
 }
-);
-
-if(revealResult.error)
-throw revealResult.error;
-
-const reveal=
-revealResult.data;
-
-guessVoteResultsList.innerHTML="";
-
-
-/* SHOW EVERY PLAYER */
-
-(reveal.players||[]).forEach(p=>{
-
-const div=
-document.createElement("div");
-
-div.className="guessVotePlayer";
-
-
-const top=
-document.createElement("div");
-
-top.className="guessVotePlayerTop";
-
-
-const name=
-document.createElement("div");
-
-name.className="guessVotePlayerName";
-
-name.textContent=p.name;
-
-
-const badge=
-document.createElement("span");
-
-badge.className=
-"roleBadge "+
-(
-p.is_imposter
-?"imposterBadge"
-:"civilianBadge"
-);
-
-badge.textContent=
-p.is_imposter
-?"IMPOSTER"
-:"CIVILIAN";
-
-
-top.appendChild(name);
-top.appendChild(badge);
-
-
-const votes=
-document.createElement("div");
-
-votes.className="guessVoteCount";
-
-votes.textContent=
-p.votes+
-(
-p.votes===1
-?" vote"
-:" votes"
-);
-
-
-div.appendChild(top);
-div.appendChild(votes);
-
-guessVoteResultsList.appendChild(div);
-
-});
-
-
-/* SHOW REVEAL */
-
-guessVoteResults.classList.remove("hidden");
-
-
-}catch(error){
-
-console.error(
-"Final guess screen:",
-error
-);
-
-guessVoteResultsList.innerHTML="";
-
-const errorBox=
-document.createElement("div");
-
-errorBox.className="status err";
-
-errorBox.textContent=
-"Could not load vote results: "+
-error.message;
-
-guessVoteResultsList.appendChild(errorBox);
-
-guessVoteResults.classList.remove("hidden");
-
-}
-
-}
-
 
 submitFinalGuessButton.onclick=async()=>{
-
-const guess=
-finalGuessInput.value.trim();
+const guess=finalGuessInput.value.trim();
 
 if(!guess){
-
-finalGuessStatus.textContent=
-"Enter your guess first.";
-
+finalGuessStatus.textContent="Enter your guess first.";
 return;
-
 }
 
 submitFinalGuessButton.disabled=true;
 finalGuessInput.disabled=true;
-
-finalGuessStatus.textContent=
-"Checking your guess...";
+finalGuessStatus.textContent="Checking your guess...";
 
 try{
-
-const result=
-await db.rpc(
-"submit_imposter_guess",
-{
+const result=await db.rpc("submit_imposter_guess",{
 p_code:game.code,
 p_player_token:getToken(),
 p_guess:guess
+});
+
+if(result.error)throw result.error;
+
+if(result.data.correct){
+finalGuessStatus.innerHTML=
+"🎉 <span class='resultCorrect'>Correct!</span> Your guess counts.";
+}else{
+finalGuessStatus.innerHTML=
+"❌ <span class='resultWrong'>Incorrect.</span> Waiting for the other Imposter(s).";
 }
-);
 
-if(result.error)
-throw result.error;
-
-await sleep(500);
-
+await sleep(700);
 await syncGame();
 
 }catch(error){
-
-finalGuessStatus.textContent=
-error.message;
-
+finalGuessStatus.textContent=error.message;
 submitFinalGuessButton.disabled=false;
 finalGuessInput.disabled=false;
-
 }
-
 };
 
-
-/* =========================================================
-   PUBLIC RESULTS
-========================================================= */
-
 async function loadResults(){
-
 show(resultsScreen);
 
-nextRoundButton.style.display=
-player.is_host?"block":"none";
-
-backLobbyButton.style.display=
-player.is_host?"block":"none";
+nextRoundButton.style.display=player.is_host?"block":"none";
+backLobbyButton.style.display=player.is_host?"block":"none";
 
 voteResults.innerHTML="";
 finalGuessResult.classList.add("hidden");
 actualWordBox.classList.add("hidden");
 
 try{
-
-const result=
-await db.rpc(
-"get_public_results",
-{
+const result=await db.rpc("get_public_results",{
 p_code:game.code,
 p_player_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
-const data=
-result.data;
+const data=result.data;
 
-if(!data)
-throw new Error("No results returned.");
+actualWord.textContent=data.word||"";
+actualWordBox.classList.remove("hidden");
 
-actualWord.textContent=
-data.word||"";
-
-actualWordBox.classList.remove(
-"hidden"
-);
-
-
-/* WIN RESULT */
-
-if(data.correct===true){
-
+if(data.imposter_ids&&data.imposter_ids.length===0){
 resultText.innerHTML=
-"🎉 <span class='resultCorrect'>The Imposter guessed the word!</span>";
-
+"🎉 <span class='resultCorrect'>There were NO Imposters!</span>";
+}else if(data.correct===true){
+resultText.innerHTML=
+"🎉 <span class='resultCorrect'>The Imposter(s) stole the win!</span>";
 }else{
-
 resultText.innerHTML=
 "❌ <span class='resultWrong'>The civilians win!</span>";
-
 }
 
+const guesses=data.guesses||[];
 
-/* FINAL GUESS */
+if(guesses.length){
+finalGuessResult.classList.remove("hidden");
 
-if(
-data.guess!==null &&
-data.guess!==undefined
-){
+finalGuessWord.innerHTML=guesses.map(g=>
+escapeHtml(g.name)+": <strong>"+escapeHtml(g.guess)+"</strong>"
+).join("<br>");
 
-finalGuessResult.classList.remove(
-"hidden"
-);
+const anyCorrect=guesses.some(g=>g.correct);
 
-finalGuessWord.textContent=
-data.guess;
-
-if(data.correct===true){
-
-finalGuessOutcome.textContent=
-"🎉 The Imposter guessed the word correctly!";
+finalGuessOutcome.textContent=anyCorrect
+?"🎉 At least one Imposter guessed correctly!"
+:"❌ None of the Imposters guessed correctly.";
 
 finalGuessOutcome.className=
-"finalGuessOutcome resultCorrect";
-
-}else{
-
-finalGuessOutcome.textContent=
-"❌ The Imposter guessed incorrectly.";
-
-finalGuessOutcome.className=
-"finalGuessOutcome resultWrong";
-
+"finalGuessOutcome "+
+(anyCorrect?"resultCorrect":"resultWrong");
 }
-
-}
-
-
-/* VOTES + ROLES */
 
 (data.players||[]).forEach(p=>{
-
-const div=
-document.createElement("div");
-
+const div=document.createElement("div");
 div.className="resultPlayer";
 
-const top=
-document.createElement("div");
-
+const top=document.createElement("div");
 top.className="resultPlayerTop";
 
-const name=
-document.createElement("div");
-
+const name=document.createElement("div");
 name.className="resultPlayerName";
+name.textContent=p.name;
 
-name.textContent=
-p.name;
-
-const badge=
-document.createElement("span");
-
-badge.className=
-"roleBadge "+
-(
-p.is_imposter
-?"imposterBadge"
-:"civilianBadge"
-);
-
-badge.textContent=
-p.is_imposter
-?"IMPOSTER"
-:"CIVILIAN";
+const badge=document.createElement("span");
+badge.className="roleBadge "+(p.is_imposter?"imposterBadge":"civilianBadge");
+badge.textContent=p.is_imposter?"IMPOSTER":"CIVILIAN";
 
 top.appendChild(name);
 top.appendChild(badge);
 
-const votes=
-document.createElement("div");
-
+const votes=document.createElement("div");
 votes.className="voteCount";
-
-votes.textContent=
-p.votes+
-(
-p.votes===1
-?" vote"
-:" votes"
-);
+votes.textContent=p.votes+" vote"+(p.votes===1?"":"s");
 
 div.appendChild(top);
 div.appendChild(votes);
-
 voteResults.appendChild(div);
-
 });
 
-
-const imposter=
-data.imposter_name;
-
-if(imposter){
-
-const info=
-document.createElement("div");
-
-info.className="infoBox";
-
-info.innerHTML=
-"🚨 The Imposter was <strong>"+
-escapeHtml(imposter)+
-"</strong>";
-
-voteResults.prepend(info);
-
-}
-
 }catch(error){
+console.error("Results:",error);
 
-console.error(
-"Results:",
-error
-);
+resultText.textContent="Results could not be loaded.";
 
-resultText.textContent=
-"Results could not be loaded.";
-
-const errorBox=
-document.createElement("div");
-
+const errorBox=document.createElement("div");
 errorBox.className="status err";
-
-errorBox.textContent=
-error.message;
-
+errorBox.textContent=error.message;
 voteResults.appendChild(errorBox);
-
 }
-
 }
-
-
-/* =========================================================
-   NEXT ROUND
-========================================================= */
 
 nextRoundButton.onclick=async()=>{
-
-if(!player.is_host)
-return;
+if(!player.is_host)return;
 
 nextRoundButton.disabled=true;
 
 try{
-
-const cat=
-category.value==="random"
-?null
-:parseInt(category.value,10);
-
-const time=
-parseInt(clueTime.value,10);
-
-const hints=
-imposterHints.checked;
-
-const result=
-await db.rpc(
-"start_game",
-{
+const result=await db.rpc("start_game",{
 p_code:game.code,
 p_host_token:getToken(),
-p_category_id:cat,
-p_clue_time:time,
-p_imposter_hints_enabled:hints
-}
-);
+p_category_id:category.value==="random"?null:parseInt(category.value,10),
+p_clue_time:parseInt(clueTime.value,10),
+p_imposter_hints_enabled:imposterHints.checked,
+p_game_mode:gameMode.value
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 game=result.data.game;
-
 lastStatus=null;
 
 await syncGame();
 
 }catch(error){
-
-alert(
-"Could not start next round:\n"+
-error.message
-);
-
+alert("Could not start next round:\n"+error.message);
 }finally{
-
 nextRoundButton.disabled=false;
-
 }
-
 };
 
-
-/* =========================================================
-   START GAME
-========================================================= */
-
 startButton.onclick=async()=>{
-
-if(!player.is_host)
-return;
+if(!player.is_host)return;
 
 startButton.disabled=true;
 
 try{
-
 await saveSettings();
 
-const cat=
-category.value==="random"
-?null
-:parseInt(category.value,10);
-
-const time=
-parseInt(clueTime.value,10);
-
-const hints=
-imposterHints.checked;
-
-const result=
-await db.rpc(
-"start_game",
-{
+const result=await db.rpc("start_game",{
 p_code:game.code,
 p_host_token:getToken(),
-p_category_id:cat,
-p_clue_time:time,
-p_imposter_hints_enabled:hints
-}
-);
+p_category_id:category.value==="random"?null:parseInt(category.value,10),
+p_clue_time:parseInt(clueTime.value,10),
+p_imposter_hints_enabled:imposterHints.checked,
+p_game_mode:gameMode.value
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 game=result.data.game;
-
 lastStatus=null;
 
 await syncGame();
 
 }catch(error){
-
 console.error(error);
-
-alert(
-"Could not start game:\n"+
-error.message
-);
-
+alert("Could not start game:\n"+error.message);
 }finally{
-
 startButton.disabled=false;
-
 }
-
 };
-
-
-/* =========================================================
-   BACK TO LOBBY
-========================================================= */
 
 backLobbyButton.onclick=async()=>{
-
-if(!player.is_host)
-return;
+if(!player.is_host)return;
 
 try{
-
-const result=
-await db.rpc(
-"reset_to_lobby",
-{
+const result=await db.rpc("reset_to_lobby",{
 p_code:game.code,
 p_host_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 lastStatus=null;
-
 await syncGame();
 
 }catch(error){
-
 alert(error.message);
-
 }
-
 };
-
-
-/* =========================================================
-   BRING EVERYONE BACK
-========================================================= */
 
 bringLobbyButton.onclick=async()=>{
+if(!player.is_host)return;
 
-if(!player.is_host)
-return;
-
-if(!confirm(
-"Bring everyone back to the lobby?"
-))
-return;
+if(!confirm("Bring everyone back to the lobby?"))return;
 
 try{
-
-const result=
-await db.rpc(
-"reset_to_lobby",
-{
+const result=await db.rpc("reset_to_lobby",{
 p_code:game.code,
 p_host_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 lastStatus=null;
-
 await syncGame();
 
 }catch(error){
-
 alert(error.message);
-
 }
-
 };
 
-
-/* =========================================================
-   LEAVE
-========================================================= */
-
 gameLeaveButton.onclick=async()=>{
+if(!game||!player)return;
 
-if(!game||!player)
-return;
-
-if(!confirm(
-"Leave this game?"
-))
-return;
+if(!confirm("Leave this game?"))return;
 
 try{
-
-const result=
-await db.rpc(
-"leave_game",
-{
+const result=await db.rpc("leave_game",{
 p_code:game.code,
 p_player_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 await clearLocalGame();
 
 }catch(error){
-
-alert(
-"Could not leave game:\n"+
-error.message
-);
-
+alert("Could not leave game:\n"+error.message);
 }
-
 };
 
-
-/* =========================================================
-   CLEAR LOCAL GAME
-========================================================= */
-
 async function clearLocalGame(){
-
 clearInterval(clueTimerInterval);
 clearInterval(syncInterval);
 
 if(channel){
-
-try{
-await db.removeChannel(channel);
-}catch{}
-
+try{await db.removeChannel(channel)}catch{}
 channel=null;
-
 }
 
 game=null;
 player=null;
 clueOrder=[];
 lastStatus=null;
+selectedVotes=[];
+votingNobody=false;
 
 clearSavedRoom();
-
 show(home);
 
-setConnection(
-true,
-"Multiplayer connected"
-);
-
+setConnection(true,"Multiplayer connected");
 }
-
-
-/* =========================================================
-   REJOIN
-========================================================= */
 
 async function checkForPreviousGame(){
-
-const code=
-localStorage.getItem(
-"imposter_room_code"
-);
-
-if(!code)
-return;
+const code=localStorage.getItem("imposter_room_code");
+if(!code)return;
 
 try{
-
-const result=
-await db.rpc(
-"resume_game",
-{
+const result=await db.rpc("resume_game",{
 p_code:code,
 p_player_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
-
-if(!result.data)
-throw new Error("Unavailable");
+if(result.error)throw result.error;
 
 game=result.data.game;
 player=result.data.player;
 
-if(!game||!player)
-throw new Error("Unavailable");
+if(!game||!player)throw new Error("Unavailable");
 
 rejoinInfo.innerHTML=
-"Room <strong>"+
-game.code+
-"</strong><br><br>"+
+"Room <strong>"+escapeHtml(game.code)+"</strong><br><br>"+
 "Your previous game is still active.";
 
-rejoinCard.classList.remove(
-"hidden"
-);
+rejoinCard.classList.remove("hidden");
 
 }catch{
-
-rejoinCard.classList.add(
-"hidden"
-);
-
+rejoinCard.classList.add("hidden");
 }
-
 }
 
 rejoinButton.onclick=async()=>{
-
-const code=
-localStorage.getItem(
-"imposter_room_code"
-);
-
-if(!code)
-return;
+const code=localStorage.getItem("imposter_room_code");
+if(!code)return;
 
 rejoinButton.disabled=true;
 
 try{
-
-const result=
-await db.rpc(
-"resume_game",
-{
+const result=await db.rpc("resume_game",{
 p_code:code,
 p_player_token:getToken()
-}
-);
+});
 
-if(result.error)
-throw result.error;
+if(result.error)throw result.error;
 
 game=result.data.game;
 player=result.data.player;
 
-rejoinCard.classList.add(
-"hidden"
-);
-
+rejoinCard.classList.add("hidden");
 saveRoom();
 
 await openLobby();
 await syncGame();
 
 }catch(error){
-
 clearSavedRoom();
-
-rejoinCard.classList.add(
-"hidden"
-);
-
+rejoinCard.classList.add("hidden");
 alert(error.message);
-
 }finally{
-
 rejoinButton.disabled=false;
-
 }
-
 };
 
 forgetGameButton.onclick=()=>{
-
 clearSavedRoom();
-
-rejoinCard.classList.add(
-"hidden"
-);
-
+rejoinCard.classList.add("hidden");
 };
 
+gameMode.addEventListener("change",scheduleSettingsSave);
+category.addEventListener("change",scheduleSettingsSave);
+clueTime.addEventListener("change",scheduleSettingsSave);
+imposterHints.addEventListener("change",scheduleSettingsSave);
 
-/* =========================================================
-   INPUTS
-========================================================= */
-
-category.addEventListener(
-"change",
-scheduleSettingsSave
-);
-
-clueTime.addEventListener(
-"change",
-scheduleSettingsSave
-);
-
-imposterHints.addEventListener(
-"change",
-scheduleSettingsSave
-);
-
-joinCode.addEventListener(
-"input",
-()=>{
+joinCode.addEventListener("input",()=>{
 joinCode.value=
-joinCode.value
-.toUpperCase()
-.replace(/[^A-Z0-9]/g,"")
-.slice(0,6);
-}
-);
+joinCode.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,6);
+});
 
-createName.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter")
-createGame();
-}
-);
+createName.addEventListener("keydown",e=>{
+if(e.key==="Enter")createGame();
+});
 
-joinName.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter")
-joinGame();
-}
-);
+joinName.addEventListener("keydown",e=>{
+if(e.key==="Enter")joinGame();
+});
 
-joinCode.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter")
-joinGame();
-}
-);
+joinCode.addEventListener("keydown",e=>{
+if(e.key==="Enter")joinGame();
+});
 
-finalGuessInput.addEventListener(
-"keydown",
-e=>{
-if(
-e.key==="Enter" &&
-!submitFinalGuessButton.disabled
-){
+finalGuessInput.addEventListener("keydown",e=>{
+if(e.key==="Enter"&&!submitFinalGuessButton.disabled)
 submitFinalGuessButton.click();
-}
-}
-);
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
+});
 
 createButton.onclick=createGame;
 joinButton.onclick=joinGame;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
 function sleep(ms){
-
-return new Promise(
-resolve=>setTimeout(resolve,ms)
-);
-
+return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
 function escapeHtml(text){
-
-return String(text)
+return String(text??"")
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
 .replace(/"/g,"&quot;")
 .replace(/'/g,"&#039;");
-
 }
 
+document.addEventListener("visibilitychange",async()=>{
+if(!document.hidden&&game)await syncGame();
+});
 
-/* =========================================================
-   VISIBILITY
-========================================================= */
-
-document.addEventListener(
-"visibilitychange",
-async()=>{
-if(!document.hidden&&game)
-await syncGame();
-}
-);
-
-window.addEventListener(
-"pageshow",
-async()=>{
-if(game)
-await syncGame();
-}
-);
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
+window.addEventListener("pageshow",async()=>{
+if(game)await syncGame();
+});
 
 (async()=>{
-
 try{
-
 initSupabase();
 
 await loadCategories();
 
-setConnection(
-true,
-"Multiplayer connected"
-);
+setConnection(true,"Multiplayer connected");
 
 setStatus(
 createStatus,
@@ -3477,23 +2398,16 @@ createStatus,
 await checkForPreviousGame();
 
 }catch(error){
-
 console.error(error);
 
-setConnection(
-false,
-"Connection problem"
-);
+setConnection(false,"Connection problem");
 
 setStatus(
 createStatus,
-"Connection failed: "+
-error.message,
+"Connection failed: "+error.message,
 "err"
 );
-
 }
-
 })();
 </script>
 
