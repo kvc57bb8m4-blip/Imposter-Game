@@ -14,7 +14,11 @@ if(!window.supabase){
 </script>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent
+}
+
 html,body{
   margin:0;
   min-height:100%;
@@ -22,8 +26,18 @@ html,body{
   color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
-body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-.app{width:100%;max-width:620px;margin:auto;padding:20px 16px 45px}
+
+body{
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
+}
+
+.app{
+  width:100%;
+  max-width:620px;
+  margin:auto;
+  padding:20px 16px 45px
+}
+
 h1{
   text-align:center;
   font-size:46px;
@@ -31,6 +45,7 @@ h1{
   letter-spacing:3px;
   font-weight:900
 }
+
 .card{
   background:#131724;
   border:1px solid #292f43;
@@ -39,7 +54,11 @@ h1{
   margin-bottom:16px;
   box-shadow:0 10px 30px rgba(0,0,0,.18)
 }
-h2{margin-top:0}
+
+h2{
+  margin-top:0
+}
+
 input,button,select{
   width:100%;
   height:54px;
@@ -47,6 +66,7 @@ input,button,select{
   font-size:17px;
   margin-top:10px
 }
+
 input,select{
   padding:0 15px;
   background:#090c14;
@@ -54,6 +74,7 @@ input,select{
   color:#fff;
   outline:none
 }
+
 button{
   border:0;
   background:#6264ff;
@@ -61,12 +82,31 @@ button{
   font-weight:800;
   cursor:pointer
 }
-button:active{transform:scale(.98)}
-button:disabled{opacity:.5}
-.secondary{background:#242a3b}
-.danger{background:#8f354c}
-.hidden{display:none!important}
-.center{text-align:center}
+
+button:active{
+  transform:scale(.98)
+}
+
+button:disabled{
+  opacity:.5
+}
+
+.secondary{
+  background:#242a3b
+}
+
+.danger{
+  background:#8f354c
+}
+
+.hidden{
+  display:none!important
+}
+
+.center{
+  text-align:center
+}
+
 .status{
   margin-top:13px;
   padding:13px;
@@ -76,11 +116,30 @@ button:disabled{opacity:.5}
   line-height:1.4;
   word-break:break-word
 }
-.ok{color:#7ee5a7}
-.err{color:#ff8199}
-.tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{margin:0;background:#242a3b}
-.tab.active{background:#6264ff}
+
+.ok{
+  color:#7ee5a7
+}
+
+.err{
+  color:#ff8199
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px
+}
+
+.tab{
+  margin:0;
+  background:#242a3b
+}
+
+.tab.active{
+  background:#6264ff
+}
+
 .code{
   text-align:center;
   font-size:42px;
@@ -88,6 +147,7 @@ button:disabled{opacity:.5}
   letter-spacing:7px;
   margin:12px 0
 }
+
 .player{
   background:#0d111b;
   border:1px solid #252b3c;
@@ -96,23 +156,70 @@ button:disabled{opacity:.5}
   margin-top:8px;
   min-height:50px
 }
-.host{float:right;color:#8c8fff;font-size:13px;font-weight:700}
-.roleBox{text-align:center;padding:20px 5px}
-.role{font-size:35px;font-weight:900;margin:20px 0 10px}
-.word{font-size:36px;font-weight:900;margin:18px 0}
-.category{color:#a2a8ba;font-size:15px}
-.clueHeader{text-align:center;margin-bottom:18px}
-.clueHeader h2{margin-bottom:6px}
-.clueHeader p{margin:0;color:#9299aa;font-size:14px}
-.timer,.timerWarning,.noTimer{
+
+.host{
+  float:right;
+  color:#8c8fff;
+  font-size:13px;
+  font-weight:700
+}
+
+.roleBox{
+  text-align:center;
+  padding:20px 5px
+}
+
+.role{
+  font-size:35px;
+  font-weight:900;
+  margin:20px 0 10px
+}
+
+.word{
+  font-size:36px;
+  font-weight:900;
+  margin:18px 0
+}
+
+.category{
+  color:#a2a8ba;
+  font-size:15px
+}
+
+.clueHeader{
+  text-align:center;
+  margin-bottom:18px
+}
+
+.clueHeader h2{
+  margin-bottom:6px
+}
+
+.clueHeader p{
+  margin:0;
+  color:#9299aa;
+  font-size:14px
+}
+
+.timer,
+.timerWarning,
+.noTimer{
   font-size:62px;
   line-height:1;
   font-weight:900;
   text-align:center;
   margin:18px 0 22px
 }
-.timerWarning{color:#ff8199}
-.noTimer{font-size:20px;color:#9b9dff}
+
+.timerWarning{
+  color:#ff8199
+}
+
+.noTimer{
+  font-size:20px;
+  color:#9b9dff
+}
+
 .orderRow{
   display:flex;
   align-items:center;
@@ -124,13 +231,22 @@ button:disabled{opacity:.5}
   margin-top:8px;
   transition:.15s
 }
+
 .orderRow.current{
   background:#1d2040;
   border-color:#6264ff;
   box-shadow:0 0 0 1px rgba(98,100,255,.15)
 }
-.orderRow.done{opacity:.65}
-.orderRow.skipped{opacity:.55;border-color:#713346}
+
+.orderRow.done{
+  opacity:.65
+}
+
+.orderRow.skipped{
+  opacity:.55;
+  border-color:#713346
+}
+
 .orderNumber{
   width:34px;
   height:34px;
@@ -142,17 +258,36 @@ button:disabled{opacity:.5}
   background:#282e41;
   font-weight:900
 }
-.current .orderNumber{background:#6264ff}
-.orderName{font-size:17px;font-weight:700;flex:1}
+
+.current .orderNumber{
+  background:#6264ff
+}
+
+.orderName{
+  font-size:17px;
+  font-weight:700;
+  flex:1
+}
+
 .orderStatus{
   font-size:12px;
   font-weight:800;
   color:#8991a5;
   text-align:right
 }
-.current .orderStatus{color:#9b9dff}
-.done .orderStatus{color:#70d89a}
-.skipped .orderStatus{color:#ff8199}
+
+.current .orderStatus{
+  color:#9b9dff
+}
+
+.done .orderStatus{
+  color:#70d89a
+}
+
+.skipped .orderStatus{
+  color:#ff8199
+}
+
 .youBadge{
   display:inline-block;
   font-size:11px;
@@ -163,7 +298,12 @@ button:disabled{opacity:.5}
   border-radius:7px;
   margin-left:6px
 }
-.current .youBadge{background:#6264ff;color:#fff}
+
+.current .youBadge{
+  background:#6264ff;
+  color:#fff
+}
+
 .turnMessage{
   margin-top:16px;
   text-align:center;
@@ -172,11 +312,13 @@ button:disabled{opacity:.5}
   background:#1c2130;
   font-weight:700
 }
+
 .hostControls{
   margin-top:14px;
   padding-top:14px;
   border-top:1px solid #292f43
 }
+
 .hostLabel{
   font-size:12px;
   font-weight:800;
@@ -184,31 +326,37 @@ button:disabled{opacity:.5}
   text-align:center;
   margin-bottom:2px
 }
+
 .choice{
   background:#1d2332;
   border:1px solid #30384d;
   margin-top:8px
 }
+
 .choice.selected{
   background:#6264ff;
   border-color:#6264ff
 }
+
 .result{
   text-align:center;
   font-size:25px;
   font-weight:900;
   padding:18px
 }
+
 .small{
   text-align:center;
   color:#8e95a8;
   font-size:13px
 }
+
 hr{
   border:0;
   border-top:1px solid #292f43;
   margin:20px 0
 }
+
 .connectionDot{
   display:inline-block;
   width:8px;
@@ -217,7 +365,11 @@ hr{
   background:#ff8199;
   margin-right:7px
 }
-.connectionDot.okDot{background:#70d89a}
+
+.connectionDot.okDot{
+  background:#70d89a
+}
+
 .infoBox{
   background:#101522;
   border:1px solid #292f43;
@@ -228,14 +380,68 @@ hr{
   color:#aeb4c4;
   text-align:center
 }
+
+/* =========================================================
+   GLOBAL LEAVE BUTTON
+========================================================= */
+
+.gameLeaveButton{
+  position:fixed;
+  top:calc(env(safe-area-inset-top) + 10px);
+  left:12px;
+  z-index:9999;
+  width:auto;
+  min-width:110px;
+  height:42px;
+  padding:0 14px;
+  margin:0;
+  border-radius:12px;
+  background:#242a3b;
+  border:1px solid #353c51;
+  font-size:14px;
+  box-shadow:0 5px 18px rgba(0,0,0,.25)
+}
+
+/* =========================================================
+   REJOIN CARD
+========================================================= */
+
+.rejoinCard{
+  margin-top:12px;
+  border:1px solid #6264ff;
+  background:#171a2b
+}
+
+.rejoinTitle{
+  font-size:19px;
+  font-weight:900;
+  margin-bottom:7px
+}
+
+.rejoinInfo{
+  color:#9da4b7;
+  font-size:14px;
+  line-height:1.5
+}
 </style>
 </head>
 
 <body>
 
+<!-- GLOBAL LEAVE BUTTON -->
+
+<button
+  id="gameLeaveButton"
+  class="gameLeaveButton hidden"
+>
+← Leave Game
+</button>
+
+
 <main class="app">
 
 <h1>IMPOSTER</h1>
+
 
 <!-- =====================================================
      HOME
@@ -244,9 +450,17 @@ hr{
 <section id="home">
 
 <div class="tabs">
-<button id="createTab" class="tab active">Create Game</button>
-<button id="joinTab" class="tab">Join Game</button>
+
+<button id="createTab" class="tab active">
+Create Game
+</button>
+
+<button id="joinTab" class="tab">
+Join Game
+</button>
+
 </div>
+
 
 <div id="createCard" class="card">
 
@@ -259,13 +473,16 @@ hr{
   placeholder="Your name"
 >
 
-<button id="createButton">Create Room</button>
+<button id="createButton">
+Create Room
+</button>
 
 <div id="createStatus" class="status">
 Connecting to multiplayer...
 </div>
 
 </div>
+
 
 <div id="joinCard" class="card hidden">
 
@@ -285,11 +502,44 @@ Connecting to multiplayer...
   placeholder="6-character room code"
 >
 
-<button id="joinButton">Join Game</button>
+<button id="joinButton">
+Join Game
+</button>
 
 <div id="joinStatus" class="status">
 Enter the room code your friend gave you.
 </div>
+
+</div>
+
+
+<!-- =====================================================
+     REJOIN GAME
+===================================================== -->
+
+<div
+  id="rejoinCard"
+  class="card rejoinCard hidden"
+>
+
+<div class="rejoinTitle">
+Previous Game Found
+</div>
+
+<div id="rejoinInfo" class="rejoinInfo">
+Checking previous game...
+</div>
+
+<button id="rejoinButton">
+Rejoin Game
+</button>
+
+<button
+  id="forgetGameButton"
+  class="secondary"
+>
+Don't Rejoin
+</button>
 
 </div>
 
@@ -302,53 +552,86 @@ Enter the room code your friend gave you.
 
 <section id="lobby" class="card hidden">
 
-<h2 class="center">Game Lobby</h2>
+<h2 class="center">
+Game Lobby
+</h2>
 
-<div id="roomCode" class="code">------</div>
+<div id="roomCode" class="code">
+------
+</div>
 
-<p class="center">Share this code with your friends.</p>
+<p class="center">
+Share this code with your friends.
+</p>
 
 <hr>
 
-<div id="players">Loading players...</div>
+<div id="players">
+Loading players...
+</div>
+
 
 <div id="hostControls" class="hidden">
 
 <hr>
 
-<h3>Game Settings</h3>
+<h3>
+Game Settings
+</h3>
 
-<label>Category</label>
+<label>
+Category
+</label>
 
 <select id="category">
-<option value="random">Random Category</option>
+<option value="random">
+Random Category
+</option>
 </select>
+
 
 <label style="display:block;margin-top:14px">
 Clue time
 </label>
 
 <select id="clueTime">
-<option value="30">30 seconds</option>
-<option value="45">45 seconds</option>
-<option value="60" selected>60 seconds</option>
-<option value="90">90 seconds</option>
-<option value="0">♾️ No Time Limit</option>
+<option value="30">
+30 seconds
+</option>
+
+<option value="45">
+45 seconds
+</option>
+
+<option value="60" selected>
+60 seconds
+</option>
+
+<option value="90">
+90 seconds
+</option>
+
+<option value="0">
+♾️ No Time Limit
+</option>
+
 </select>
+
 
 <button id="startButton">
 Start Game
 </button>
 
-<button id="bringLobbyButton" class="secondary">
+
+<button
+  id="bringLobbyButton"
+  class="secondary"
+>
 Bring Everyone Back To Lobby
 </button>
 
 </div>
 
-<button id="leaveButton" class="secondary">
-Leave Room
-</button>
 
 <div id="lobbyStatus" class="status">
 Waiting for players...
@@ -365,15 +648,24 @@ Waiting for players...
 
 <div class="roleBox">
 
-<div class="category" id="roleCategory">
+<div
+  class="category"
+  id="roleCategory"
+>
 CATEGORY
 </div>
 
-<div id="roleTitle" class="role">
+<div
+  id="roleTitle"
+  class="role"
+>
 YOUR ROLE
 </div>
 
-<div id="roleWord" class="word">
+<div
+  id="roleWord"
+  class="word"
+>
 WORD
 </div>
 
@@ -396,7 +688,9 @@ I'm Ready
 
 <div class="clueHeader">
 
-<h2>Clue Order</h2>
+<h2>
+Clue Order
+</h2>
 
 <p>
 Everyone follows this order. Everyone sees the same turn.
@@ -404,27 +698,41 @@ Everyone follows this order. Everyone sees the same turn.
 
 </div>
 
+
 <div id="clueTimer" class="timer">
 60
 </div>
 
+
 <div id="clueOrderList"></div>
 
-<div id="clueTurnMessage" class="turnMessage">
+
+<div
+  id="clueTurnMessage"
+  class="turnMessage"
+>
 Synchronizing...
 </div>
+
 
 <button id="clueDoneButton">
 I Gave My Clue
 </button>
 
-<div id="hostSkipControls" class="hostControls hidden">
+
+<div
+  id="hostSkipControls"
+  class="hostControls hidden"
+>
 
 <div class="hostLabel">
 HOST CONTROLS
 </div>
 
-<button id="hostSkipButton" class="danger">
+<button
+  id="hostSkipButton"
+  class="danger"
+>
 ⏭ Skip Current Player
 </button>
 
@@ -439,7 +747,9 @@ HOST CONTROLS
 
 <section id="votingScreen" class="card hidden">
 
-<h2 class="center">Vote</h2>
+<h2 class="center">
+Vote
+</h2>
 
 <p class="center">
 Who do you think the Imposter is?
@@ -447,11 +757,17 @@ Who do you think the Imposter is?
 
 <div id="votePlayers"></div>
 
-<button id="submitVoteButton" disabled>
+<button
+  id="submitVoteButton"
+  disabled
+>
 Submit Vote
 </button>
 
-<div id="voteStatus" class="status center">
+<div
+  id="voteStatus"
+  class="status center"
+>
 Choose a player.
 </div>
 
@@ -464,9 +780,14 @@ Choose a player.
 
 <section id="resultsScreen" class="card hidden">
 
-<h2 class="center">Results</h2>
+<h2 class="center">
+Results
+</h2>
 
-<div id="resultText" class="result">
+<div
+  id="resultText"
+  class="result"
+>
 Calculating...
 </div>
 
@@ -476,7 +797,10 @@ Calculating...
 Next Round
 </button>
 
-<button id="backLobbyButton" class="secondary">
+<button
+  id="backLobbyButton"
+  class="secondary"
+>
 Back To Lobby
 </button>
 
@@ -484,8 +808,16 @@ Back To Lobby
 
 
 <p class="small">
-<span id="connectionDot" class="connectionDot"></span>
-<span id="connectionText">Connecting...</span>
+
+<span
+  id="connectionDot"
+  class="connectionDot"
+></span>
+
+<span id="connectionText">
+Connecting...
+</span>
+
 </p>
 
 </main>
@@ -493,6 +825,7 @@ Back To Lobby
 
 <script>
 "use strict";
+
 
 /* =========================================================
    SUPABASE
@@ -504,192 +837,216 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
-let db = null;
+let db=null;
 
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let game = null;
-let player = null;
-let channel = null;
+let game=null;
+let player=null;
+let channel=null;
 
-let clueOrder = [];
-let skippedPlayers = new Set();
+let clueOrder=[];
+let skippedPlayers=new Set();
 
-let currentTurn = 0;
-let currentRound = 1;
-let timeLimit = 60;
+let currentTurn=0;
+let currentRound=1;
+let timeLimit=60;
 
-let clueInterval = null;
-let syncInterval = null;
+let clueInterval=null;
+let syncInterval=null;
 
-let selectedVote = null;
+let selectedVote=null;
 
-let lastGameStatus = null;
-let lastRenderedTurn = -1;
+let lastGameStatus=null;
+let syncing=false;
 
-let phaseRequestRunning = false;
-let syncing = false;
+
+/*
+ These are saved locally so that when Safari is
+ reopened we can check whether the SAME players
+ are still in the room.
+
+This does NOT automatically reconnect the player.
+*/
+
+let savedRoster=[];
 
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const home =
+const home=
 document.getElementById("home");
 
-const lobby =
+const lobby=
 document.getElementById("lobby");
 
-const roleScreen =
+const roleScreen=
 document.getElementById("roleScreen");
 
-const clueScreen =
+const clueScreen=
 document.getElementById("clueScreen");
 
-const votingScreen =
+const votingScreen=
 document.getElementById("votingScreen");
 
-const resultsScreen =
+const resultsScreen=
 document.getElementById("resultsScreen");
 
-const createTab =
+const createTab=
 document.getElementById("createTab");
 
-const joinTab =
+const joinTab=
 document.getElementById("joinTab");
 
-const createCard =
+const createCard=
 document.getElementById("createCard");
 
-const joinCard =
+const joinCard=
 document.getElementById("joinCard");
 
-const createName =
+const createName=
 document.getElementById("createName");
 
-const joinName =
+const joinName=
 document.getElementById("joinName");
 
-const joinCode =
+const joinCode=
 document.getElementById("joinCode");
 
-const createButton =
+const createButton=
 document.getElementById("createButton");
 
-const joinButton =
+const joinButton=
 document.getElementById("joinButton");
 
-const createStatus =
+const createStatus=
 document.getElementById("createStatus");
 
-const joinStatus =
+const joinStatus=
 document.getElementById("joinStatus");
 
-const roomCode =
+const roomCode=
 document.getElementById("roomCode");
 
-const players =
+const players=
 document.getElementById("players");
 
-const hostControls =
+const hostControls=
 document.getElementById("hostControls");
 
-const category =
+const category=
 document.getElementById("category");
 
-const clueTime =
+const clueTime=
 document.getElementById("clueTime");
 
-const startButton =
+const startButton=
 document.getElementById("startButton");
 
-const bringLobbyButton =
+const bringLobbyButton=
 document.getElementById("bringLobbyButton");
 
-const leaveButton =
-document.getElementById("leaveButton");
-
-const lobbyStatus =
+const lobbyStatus=
 document.getElementById("lobbyStatus");
 
-const roleCategory =
+const roleCategory=
 document.getElementById("roleCategory");
 
-const roleTitle =
+const roleTitle=
 document.getElementById("roleTitle");
 
-const roleWord =
+const roleWord=
 document.getElementById("roleWord");
 
-const roleDescription =
+const roleDescription=
 document.getElementById("roleDescription");
 
-const readyButton =
+const readyButton=
 document.getElementById("readyButton");
 
-const clueTimer =
+const clueTimer=
 document.getElementById("clueTimer");
 
-const clueOrderList =
+const clueOrderList=
 document.getElementById("clueOrderList");
 
-const clueTurnMessage =
+const clueTurnMessage=
 document.getElementById("clueTurnMessage");
 
-const clueDoneButton =
+const clueDoneButton=
 document.getElementById("clueDoneButton");
 
-const hostSkipControls =
+const hostSkipControls=
 document.getElementById("hostSkipControls");
 
-const hostSkipButton =
+const hostSkipButton=
 document.getElementById("hostSkipButton");
 
-const votePlayers =
+const votePlayers=
 document.getElementById("votePlayers");
 
-const submitVoteButton =
+const submitVoteButton=
 document.getElementById("submitVoteButton");
 
-const voteStatus =
+const voteStatus=
 document.getElementById("voteStatus");
 
-const resultText =
+const resultText=
 document.getElementById("resultText");
 
-const voteResults =
+const voteResults=
 document.getElementById("voteResults");
 
-const nextRoundButton =
+const nextRoundButton=
 document.getElementById("nextRoundButton");
 
-const backLobbyButton =
+const backLobbyButton=
 document.getElementById("backLobbyButton");
 
-const connectionDot =
+const connectionDot=
 document.getElementById("connectionDot");
 
-const connectionText =
+const connectionText=
 document.getElementById("connectionText");
+
+const gameLeaveButton=
+document.getElementById("gameLeaveButton");
+
+const rejoinCard=
+document.getElementById("rejoinCard");
+
+const rejoinInfo=
+document.getElementById("rejoinInfo");
+
+const rejoinButton=
+document.getElementById("rejoinButton");
+
+const forgetGameButton=
+document.getElementById("forgetGameButton");
 
 
 /* =========================================================
-   LOCAL PLAYER TOKEN
+   PLAYER TOKEN
 ========================================================= */
 
 function getToken(){
 
-let token =
-localStorage.getItem("imposter_player_token");
+let token=
+localStorage.getItem(
+"imposter_player_token"
+);
 
 if(!token){
 
-if(window.crypto &&
-   typeof crypto.randomUUID==="function"){
+if(
+window.crypto &&
+typeof crypto.randomUUID==="function"
+){
 
 token=crypto.randomUUID();
 
@@ -697,19 +1054,22 @@ token=crypto.randomUUID();
 
 token=
 "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-.replace(/[xy]/g,function(c){
+.replace(
+/[xy]/g,
+function(c){
 
-const r =
+const r=
 Math.random()*16|0;
 
-const v =
+const v=
 c==="x"
 ?r
 :(r&3)|8;
 
 return v.toString(16);
 
-});
+}
+);
 
 }
 
@@ -739,6 +1099,15 @@ localStorage.setItem(
 game.code
 );
 
+if(savedRoster.length){
+
+localStorage.setItem(
+"imposter_room_roster",
+JSON.stringify(savedRoster)
+);
+
+}
+
 }
 
 
@@ -748,41 +1117,111 @@ localStorage.removeItem(
 "imposter_room_code"
 );
 
+localStorage.removeItem(
+"imposter_room_roster"
+);
+
+savedRoster=[];
+
 }
 
 
 /* =========================================================
-   SUPABASE INIT
+   SAVE CURRENT ROSTER
 ========================================================= */
 
-function initSupabase(){
+function saveRoster(list){
 
-if(!window.supabase){
+if(!Array.isArray(list))
+return;
 
-throw new Error(
-"Supabase library failed to load."
+savedRoster=
+list.map(p=>({
+id:p.id,
+display_name:p.display_name
+}));
+
+try{
+
+localStorage.setItem(
+"imposter_room_roster",
+JSON.stringify(savedRoster)
+);
+
+}catch(e){
+
+console.warn(
+"Could not save roster:",
+e
 );
 
 }
 
-db =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY,
-{
-auth:{
-persistSession:false,
-autoRefreshToken:false
-},
-realtime:{
-params:{
-eventsPerSecond:30
 }
-}
-}
+
+
+/* =========================================================
+   LOAD SAVED ROSTER
+========================================================= */
+
+function loadSavedRoster(){
+
+try{
+
+const raw=
+localStorage.getItem(
+"imposter_room_roster"
 );
 
-return db;
+if(!raw){
+
+savedRoster=[];
+
+return;
+
+}
+
+const parsed=
+JSON.parse(raw);
+
+if(Array.isArray(parsed)){
+
+savedRoster=parsed;
+
+}else{
+
+savedRoster=[];
+
+}
+
+}catch(e){
+
+savedRoster=[];
+
+}
+
+}
+
+
+/* =========================================================
+   SHOW LEAVE BUTTON
+========================================================= */
+
+function updateLeaveButton(){
+
+if(game && player){
+
+gameLeaveButton.classList.remove(
+"hidden"
+);
+
+}else{
+
+gameLeaveButton.classList.add(
+"hidden"
+);
+
+}
 
 }
 
@@ -800,11 +1239,13 @@ roleScreen,
 clueScreen,
 votingScreen,
 resultsScreen
-].forEach(x =>
-x.classList.add("hidden")
+].forEach(
+x=>x.classList.add("hidden")
 );
 
 screen.classList.remove("hidden");
+
+updateLeaveButton();
 
 window.scrollTo({
 top:0,
@@ -821,6 +1262,7 @@ type=""
 ){
 
 element.textContent=text;
+
 element.className=
 "status "+type;
 
@@ -838,6 +1280,42 @@ ok
 );
 
 connectionText.textContent=text;
+
+}
+
+
+/* =========================================================
+   INIT SUPABASE
+========================================================= */
+
+function initSupabase(){
+
+if(!window.supabase){
+
+throw new Error(
+"Supabase library failed to load."
+);
+
+}
+
+db=
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY,
+{
+auth:{
+persistSession:false,
+autoRefreshToken:false
+},
+realtime:{
+params:{
+eventsPerSecond:30
+}
+}
+}
+);
+
+return db;
 
 }
 
@@ -863,8 +1341,9 @@ try{
 if(!db)
 initSupabase();
 
-const timeout =
-new Promise((_,reject)=>{
+const timeout=
+new Promise(
+(_,reject)=>{
 
 setTimeout(
 ()=>reject(
@@ -875,15 +1354,16 @@ new Error(
 8000
 );
 
-});
+}
+);
 
-const request =
+const request=
 db
 .from("game_categories")
 .select("id,name")
 .limit(1);
 
-const result =
+const result=
 await Promise.race([
 request,
 timeout
@@ -920,7 +1400,8 @@ false,
 setStatus(
 createStatus,
 "Connection failed: "+
-(error.message||"Unknown error"),
+(error.message||
+"Unknown error"),
 "err"
 );
 
@@ -937,7 +1418,7 @@ async function loadCategories(){
 
 try{
 
-const result =
+const result=
 await db
 .from("game_categories")
 .select("id,name")
@@ -947,23 +1428,25 @@ await db
 if(result.error)
 throw result.error;
 
-category.innerHTML =
+category.innerHTML=
 '<option value="random">Random Category</option>';
 
-(result.data||[]).forEach(cat=>{
+(result.data||[]).forEach(
+cat=>{
 
-const option =
+const option=
 document.createElement("option");
 
-option.value =
+option.value=
 String(cat.id);
 
-option.textContent =
+option.textContent=
 cat.name;
 
 category.appendChild(option);
 
-});
+}
+);
 
 }catch(error){
 
@@ -991,7 +1474,6 @@ joinCard.classList.add("hidden");
 
 };
 
-
 joinTab.onclick=()=>{
 
 joinTab.classList.add("active");
@@ -1018,7 +1500,7 @@ return;
 
 }
 
-const name =
+const name=
 createName.value.trim();
 
 if(!name){
@@ -1042,7 +1524,7 @@ createStatus,
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "create_game",
 {
@@ -1060,16 +1542,23 @@ throw new Error(
 "No game data returned."
 );
 
-game =
+game=
 result.data.game;
 
-player =
+player=
 result.data.player;
 
 if(!game||!player)
 throw new Error(
 "Invalid game response."
 );
+
+savedRoster=[
+{
+id:player.id,
+display_name:player.display_name
+}
+];
 
 saveRoom();
 
@@ -1082,7 +1571,8 @@ console.error(error);
 setStatus(
 createStatus,
 "Could not create room: "+
-(error.message||"Unknown error"),
+(error.message||
+"Unknown error"),
 "err"
 );
 
@@ -1110,10 +1600,10 @@ return;
 
 }
 
-const name =
+const name=
 joinName.value.trim();
 
-const code =
+const code=
 joinCode.value
 .trim()
 .toUpperCase();
@@ -1151,7 +1641,7 @@ joinStatus,
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "join_game",
 {
@@ -1164,16 +1654,18 @@ p_name:name
 if(result.error)
 throw result.error;
 
-game =
+game=
 result.data.game;
 
-player =
+player=
 result.data.player;
 
 if(!game||!player)
 throw new Error(
 "Invalid game response."
 );
+
+savedRoster=[];
 
 saveRoom();
 
@@ -1186,7 +1678,8 @@ console.error(error);
 setStatus(
 joinStatus,
 "Could not join room: "+
-(error.message||"Unknown error"),
+(error.message||
+"Unknown error"),
 "err"
 );
 
@@ -1200,27 +1693,40 @@ joinButton.disabled=false;
 
 
 /* =========================================================
-   RESUME AFTER CLOSING SAFARI
+   CHECK FOR REJOINABLE GAME
 ========================================================= */
 
-async function tryResumeGame(){
+/*
+ IMPORTANT:
 
-const savedCode =
+This does NOT reconnect.
+
+It only checks whether the previous
+room still exists and whether the
+players who were there when the user
+left are still present.
+
+The user must press Rejoin Game.
+*/
+
+async function checkForPreviousGame(){
+
+const savedCode=
 localStorage.getItem(
 "imposter_room_code"
 );
 
 if(!savedCode)
-return false;
+return;
+
+loadSavedRoster();
 
 try{
 
-setStatus(
-createStatus,
-"Rejoining your previous game..."
-);
+rejoinInfo.textContent=
+"Checking previous game...";
 
-const result =
+const result=
 await db.rpc(
 "resume_game",
 {
@@ -1229,51 +1735,385 @@ p_player_token:getToken()
 }
 );
 
-if(result.error){
+if(result.error)
+throw result.error;
 
-console.log(
-"Resume unavailable:",
-result.error.message
+if(!result.data)
+throw new Error(
+"No previous game."
 );
 
-clearSavedRoom();
+const previousGame=
+result.data.game;
 
-return false;
+const previousPlayer=
+result.data.player;
+
+if(
+!previousGame||
+!previousPlayer
+){
+
+throw new Error(
+"Previous game unavailable."
+);
 
 }
 
-if(!result.data)
-return false;
 
-game =
+/*
+ Only these phases can be rejoined.
+*/
+
+const activeStatuses=[
+"lobby",
+"playing",
+"clues",
+"voting",
+"results"
+];
+
+if(
+!activeStatuses.includes(
+previousGame.status
+)
+){
+
+throw new Error(
+"Game is no longer active."
+);
+
+}
+
+
+/*
+ Get the current player list.
+*/
+
+const playersResult=
+await db
+.from("game_players")
+.select(
+"id,display_name,is_host,is_alive"
+)
+.eq(
+"game_id",
+previousGame.id
+);
+
+if(playersResult.error)
+throw playersResult.error;
+
+const currentPlayers=
+playersResult.data||[];
+
+
+/*
+ The saved roster may be empty for
+ an older game. In that situation,
+ require at least two players before
+ showing Rejoin.
+*/
+
+if(
+savedRoster.length>0
+){
+
+const currentIds=
+new Set(
+currentPlayers.map(p=>p.id)
+);
+
+const everyoneStillHere=
+savedRoster.every(
+p=>currentIds.has(p.id)
+);
+
+if(!everyoneStillHere){
+
+rejoinCard.classList.add(
+"hidden"
+);
+
+rejoinInfo.textContent=
+"The previous game is no longer available to rejoin.";
+
+return;
+
+}
+
+}
+
+
+/*
+ A game with only the returning player
+ is not rejoinable.
+*/
+
+if(currentPlayers.length<2){
+
+rejoinCard.classList.add(
+"hidden"
+);
+
+return;
+
+}
+
+
+/*
+ Describe current phase.
+*/
+
+let phaseText=
+"Game in progress.";
+
+if(previousGame.status==="lobby"){
+
+phaseText=
+"The lobby is still open.";
+
+}
+
+else if(
+previousGame.status==="playing"
+){
+
+phaseText=
+"The role round is currently active.";
+
+}
+
+else if(
+previousGame.status==="clues"
+){
+
+phaseText=
+"The clue round is currently active.";
+
+}
+
+else if(
+previousGame.status==="voting"
+){
+
+phaseText=
+"The voting round is currently active.";
+
+}
+
+else if(
+previousGame.status==="results"
+){
+
+phaseText=
+"The round results are currently showing.";
+
+}
+
+
+rejoinInfo.innerHTML=
+"Room <strong>"+
+previousGame.code+
+"</strong><br>"+
+phaseText+
+"<br><br>"+
+currentPlayers.length+
+" players are still in the game.";
+
+
+rejoinCard.classList.remove(
+"hidden"
+);
+
+
+}catch(error){
+
+console.log(
+"No rejoinable game:",
+error.message
+);
+
+rejoinCard.classList.add(
+"hidden"
+);
+
+}
+
+}
+
+
+/* =========================================================
+   REJOIN BUTTON
+========================================================= */
+
+rejoinButton.onclick=
+async()=>{
+
+const savedCode=
+localStorage.getItem(
+"imposter_room_code"
+);
+
+if(!savedCode)
+return;
+
+rejoinButton.disabled=true;
+
+rejoinInfo.textContent=
+"Rejoining game...";
+
+try{
+
+/*
+ Re-check everything immediately
+ before actually reconnecting.
+*/
+
+const result=
+await db.rpc(
+"resume_game",
+{
+p_code:savedCode,
+p_player_token:getToken()
+}
+);
+
+if(result.error)
+throw result.error;
+
+if(!result.data)
+throw new Error(
+"Game is no longer available."
+);
+
+game=
 result.data.game;
 
-player =
+player=
 result.data.player;
 
 if(!game||!player)
-return false;
+throw new Error(
+"Invalid game response."
+);
+
+
+/*
+ Check that everyone from the saved
+ roster is still present.
+*/
+
+if(savedRoster.length){
+
+const resultPlayers=
+await db
+.from("game_players")
+.select(
+"id,display_name"
+)
+.eq(
+"game_id",
+game.id
+);
+
+if(resultPlayers.error)
+throw resultPlayers.error;
+
+const ids=
+new Set(
+(resultPlayers.data||[])
+.map(p=>p.id)
+);
+
+const everyoneStillHere=
+savedRoster.every(
+p=>ids.has(p.id)
+);
+
+if(!everyoneStillHere){
+
+game=null;
+player=null;
+
+throw new Error(
+"Someone from the previous game has left. Rejoining is no longer available."
+);
+
+}
+
+}
+
+
+/*
+ The important part:
+
+We DO NOT assume clues.
+
+We read the actual authoritative
+server phase.
+*/
+
+lastGameStatus=null;
 
 saveRoom();
+
+rejoinCard.classList.add(
+"hidden"
+);
 
 await openLobby();
 
 await syncGame();
 
-return true;
-
 }catch(error){
 
-console.log(
-"Could not resume:",
+console.error(
+"Rejoin error:",
 error
 );
 
-return false;
+game=null;
+player=null;
+
+rejoinInfo.textContent=
+error.message||
+"Could not rejoin the game.";
+
+setTimeout(
+()=>{
+
+rejoinCard.classList.add(
+"hidden"
+);
+
+},
+2500
+);
+
+}finally{
+
+rejoinButton.disabled=false;
 
 }
 
-}
+};
+
+
+/* =========================================================
+   DON'T REJOIN
+========================================================= */
+
+forgetGameButton.onclick=
+()=>{
+
+clearSavedRoom();
+
+rejoinCard.classList.add(
+"hidden"
+);
+
+};
 
 
 /* =========================================================
@@ -1287,7 +2127,7 @@ return;
 
 show(lobby);
 
-roomCode.textContent =
+roomCode.textContent=
 game.code;
 
 hostControls.classList.toggle(
@@ -1315,45 +2155,89 @@ return;
 
 try{
 
-const result =
+const result=
 await db
 .from("game_players")
 .select(
 "id,display_name,is_host,is_alive"
 )
-.eq("game_id",game.id)
+.eq(
+"game_id",
+game.id
+)
 .order("joined_at");
 
 if(result.error)
 throw result.error;
 
-const list =
+const list=
 result.data||[];
 
-players.innerHTML =
+
+/*
+ Save the roster whenever we know it.
+
+This lets the rejoin system later
+determine whether everyone who was
+originally there is still present.
+*/
+
+if(
+list.length>0 &&
+game.status!=="lobby"
+){
+
+saveRoster(list);
+
+}
+
+
+/*
+ During lobby, also keep roster updated.
+*/
+
+if(list.length>0){
+
+if(
+!savedRoster.length ||
+game.status==="lobby"
+){
+
+saveRoster(list);
+
+}
+
+}
+
+
+players.innerHTML=
 "<h3>Players ("+
 list.length+
 ")</h3>";
 
-list.forEach(p=>{
 
-const div =
+list.forEach(
+p=>{
+
+const div=
 document.createElement("div");
 
 div.className="player";
 
-div.textContent =
+div.textContent=
 p.display_name;
 
-if(p.id===player?.id){
+if(
+p.id===player?.id
+){
 
-div.textContent += " (You)";
+div.textContent+=" (You)";
 
 }
 
 if(p.is_host){
 
-const h =
+const h=
 document.createElement("span");
 
 h.className="host";
@@ -1368,10 +2252,15 @@ players.appendChild(div);
 
 });
 
-lobbyStatus.textContent =
+
+lobbyStatus.textContent=
 list.length+
 " player"+
-(list.length===1?"":"s")+
+(
+list.length===1
+?""
+:"s"
+)+
 " in the room.";
 
 }catch(error){
@@ -1381,7 +2270,7 @@ console.error(
 error
 );
 
-players.innerHTML =
+players.innerHTML=
 "<p>Could not load players. Retrying...</p>";
 
 }
@@ -1401,17 +2290,21 @@ return;
 if(channel){
 
 try{
-db.removeChannel(channel);
+
+db.removeChannel(
+channel
+);
+
 }catch(e){}
 
 channel=null;
 
 }
 
-const roomId =
+const roomId=
 game.id;
 
-channel =
+channel=
 db
 .channel(
 "imposter-room-"+roomId
@@ -1443,12 +2336,14 @@ filter:"game_id=eq."+roomId
 async()=>{
 
 await loadPlayers();
+
 await syncGame();
 
 }
 )
 
-.subscribe(status=>{
+.subscribe(
+status=>{
 
 console.log(
 "Realtime status:",
@@ -1462,7 +2357,8 @@ true,
 "Multiplayer connected"
 );
 
-}else if(
+}
+else if(
 status==="CHANNEL_ERROR"||
 status==="TIMED_OUT"
 ){
@@ -1472,12 +2368,15 @@ false,
 "Realtime reconnecting..."
 );
 
-setTimeout(()=>{
+setTimeout(
+()=>{
 
 if(game)
 subscribeToGame();
 
-},1500);
+},
+1500
+);
 
 }
 
@@ -1492,9 +2391,11 @@ subscribeToGame();
 
 function startSyncLoop(){
 
-clearInterval(syncInterval);
+clearInterval(
+syncInterval
+);
 
-syncInterval =
+syncInterval=
 setInterval(
 async()=>{
 
@@ -1514,14 +2415,18 @@ await syncGame();
 
 async function syncGame(){
 
-if(!game||!db||syncing)
+if(
+!game||
+!db||
+syncing
+)
 return;
 
 syncing=true;
 
 try{
 
-const result =
+const result=
 await db
 .from("games")
 .select("*")
@@ -1539,11 +2444,8 @@ throw new Error(
 
 }
 
-const serverGame =
+game=
 result.data;
-
-game =
-serverGame;
 
 saveRoom();
 
@@ -1552,31 +2454,52 @@ true,
 "Multiplayer connected"
 );
 
-const status =
-serverGame.status;
+const status=
+game.status;
 
-if(status!==lastGameStatus){
+if(
+status!==lastGameStatus
+){
 
-lastGameStatus =
+lastGameStatus=
 status;
 
-await handlePhase(status);
+await handlePhase(
+status
+);
 
-}else{
+}
+else{
 
 if(status==="clues"){
 
 await syncClueState();
 
-}else if(status==="voting"){
+}
+else if(status==="voting"){
 
-if(votingScreen.classList.contains("hidden"))
+if(
+votingScreen.classList.contains(
+"hidden"
+)
+){
+
 await showVoting();
 
-}else if(status==="results"){
+}
 
-if(resultsScreen.classList.contains("hidden"))
+}
+else if(status==="results"){
+
+if(
+resultsScreen.classList.contains(
+"hidden"
+)
+){
+
 await loadResults();
+
+}
 
 }
 
@@ -1622,22 +2545,36 @@ phase
 if(phase==="lobby"){
 
 await loadPlayers();
+
 openLobby();
 
-}else if(phase==="playing"){
+}
+else if(
+phase==="playing"
+){
 
 await loadRole();
 
-}else if(phase==="clues"){
+}
+else if(
+phase==="clues"
+){
 
 await loadRoleIfNeeded();
+
 await syncClueState();
 
-}else if(phase==="voting"){
+}
+else if(
+phase==="voting"
+){
 
 await showVoting();
 
-}else if(phase==="results"){
+}
+else if(
+phase==="results"
+){
 
 await loadResults();
 
@@ -1657,7 +2594,7 @@ return;
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "get_role",
 {
@@ -1669,7 +2606,7 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-const data =
+const data=
 result.data;
 
 if(!data)
@@ -1677,42 +2614,50 @@ throw new Error(
 "No role data returned."
 );
 
-if(data.status==="lobby"){
+if(
+data.status==="lobby"
+){
 
 openLobby();
+
 return;
 
 }
 
-currentRound =
-Number(data.round||1);
+currentRound=
+Number(
+data.round||1
+);
 
-timeLimit =
-Number(data.clue_time||60);
+timeLimit=
+Number(
+data.clue_time||60
+);
 
-roleCategory.textContent =
+roleCategory.textContent=
 data.category||
 "CATEGORY";
 
 if(data.is_imposter){
 
-roleTitle.textContent =
+roleTitle.textContent=
 "YOU ARE THE IMPOSTER";
 
 roleWord.textContent="";
 
-roleDescription.textContent =
+roleDescription.textContent=
 "You don't know the secret word. Listen carefully to everyone's clues and try to blend in.";
 
-}else{
+}
+else{
 
-roleTitle.textContent =
+roleTitle.textContent=
 "YOU ARE NOT THE IMPOSTER";
 
-roleWord.textContent =
+roleWord.textContent=
 data.word||"";
 
-roleDescription.textContent =
+roleDescription.textContent=
 "Give a clue about the word without making it too obvious.";
 
 }
@@ -1734,13 +2679,15 @@ error
 
 
 /* =========================================================
-   ONLY LOAD ROLE IF NEEDED
+   LOAD ROLE IF NEEDED
 ========================================================= */
 
 async function loadRoleIfNeeded(){
 
 if(
-roleScreen.classList.contains("hidden")
+roleScreen.classList.contains(
+"hidden"
+)
 ){
 
 await loadRole();
@@ -1754,7 +2701,8 @@ await loadRole();
    READY
 ========================================================= */
 
-readyButton.onclick=async()=>{
+readyButton.onclick=
+async()=>{
 
 readyButton.disabled=true;
 
@@ -1766,47 +2714,54 @@ await syncClueState();
 
 
 /* =========================================================
-   GET SERVER CLUE ORDER
+   GET CLUE ORDER
 ========================================================= */
 
 async function getClueOrder(){
 
-const result =
+const result=
 await db
 .from("game_players")
 .select(
 "id,display_name,is_alive"
 )
-.eq("game_id",game.id)
-.eq("is_alive",true);
+.eq(
+"game_id",
+game.id
+)
+.eq(
+"is_alive",
+true
+);
 
 if(result.error)
 throw result.error;
 
-const map =
+const map=
 new Map(
 (result.data||[])
-.map(p=>[p.id,p])
+.map(
+p=>[p.id,p]
+)
 );
 
-const serverOrder =
-Array.isArray(game.clue_order)
+const serverOrder=
+Array.isArray(
+game.clue_order
+)
 ?game.clue_order
 :[];
 
-let order =
+let order=
 serverOrder
-.map(id=>map.get(id))
+.map(
+id=>map.get(id)
+)
 .filter(Boolean);
 
 if(!order.length){
 
-/*
- Fallback only for very old games.
- New games always use games.clue_order.
-*/
-
-order =
+order=
 (result.data||[]).slice();
 
 }
@@ -1825,26 +2780,36 @@ async function syncClueState(){
 if(!game)
 return;
 
-if(game.status!=="clues")
+if(
+game.status!=="clues"
+)
 return;
 
 try{
 
-clueOrder =
+clueOrder=
 await getClueOrder();
 
-currentTurn =
-Number(game.clue_turn||0);
+currentTurn=
+Number(
+game.clue_turn||0
+);
 
-currentRound =
-Number(game.round_number||1);
+currentRound=
+Number(
+game.round_number||1
+);
 
-timeLimit =
-Number(game.clue_time||60);
+timeLimit=
+Number(
+game.clue_time||60
+);
 
-skippedPlayers =
+skippedPlayers=
 new Set(
-Array.isArray(game.skipped_player_ids)
+Array.isArray(
+game.skipped_player_ids
+)
 ?game.skipped_player_ids
 :[]
 );
@@ -1876,50 +2841,62 @@ clueOrderList.innerHTML="";
 clueOrder.forEach(
 (p,index)=>{
 
-const row =
+const row=
 document.createElement("div");
 
-row.className =
+row.className=
 "orderRow";
 
 if(index===currentTurn)
-row.classList.add("current");
+row.classList.add(
+"current"
+);
 
 if(index<currentTurn)
-row.classList.add("done");
+row.classList.add(
+"done"
+);
 
-if(skippedPlayers.has(p.id))
-row.classList.add("skipped");
+if(
+skippedPlayers.has(p.id)
+)
+row.classList.add(
+"skipped"
+);
 
-const number =
+
+const number=
 document.createElement("div");
 
-number.className =
+number.className=
 "orderNumber";
 
-number.textContent =
+number.textContent=
 index+1;
 
 row.appendChild(number);
 
-const name =
+
+const name=
 document.createElement("div");
 
-name.className =
+name.className=
 "orderName";
 
-name.textContent =
+name.textContent=
 p.display_name;
 
-if(p.id===player.id){
+if(
+p.id===player.id
+){
 
-const you =
+const you=
 document.createElement("span");
 
-you.className =
+you.className=
 "youBadge";
 
-you.textContent =
+you.textContent=
 "YOU";
 
 name.appendChild(you);
@@ -1928,30 +2905,41 @@ name.appendChild(you);
 
 row.appendChild(name);
 
-const status =
+
+const status=
 document.createElement("div");
 
-status.className =
+status.className=
 "orderStatus";
 
-if(skippedPlayers.has(p.id)){
 
-status.textContent =
+if(
+skippedPlayers.has(p.id)
+){
+
+status.textContent=
 "⏭ SKIPPED";
 
-}else if(index<currentTurn){
+}
+else if(
+index<currentTurn
+){
 
-status.textContent =
+status.textContent=
 "✓ DONE";
 
-}else if(index===currentTurn){
+}
+else if(
+index===currentTurn
+){
 
-status.textContent =
+status.textContent=
 "NOW";
 
-}else{
+}
+else{
 
-status.textContent =
+status.textContent=
 "WAITING";
 
 }
@@ -1966,50 +2954,56 @@ clueOrderList.appendChild(row);
 
 
 /* =========================================================
-   CURRENT TURN
+   START CLUE TURN
 ========================================================= */
 
 function startClueTurn(){
 
-if(game?.status!=="clues")
+if(
+game?.status!=="clues"
+)
 return;
 
 if(!clueOrder.length)
 return;
 
-if(currentTurn>=clueOrder.length){
+if(
+currentTurn>=clueOrder.length
+){
 
-clueDoneButton.style.display="none";
+clueDoneButton.style.display=
+"none";
 
 return;
 
 }
 
-const current =
+const current=
 clueOrder[currentTurn];
 
-const isMe =
+const isMe=
 current &&
 current.id===player.id;
 
 if(isMe){
 
-clueTurnMessage.textContent =
+clueTurnMessage.textContent=
 "🔥 IT'S YOUR TURN — GIVE YOUR CLUE!";
 
-clueDoneButton.style.display =
+clueDoneButton.style.display=
 "block";
 
 clueDoneButton.disabled=false;
 
-}else{
+}
+else{
 
-clueTurnMessage.textContent =
+clueTurnMessage.textContent=
 "Waiting for "+
 current.display_name+
 " to give their clue...";
 
-clueDoneButton.style.display =
+clueDoneButton.style.display=
 "none";
 
 }
@@ -2030,39 +3024,46 @@ startAuthoritativeTimer();
 
 function startAuthoritativeTimer(){
 
-clearInterval(clueInterval);
+clearInterval(
+clueInterval
+);
 
-if(timeLimit===0){
+if(
+timeLimit===0
+){
 
-clueTimer.className =
+clueTimer.className=
 "noTimer";
 
-clueTimer.textContent =
+clueTimer.textContent=
 "♾️ No Time Limit";
 
 return;
 
 }
 
-const started =
+const started=
 game.clue_turn_started_at;
 
 if(!started){
 
-clueTimer.textContent =
+clueTimer.textContent=
 timeLimit;
 
 return;
 
 }
 
+
 function update(){
 
-const elapsed =
-(Date.now()-
-new Date(started).getTime())/1000;
+const elapsed=
+(
+Date.now()-
+new Date(started).getTime()
+)/1000;
 
-const remaining =
+const remaining=
 Math.max(
 0,
 Math.ceil(
@@ -2070,19 +3071,28 @@ timeLimit-elapsed
 )
 );
 
-clueTimer.textContent =
+clueTimer.textContent=
 remaining;
 
-if(remaining<=10)
-clueTimer.className =
+if(remaining<=10){
+
+clueTimer.className=
 "timerWarning";
-else
-clueTimer.className =
+
+}
+else{
+
+clueTimer.className=
 "timer";
+
+}
+
 
 if(remaining<=0){
 
-clearInterval(clueInterval);
+clearInterval(
+clueInterval
+);
 
 if(
 player.is_host &&
@@ -2102,7 +3112,7 @@ true
 
 update();
 
-clueInterval =
+clueInterval=
 setInterval(
 update,
 250
@@ -2123,23 +3133,31 @@ timeout=false
 if(!game||!player)
 return;
 
-if(game.status!=="clues")
+if(
+game.status!=="clues"
+)
 return;
 
-const expectedTurn =
-Number(game.clue_turn||0);
+const expectedTurn=
+Number(
+game.clue_turn||0
+);
 
-if(expectedTurn!==currentTurn)
+if(
+expectedTurn!==currentTurn
+)
 return;
 
-const current =
+const current=
 clueOrder[currentTurn];
 
 if(!current)
 return;
 
-if(!skip &&
-   current.id!==player.id){
+if(
+!skip &&
+current.id!==player.id
+){
 
 return;
 
@@ -2148,9 +3166,10 @@ return;
 try{
 
 clueDoneButton.disabled=true;
+
 hostSkipButton.disabled=true;
 
-const result =
+const result=
 await db.rpc(
 "advance_clue",
 {
@@ -2167,21 +3186,10 @@ throw result.error;
 if(result.data?.stale){
 
 await syncGame();
+
 return;
 
 }
-
-/*
- DO NOT locally guess the next state.
-
-The server changes:
-- clue_turn
-- skipped_player_ids
-- clue_turn_started_at
-- status
-
-Then every phone reads that same state.
-*/
 
 await syncGame();
 
@@ -2197,6 +3205,7 @@ await syncGame();
 }finally{
 
 clueDoneButton.disabled=false;
+
 hostSkipButton.disabled=false;
 
 }
@@ -2205,10 +3214,11 @@ hostSkipButton.disabled=false;
 
 
 /* =========================================================
-   PLAYER FINISHES CLUE
+   CLUE DONE
 ========================================================= */
 
-clueDoneButton.onclick=async()=>{
+clueDoneButton.onclick=
+async()=>{
 
 if(!game||!player)
 return;
@@ -2222,7 +3232,10 @@ return;
 
 }
 
-await advanceClue(false,false);
+await advanceClue(
+false,
+false
+);
 
 };
 
@@ -2231,12 +3244,15 @@ await advanceClue(false,false);
    HOST SKIP
 ========================================================= */
 
-hostSkipButton.onclick=async()=>{
+hostSkipButton.onclick=
+async()=>{
 
 if(!player.is_host)
 return;
 
-if(!clueOrder[currentTurn])
+if(
+!clueOrder[currentTurn]
+)
 return;
 
 if(
@@ -2251,7 +3267,10 @@ return;
 
 }
 
-await advanceClue(true,false);
+await advanceClue(
+true,
+false
+);
 
 };
 
@@ -2262,7 +3281,9 @@ await advanceClue(true,false);
 
 async function showVoting(){
 
-clearInterval(clueInterval);
+clearInterval(
+clueInterval
+);
 
 show(votingScreen);
 
@@ -2270,45 +3291,58 @@ selectedVote=null;
 
 submitVoteButton.disabled=true;
 
-voteStatus.textContent =
+voteStatus.textContent=
 "Choose a player.";
 
 try{
 
-const result =
+const result=
 await db
 .from("game_players")
 .select(
 "id,display_name,is_alive"
 )
-.eq("game_id",game.id)
-.eq("is_alive",true);
+.eq(
+"game_id",
+game.id
+)
+.eq(
+"is_alive",
+true
+);
 
 if(result.error)
 throw result.error;
 
 votePlayers.innerHTML="";
 
-(result.data||[]).forEach(p=>{
+(result.data||[]).forEach(
+p=>{
 
-if(p.id===player.id)
+if(
+p.id===player.id
+)
 return;
 
-const button =
+const button=
 document.createElement("button");
 
-button.className =
+button.className=
 "choice";
 
-button.textContent =
+button.textContent=
 p.display_name;
 
-button.onclick=()=>{
+button.onclick=
+()=>{
 
 document
-.querySelectorAll(".choice")
+.querySelectorAll(
+".choice"
+)
 .forEach(
-x=>x.classList.remove(
+x=>
+x.classList.remove(
 "selected"
 )
 );
@@ -2317,14 +3351,17 @@ button.classList.add(
 "selected"
 );
 
-selectedVote =
+selectedVote=
 p.id;
 
-submitVoteButton.disabled=false;
+submitVoteButton.disabled=
+false;
 
 };
 
-votePlayers.appendChild(button);
+votePlayers.appendChild(
+button
+);
 
 });
 
@@ -2335,19 +3372,24 @@ console.error(
 error
 );
 
-voteStatus.textContent =
+voteStatus.textContent=
 "Could not load players. Retrying...";
 
-setTimeout(()=>{
+setTimeout(
+()=>{
 
-if(game&&
-game.status==="voting"){
+if(
+game &&
+game.status==="voting"
+){
 
 showVoting();
 
 }
 
-},1000);
+},
+1000
+);
 
 }
 
@@ -2355,10 +3397,10 @@ showVoting();
 
 
 /* =========================================================
-   VOTE
+   SUBMIT VOTE
 ========================================================= */
 
-submitVoteButton.onclick =
+submitVoteButton.onclick=
 async()=>{
 
 if(!selectedVote)
@@ -2368,7 +3410,7 @@ submitVoteButton.disabled=true;
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "cast_vote",
 {
@@ -2381,14 +3423,9 @@ p_target_id:selectedVote
 if(result.error)
 throw result.error;
 
-voteStatus.textContent =
+voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
 
-/*
- The host checks the server quickly.
- Everyone else simply waits for the
- authoritative phase change.
-*/
 
 if(player.is_host){
 
@@ -2400,7 +3437,7 @@ await checkVotesUntilComplete();
 
 console.error(error);
 
-voteStatus.textContent =
+voteStatus.textContent=
 error.message||
 "Could not submit vote.";
 
@@ -2417,15 +3454,21 @@ submitVoteButton.disabled=false;
 
 async function checkVotesUntilComplete(){
 
-for(let i=0;i<20;i++){
+for(
+let i=0;
+i<20;
+i++
+){
 
-if(!game||
-game.status!=="voting")
+if(
+!game ||
+game.status!=="voting"
+)
 return;
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "get_vote_result",
 {
@@ -2439,25 +3482,37 @@ if(
 Array.isArray(result.data)
 ){
 
-const aliveResult =
+const aliveResult=
 await db
 .from("game_players")
 .select("id")
-.eq("game_id",game.id)
-.eq("is_alive",true);
+.eq(
+"game_id",
+game.id
+)
+.eq(
+"is_alive",
+true
+);
 
 if(
 !aliveResult.error
 ){
 
-const submittedResult =
+const submittedResult=
 await db
 .from("game_votes")
-.select("id",{
+.select(
+"id",
+{
 count:"exact",
 head:true
-})
-.eq("game_id",game.id)
+}
+)
+.eq(
+"game_id",
+game.id
+)
 .eq(
 "round_number",
 game.round_number
@@ -2508,10 +3563,7 @@ return;
 
 try{
 
-const resultList =
-results||[];
-
-const phase =
+const phase=
 await db.rpc(
 "set_phase",
 {
@@ -2549,7 +3601,7 @@ return;
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "get_vote_result",
 {
@@ -2560,14 +3612,6 @@ player.is_host
 :null
 }
 );
-
-/*
- Non-hosts cannot call get_vote_result.
- The host's database phase update is
- enough to bring everyone to Results.
-
- So if non-host, just show the screen.
-*/
 
 if(
 player.is_host &&
@@ -2580,69 +3624,79 @@ throw result.error;
 
 show(resultsScreen);
 
-nextRoundButton.style.display =
+nextRoundButton.style.display=
 player.is_host
 ?"block"
 :"none";
 
-backLobbyButton.style.display =
+backLobbyButton.style.display=
 player.is_host
 ?"block"
 :"none";
+
 
 if(
 player.is_host &&
 Array.isArray(result.data)
 ){
 
-const list =
+const list=
 result.data;
 
 voteResults.innerHTML="";
 
 if(list.length){
 
-const winner =
+const winner=
 list[0];
 
-resultText.textContent =
+resultText.textContent=
 winner.votes>0
 ?winner.name+
 " received the most votes."
 :"No votes.";
 
-list.forEach(p=>{
 
-const div =
+list.forEach(
+p=>{
+
+const div=
 document.createElement("div");
 
 div.className="player";
 
-div.textContent =
+div.textContent=
 p.name+
 " — "+
 p.votes+
-(p.votes===1
+(
+p.votes===1
 ?" vote"
-:" votes");
+:" votes"
+);
 
-voteResults.appendChild(div);
+voteResults.appendChild(
+div
+);
 
-});
+}
+);
 
-}else{
+}
+else{
 
-resultText.textContent =
+resultText.textContent=
 "No votes.";
 
 }
 
-}else{
+}
+else{
 
-resultText.innerHTML =
+resultText.innerHTML=
 "Voting complete.";
 
-voteResults.innerHTML =
+voteResults.innerHTML=
 '<div class="infoBox">The host is showing the final vote results.</div>';
 
 }
@@ -2665,7 +3719,7 @@ show(resultsScreen);
    NEXT ROUND
 ========================================================= */
 
-nextRoundButton.onclick =
+nextRoundButton.onclick=
 async()=>{
 
 if(!player.is_host)
@@ -2675,7 +3729,7 @@ nextRoundButton.disabled=true;
 
 try{
 
-const selectedCategory =
+const selectedCategory=
 category.value==="random"
 ?null
 :parseInt(
@@ -2683,23 +3737,14 @@ category.value,
 10
 );
 
-const selectedTime =
+const selectedTime=
 parseInt(
 clueTime.value,
 10
 )||60;
 
-/*
- IMPORTANT:
- ALL PARAMETERS are explicitly passed.
 
-This prevents the old ambiguous
-start_game overload problem and
-ensures the selected category is
-actually used.
-*/
-
-const result =
+const result=
 await db.rpc(
 "start_game",
 {
@@ -2713,17 +3758,13 @@ p_clue_time:selectedTime
 if(result.error)
 throw result.error;
 
-game =
+game=
 result.data.game;
 
 saveRoom();
 
-/*
- Move the authoritative phase
- to playing.
-*/
 
-const phase =
+const phase=
 await db.rpc(
 "set_phase",
 {
@@ -2735,6 +3776,8 @@ p_phase:"playing"
 
 if(phase.error)
 throw phase.error;
+
+lastGameStatus=null;
 
 await syncGame();
 
@@ -2761,7 +3804,7 @@ nextRoundButton.disabled=false;
    START GAME
 ========================================================= */
 
-startButton.onclick =
+startButton.onclick=
 async()=>{
 
 if(!player?.is_host)
@@ -2771,7 +3814,7 @@ startButton.disabled=true;
 
 try{
 
-const selectedCategory =
+const selectedCategory=
 category.value==="random"
 ?null
 :parseInt(
@@ -2779,21 +3822,14 @@ category.value,
 10
 );
 
-const selectedTime =
+const selectedTime=
 parseInt(
 clueTime.value,
 10
 )||60;
 
-/*
- THIS IS THE IMPORTANT FIX.
 
-The selected category is sent to
-Supabase instead of calling start_game
-with only the code/token.
-*/
-
-const result =
+const result=
 await db.rpc(
 "start_game",
 {
@@ -2807,23 +3843,16 @@ p_clue_time:selectedTime
 if(result.error)
 throw result.error;
 
-game =
+game=
 result.data.game;
 
 saveRoom();
 
-timeLimit =
+timeLimit=
 selectedTime;
 
-/*
- start_game creates the role data and
- sets status to "playing".
 
-Now the host moves the authoritative
-game phase to "playing".
-*/
-
-const phase =
+const phase=
 await db.rpc(
 "set_phase",
 {
@@ -2835,6 +3864,8 @@ p_phase:"playing"
 
 if(phase.error)
 throw phase.error;
+
+lastGameStatus=null;
 
 await syncGame();
 
@@ -2864,7 +3895,7 @@ startButton.disabled=false;
    BACK TO LOBBY
 ========================================================= */
 
-backLobbyButton.onclick =
+backLobbyButton.onclick=
 async()=>{
 
 if(!player.is_host)
@@ -2872,7 +3903,7 @@ return;
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "reset_to_lobby",
 {
@@ -2883,6 +3914,8 @@ p_host_token:getToken()
 
 if(result.error)
 throw result.error;
+
+lastGameStatus=null;
 
 await syncGame();
 
@@ -2903,13 +3936,13 @@ alert(
    BRING EVERYONE BACK TO LOBBY
 ========================================================= */
 
-bringLobbyButton.onclick =
+bringLobbyButton.onclick=
 async()=>{
 
 if(!player.is_host)
 return;
 
-const yes =
+const yes=
 confirm(
 "Bring everyone back to the lobby?\n\n"+
 "This will end the current round."
@@ -2922,7 +3955,7 @@ bringLobbyButton.disabled=true;
 
 try{
 
-const result =
+const result=
 await db.rpc(
 "reset_to_lobby",
 {
@@ -2933,6 +3966,8 @@ p_host_token:getToken()
 
 if(result.error)
 throw result.error;
+
+lastGameStatus=null;
 
 await syncGame();
 
@@ -2956,49 +3991,29 @@ bringLobbyButton.disabled=false;
 
 
 /* =========================================================
-   LEAVE ROOM
+   GLOBAL LEAVE GAME
 ========================================================= */
 
-leaveButton.onclick =
+gameLeaveButton.onclick=
 async()=>{
 
-if(!game)
+if(!game||!player)
 return;
 
-const yes =
+const yes=
 confirm(
-"Leave this room?"
+"Leave this game?\n\n"+
+"You will be removed from the room and will not be able to rejoin it."
 );
 
 if(!yes)
 return;
 
-leaveButton.disabled=true;
+gameLeaveButton.disabled=true;
 
 try{
 
-/*
- Host cannot leave directly because
- that would leave the room without
- an owner.
-
-Host must use:
-Bring Everyone Back To Lobby
-*/
-
-if(player.is_host){
-
-alert(
-"You are the host.\n\n"+
-"Use 'Bring Everyone Back To Lobby' "+
-"before leaving the game."
-);
-
-return;
-
-}
-
-const result =
+const result=
 await db.rpc(
 "leave_game",
 {
@@ -3014,17 +4029,20 @@ clearLocalGame();
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Leave game error:",
+error
+);
 
 alert(
-"Could not leave room:\n"+
+"Could not leave the game:\n"+
 (error.message||
 "Unknown error")
 );
 
 }finally{
 
-leaveButton.disabled=false;
+gameLeaveButton.disabled=false;
 
 }
 
@@ -3067,11 +4085,18 @@ skippedPlayers.clear();
 
 currentTurn=0;
 currentRound=1;
+
 lastGameStatus=null;
 
 clearSavedRoom();
 
+rejoinCard.classList.add(
+"hidden"
+);
+
 show(home);
+
+updateLeaveButton();
 
 setStatus(
 createStatus,
@@ -3088,8 +4113,23 @@ true,
 
 
 /* =========================================================
-   VISIBILITY / SAFARI RESUME
+   SAFARI VISIBILITY
 ========================================================= */
+
+/*
+ IMPORTANT:
+
+We DO NOT resume the old game when
+Safari becomes visible.
+
+If the player has already joined
+the current game during this page
+session, we simply sync it.
+
+If they closed/reopened Safari,
+the home page offers Rejoin Game
+instead.
+*/
 
 document.addEventListener(
 "visibilitychange",
@@ -3101,7 +4141,7 @@ game
 ){
 
 console.log(
-"Safari resumed — forcing sync."
+"Safari resumed — syncing current game."
 );
 
 await syncGame();
@@ -3138,7 +4178,7 @@ joinCode.addEventListener(
 "input",
 ()=>{
 
-joinCode.value =
+joinCode.value=
 joinCode.value
 .toUpperCase()
 .replace(
@@ -3188,10 +4228,10 @@ joinGame();
    EVENTS
 ========================================================= */
 
-createButton.onclick =
+createButton.onclick=
 createGame;
 
-joinButton.onclick =
+joinButton.onclick=
 joinGame;
 
 
@@ -3202,7 +4242,8 @@ joinGame;
 function sleep(ms){
 
 return new Promise(
-resolve=>setTimeout(
+resolve=>
+setTimeout(
 resolve,
 ms
 )
@@ -3242,23 +4283,31 @@ return;
 
 await checkConnection();
 
+
 /*
- If the player closed Safari,
-re-opened the page, or refreshed,
-try to automatically put them
-back into their existing room.
-*/
+ IMPORTANT:
+
+OLD VERSION:
 
 const resumed =
 await tryResumeGame();
 
 if(resumed){
-
-console.log(
-"Successfully resumed previous game."
-);
-
+   ...
 }
+
+That automatically rejoined the game.
+
+NEW VERSION:
+
+We ONLY check whether a rejoin
+option should be displayed.
+
+The user must press:
+REJOIN GAME
+*/
+
+await checkForPreviousGame();
 
 })();
 </script>
