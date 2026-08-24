@@ -2941,6 +2941,11 @@ guessVoteResultsList.innerHTML="";
 
 try{
 
+/*
+ Get this player's role in the final-guess phase.
+ Only the actual Imposter(s) get the input panel.
+ Everyone else gets the waiting panel.
+*/
 const stateResult=
 await db.rpc(
 "get_imposter_guess_state",
@@ -2954,7 +2959,7 @@ if(stateResult.error)
 throw stateResult.error;
 
 const data=
-stateResult.data;
+stateResult.data||{};
 
 if(data.is_imposter){
 
@@ -2977,6 +2982,10 @@ guessWaitingPanel.classList.remove("hidden");
 
 }
 
+/*
+ Load the vote reveal while everyone is waiting.
+ This does NOT reveal the secret word to the Imposter.
+*/
 const revealResult=
 await db.rpc(
 "get_vote_reveal_state",
@@ -2990,7 +2999,7 @@ if(revealResult.error)
 throw revealResult.error;
 
 const reveal=
-revealResult.data;
+revealResult.data||{};
 
 guessVoteResultsList.innerHTML="";
 
@@ -3021,8 +3030,11 @@ nobodyName.textContent=
 const nobodyBadge=
 document.createElement("span");
 
-nobodyBadge.className="roleBadge civilianBadge";
-nobodyBadge.textContent="NOT A PLAYER";
+nobodyBadge.className=
+"roleBadge civilianBadge";
+
+nobodyBadge.textContent=
+"NOT A PLAYER";
 
 nobodyTop.appendChild(nobodyName);
 nobodyTop.appendChild(nobodyBadge);
@@ -3030,7 +3042,8 @@ nobodyTop.appendChild(nobodyBadge);
 const nobodyCount=
 document.createElement("div");
 
-nobodyCount.className="guessVoteCount";
+nobodyCount.className=
+"guessVoteCount";
 
 nobodyCount.textContent=
 nobodyVotes+
@@ -3094,9 +3107,9 @@ document.createElement("div");
 votes.className="guessVoteCount";
 
 votes.textContent=
-p.votes+
+Number(p.votes||0)+
 (
-p.votes===1
+Number(p.votes||0)===1
 ?" vote"
 :" votes"
 );
@@ -3182,7 +3195,9 @@ p_guess:guess
 if(result.error)
 throw result.error;
 
-if(result.data?.correct){
+const data=result.data||{};
+
+if(data.correct){
 
 finalGuessStatus.innerHTML=
 "🎉 Correct!";
@@ -3194,8 +3209,14 @@ finalGuessStatus.innerHTML=
 
 }
 
+/*
+ IMPORTANT:
+ Do not assume the round is finished just because this
+ particular Imposter submitted. In a 2-Imposter game,
+ the other Imposter may still need to guess.
+*/
 if(
-result.data?.remaining>0
+Number(data.remaining||0)>0
 ){
 
 finalGuessStatus.innerHTML+=
@@ -3208,11 +3229,21 @@ finalGuessStatus.innerHTML+=
 
 }
 
-await sleep(700);
+/*
+ Give Supabase a moment to update the game status before
+ forcing a sync. The regular 1-second sync loop also
+ catches it if this happens slightly later.
+*/
+await sleep(500);
 
 await syncGame();
 
 }catch(error){
+
+console.error(
+"Final guess submission:",
+error
+);
 
 finalGuessStatus.textContent=
 error.message;
@@ -3742,6 +3773,10 @@ startButton.disabled=true;
 
 try{
 
+/*
+ Save the settings first. If the save fails, do not
+ continue into the round.
+*/
 await saveSettings();
 
 const cat=
@@ -3996,7 +4031,7 @@ throw new Error("Unavailable");
 
 rejoinInfo.innerHTML=
 "Room <strong>"+
-game.code+
+escapeHtml(game.code)+
 "</strong><br><br>"+
 "Your previous game is still active.";
 
@@ -4074,9 +4109,6 @@ rejoinButton.disabled=false;
 
 /* =========================================================
    DON'T REJOIN
-   IMPORTANT:
-   This now actually removes the player from the game.
-   Previously it only deleted the local room code.
 ========================================================= */
 
 forgetGameButton.onclick=async()=>{
@@ -4086,9 +4118,6 @@ localStorage.getItem(
 "imposter_room_code"
 );
 
-/*
- If there is no saved room, simply clear the card.
-*/
 if(!code){
 
 rejoinCard.classList.add("hidden");
@@ -4104,13 +4133,6 @@ rejoinInfo.innerHTML=
 
 try{
 
-/*
- If checkForPreviousGame() successfully resumed the
- player, game/player already contain the correct data.
-
- If they don't, resume the game one last time so we
- can safely call leave_game with the correct room.
-*/
 if(!game||!player){
 
 const resumeResult=
@@ -4135,10 +4157,6 @@ player=resumeResult.data.player;
 
 }
 
-/*
- THIS is the important part:
- actually remove this player's row from the lobby/game.
-*/
 const leaveResult=
 await db.rpc(
 "leave_game",
@@ -4151,9 +4169,6 @@ p_player_token:getToken()
 if(leaveResult.error)
 throw leaveResult.error;
 
-/*
- Now clear the local saved-game information.
-*/
 await clearLocalGame();
 
 rejoinCard.classList.add("hidden");
