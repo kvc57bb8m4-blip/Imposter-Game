@@ -307,7 +307,7 @@ button:disabled{
   left:12px;
   z-index:9999;
   width:auto;
-  min-width:120px;
+  min-width:110px;
   height:42px;
   padding:0 14px;
   margin:0;
@@ -323,7 +323,7 @@ button:disabled{
   top:calc(env(safe-area-inset-top) + 58px);
   left:12px;
   z-index:9998;
-  width:190px
+  width:170px
 }
 
 .leaveControls button{
@@ -403,7 +403,7 @@ hr{
 
 <button id="gameLeaveButton"
         class="gameLeaveButton hidden">
-← Leave Lobby
+← Leave Game
 </button>
 
 <div id="leaveControls"
@@ -878,6 +878,90 @@ return token;
 
 
 /* =========================================================
+   CURRENT PLAYER / HOST AUTHORIZATION
+========================================================= */
+
+/*
+ IMPORTANT:
+
+The game's host_token can change when:
+- the original host leaves
+- another player becomes host
+- the player reconnects/rejoins
+- the browser has an older player token
+
+The old version always sent getToken() to host-only
+RPCs. That could cause "Not authorized".
+
+We now refresh the current player and use the room's
+CURRENT host token for host actions.
+*/
+
+async function refreshCurrentPlayer(){
+
+if(!game||!player)
+return false;
+
+try{
+
+const result=
+await db
+.from("game_players")
+.select(
+"id,display_name,is_host,is_alive,player_token"
+)
+.eq("id",player.id)
+.eq("game_id",game.id)
+.maybeSingle();
+
+if(result.error)
+throw result.error;
+
+if(!result.data)
+return false;
+
+player=result.data;
+
+return true;
+
+}catch(error){
+
+console.error(
+"Could not refresh player:",
+error
+);
+
+return false;
+
+}
+
+}
+
+
+/*
+ Use the current game's host token.
+
+ This fixes host authorization after reconnects
+ or host transfers.
+*/
+
+function getHostToken(){
+
+if(
+game &&
+game.host_token
+){
+
+return game.host_token;
+
+}
+
+return getToken();
+
+}
+
+
+/* =========================================================
    ROOM MEMORY
 ========================================================= */
 
@@ -990,13 +1074,6 @@ connectionText.textContent=text;
 
 }
 
-
-/*
- Updates the top-left button depending
- on which part of the game the player
- is currently in.
-*/
-
 function updateLeaveUI(){
 
 if(!game||!player){
@@ -1010,21 +1087,6 @@ return;
 
 gameLeaveButton.classList.remove("hidden");
 leaveControls.classList.remove("hidden");
-
-const inLobby=
-!lobby.classList.contains("hidden");
-
-if(inLobby){
-
-gameLeaveButton.textContent=
-"← Leave Lobby";
-
-}else{
-
-gameLeaveButton.textContent=
-"← Leave Game";
-
-}
 
 bringLobbyButton.classList.toggle(
 "hidden",
@@ -1392,7 +1454,6 @@ const oldPlayer=result.data.player;
 if(!oldGame||!oldPlayer)
 throw new Error("Unavailable");
 
-
 const playersResult=
 await db
 .from("game_players")
@@ -1405,25 +1466,13 @@ throw playersResult.error;
 const currentPlayers=
 playersResult.data||[];
 
-
-/*
- There must be at least one OTHER
- player in the room.
-*/
-
-const otherPlayers=
-currentPlayers.filter(
-p=>p.id!==oldPlayer.id
-);
-
-if(otherPlayers.length<1){
+if(currentPlayers.length<2){
 
 rejoinCard.classList.add("hidden");
 
 return;
 
 }
-
 
 const active=[
 "lobby",
@@ -1440,7 +1489,6 @@ rejoinCard.classList.add("hidden");
 return;
 
 }
-
 
 let phase="Game in progress.";
 
@@ -1459,7 +1507,6 @@ phase="Voting is active.";
 if(oldGame.status==="results")
 phase="The results are showing.";
 
-
 rejoinInfo.innerHTML=
 "Room <strong>"+
 oldGame.code+
@@ -1468,7 +1515,6 @@ phase+
 "<br><br>"+
 currentPlayers.length+
 " players are currently in the room.";
-
 
 rejoinCard.classList.remove("hidden");
 
@@ -1501,9 +1547,6 @@ return;
 
 rejoinButton.disabled=true;
 
-rejoinInfo.textContent=
-"Rejoining game...";
-
 try{
 
 const result=
@@ -1518,43 +1561,20 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-if(
-!result.data ||
-!result.data.game ||
-!result.data.player
-){
-
-throw new Error(
-"This game is no longer available."
-);
-
-}
-
 game=result.data.game;
 player=result.data.player;
-
-
-/*
- Check that another player is still
- there immediately before rejoining.
-*/
 
 const playersResult=
 await db
 .from("game_players")
-.select("id,display_name,is_alive")
+.select("id,display_name")
 .eq("game_id",game.id);
 
 if(playersResult.error)
 throw playersResult.error;
 
-const currentPlayers=
-playersResult.data||[];
-
 if(
-!currentPlayers.some(
-p=>p.id!==player.id
-)
+(playersResult.data||[]).length<2
 ){
 
 throw new Error(
@@ -1563,22 +1583,11 @@ throw new Error(
 
 }
 
-
 rejoinCard.classList.add("hidden");
 
-saveRoster(currentPlayers);
 saveRoom();
 
-subscribeToGame();
-startSyncLoop();
-
-/*
- Do NOT automatically assume lobby.
- Sync reads the real current phase
- from the database.
-*/
-
-lastStatus=null;
+openLobby();
 
 await syncGame();
 
@@ -1709,13 +1718,11 @@ players.appendChild(div);
 
 });
 
-
 lobbyStatus.textContent=
 list.length+
 " player"+
 (list.length===1?"":"s")+
 " in the room.";
-
 
 savedRoster=list.map(p=>({
 id:p.id,
@@ -1750,8 +1757,6 @@ if(channel){
 try{
 db.removeChannel(channel);
 }catch{}
-
-channel=null;
 
 }
 
@@ -1888,10 +1893,7 @@ await handlePhase(status);
 
 }else{
 
-if(
-status==="playing"||
-status==="clues"
-){
+if(status==="clues"){
 
 await showGameScreen();
 
@@ -1950,16 +1952,7 @@ return;
 if(status==="lobby"){
 
 await loadPlayers();
-show(lobby);
-
-roomCode.textContent=game.code;
-
-hostControls.classList.toggle(
-"hidden",
-!player.is_host
-);
-
-updateLeaveUI();
+openLobby();
 
 return;
 
@@ -2025,8 +2018,7 @@ throw new Error(
 
 if(data.status==="lobby"){
 
-show(lobby);
-await loadPlayers();
+openLobby();
 return;
 
 }
@@ -2034,7 +2026,6 @@ return;
 gameCategory.textContent=
 data.category||
 "CATEGORY";
-
 
 if(data.is_imposter){
 
@@ -2065,7 +2056,6 @@ roleDescription.textContent=
 "Give a clue about the word without making it too obvious.";
 
 }
-
 
 await loadClueOrder();
 
@@ -2126,11 +2116,6 @@ ids
 .map(id=>map.get(id))
 .filter(Boolean);
 
-
-/*
- Fallback if clue_order is unavailable.
-*/
-
 if(!clueOrder.length){
 
 clueOrder=
@@ -2179,7 +2164,6 @@ clueOrderList.appendChild(row);
 
 });
 
-
 hostClueControls.classList.toggle(
 "hidden",
 !player.is_host
@@ -2214,8 +2198,8 @@ return;
 clueTimer.className="timer";
 
 const start=
-game.clue_turn_started_at||
-game.started_at;
+game.started_at||
+game.clue_turn_started_at;
 
 if(!start){
 
@@ -2278,19 +2262,43 @@ setInterval(tick,250);
 
 startVotingButton.onclick=async()=>{
 
-if(!player?.is_host)
+if(!game||!player)
 return;
 
 startVotingButton.disabled=true;
 
 try{
 
+/*
+ Make sure the browser knows whether
+ this player is still the host.
+*/
+
+const refreshed=
+await refreshCurrentPlayer();
+
+if(!refreshed){
+
+throw new Error(
+"Could not verify your player account."
+);
+
+}
+
+if(!player.is_host){
+
+throw new Error(
+"You are no longer the host."
+);
+
+}
+
 const result=
 await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getToken(),
+p_host_token:getHostToken(),
 p_phase:"voting"
 }
 );
@@ -2422,17 +2430,6 @@ throw result.error;
 voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
 
-if(
-result.data &&
-result.data.all_voted
-){
-
-await syncGame();
-
-return;
-
-}
-
 if(player.is_host){
 
 await finishVotesWhenReady();
@@ -2495,7 +2492,7 @@ await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getToken(),
+p_host_token:getHostToken(),
 p_phase:"results"
 }
 );
@@ -2549,7 +2546,7 @@ await db.rpc(
 p_code:game.code,
 p_host_token:
 player.is_host
-?getToken()
+?getHostToken()
 :null
 }
 );
@@ -2563,34 +2560,12 @@ throw result.error;
 
 }
 
-
-/*
- get_vote_result returns JSONB.
- Depending on the Supabase client,
- this may arrive as an array directly
- or as JSON-like data.
-*/
-
-let list=[];
-
-if(Array.isArray(result.data)){
-
-list=result.data;
-
-}else if(
-result.data &&
-Array.isArray(result.data.result)
-){
-
-list=result.data.result;
-
-}
-
-
 if(
 player.is_host &&
-!result.error
+Array.isArray(result.data)
 ){
+
+const list=result.data;
 
 voteResults.innerHTML="";
 
@@ -2656,12 +2631,31 @@ resultText.textContent=
 
 nextRoundButton.onclick=async()=>{
 
-if(!player.is_host)
+if(!game||!player)
 return;
 
 nextRoundButton.disabled=true;
 
 try{
+
+const refreshed=
+await refreshCurrentPlayer();
+
+if(!refreshed){
+
+throw new Error(
+"Could not verify your player account."
+);
+
+}
+
+if(!player.is_host){
+
+throw new Error(
+"You are no longer the host."
+);
+
+}
 
 const cat=
 category.value==="random"
@@ -2676,7 +2670,7 @@ await db.rpc(
 "start_game",
 {
 p_code:game.code,
-p_host_token:getToken(),
+p_host_token:getHostToken(),
 p_category_id:cat,
 p_clue_time:time
 }
@@ -2694,7 +2688,7 @@ await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getToken(),
+p_host_token:getHostToken(),
 p_phase:"clues"
 }
 );
@@ -2728,12 +2722,37 @@ nextRoundButton.disabled=false;
 
 startButton.onclick=async()=>{
 
-if(!player?.is_host)
+if(!game||!player)
 return;
 
 startButton.disabled=true;
 
 try{
+
+/*
+ Refresh the player first.
+ This handles host transfers and
+ stale/rejoined browser sessions.
+*/
+
+const refreshed=
+await refreshCurrentPlayer();
+
+if(!refreshed){
+
+throw new Error(
+"Could not verify your player account."
+);
+
+}
+
+if(!player.is_host){
+
+throw new Error(
+"You are no longer the host. Another player is now host."
+);
+
+}
 
 const cat=
 category.value==="random"
@@ -2748,7 +2767,7 @@ await db.rpc(
 "start_game",
 {
 p_code:game.code,
-p_host_token:getToken(),
+p_host_token:getHostToken(),
 p_category_id:cat,
 p_clue_time:time
 }
@@ -2761,12 +2780,16 @@ game=result.data.game;
 
 saveRoom();
 
+/*
+ Immediately move from playing to clues.
+*/
+
 const phase=
 await db.rpc(
 "set_phase",
 {
 p_code:game.code,
-p_host_token:getToken(),
+p_host_token:getHostToken(),
 p_phase:"clues"
 }
 );
@@ -2780,7 +2803,10 @@ await syncGame();
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Could not start game:",
+error
+);
 
 alert(
 "Could not start game:\n"+
@@ -2802,17 +2828,36 @@ startButton.disabled=false;
 
 backLobbyButton.onclick=async()=>{
 
-if(!player.is_host)
+if(!game||!player)
 return;
 
 try{
+
+const refreshed=
+await refreshCurrentPlayer();
+
+if(!refreshed){
+
+throw new Error(
+"Could not verify your player account."
+);
+
+}
+
+if(!player.is_host){
+
+throw new Error(
+"You are no longer the host."
+);
+
+}
 
 const result=
 await db.rpc(
 "reset_to_lobby",
 {
 p_code:game.code,
-p_host_token:getToken()
+p_host_token:getHostToken()
 }
 );
 
@@ -2841,7 +2886,7 @@ error.message
 
 bringLobbyButton.onclick=async()=>{
 
-if(!player?.is_host)
+if(!game||!player)
 return;
 
 if(!confirm(
@@ -2853,12 +2898,31 @@ bringLobbyButton.disabled=true;
 
 try{
 
+const refreshed=
+await refreshCurrentPlayer();
+
+if(!refreshed){
+
+throw new Error(
+"Could not verify your player account."
+);
+
+}
+
+if(!player.is_host){
+
+throw new Error(
+"You are no longer the host."
+);
+
+}
+
 const result=
 await db.rpc(
 "reset_to_lobby",
 {
 p_code:game.code,
-p_host_token:getToken()
+p_host_token:getHostToken()
 }
 );
 
@@ -2886,7 +2950,7 @@ bringLobbyButton.disabled=false;
 
 
 /* =========================================================
-   LEAVE GAME / LOBBY
+   LEAVE GAME
 ========================================================= */
 
 gameLeaveButton.onclick=async()=>{
@@ -2894,21 +2958,10 @@ gameLeaveButton.onclick=async()=>{
 if(!game||!player)
 return;
 
-
-/*
- Change the confirmation depending
- on whether they're currently in
- the lobby or an active game.
-*/
-
-const inLobby=
-!lobby.classList.contains("hidden");
-
-const message=inLobby
-?"Leave this lobby?\n\nYou will be removed from the room."
-:"Leave this game?\n\nYou will be removed from the room. If you're the host, another player will become host.";
-
-if(!confirm(message))
+if(!confirm(
+"Leave this game?\n\n"+
+"If you're the host, another player will become host."
+))
 return;
 
 gameLeaveButton.disabled=true;
@@ -2927,25 +2980,12 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-
-/*
- VERY IMPORTANT:
- Clear the saved room only after the
- database confirms the player left.
-
- This prevents an intentionally
- abandoned room from showing a
- Rejoin Game prompt.
-*/
-
 await clearLocalGame();
 
 }catch(error){
 
-console.error(error);
-
 alert(
-"Could not leave:\n"+
+"Could not leave game:\n"+
 error.message
 );
 
@@ -2967,9 +3007,6 @@ async function clearLocalGame(){
 clearInterval(clueTimerInterval);
 clearInterval(syncInterval);
 
-clueTimerInterval=null;
-syncInterval=null;
-
 if(channel){
 
 try{
@@ -2985,7 +3022,6 @@ player=null;
 clueOrder=[];
 
 lastStatus=null;
-selectedVote=null;
 
 clearSavedRoom();
 
@@ -3142,12 +3178,8 @@ return;
 await checkConnection();
 
 /*
- IMPORTANT:
- We NEVER automatically rejoin.
-
- We only check whether a previous
- game is available and show the
- Rejoin Game button.
+ Only SHOW rejoin.
+ Do not automatically reconnect.
 */
 
 await checkForPreviousGame();
