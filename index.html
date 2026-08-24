@@ -2,372 +2,82 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090b12">
 <title>IMPOSTER</title>
 
+<!-- Primary CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Fallback CDN -->
+<script>
+if(!window.supabase){
+  document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');
+}
+</script>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
-}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:#090b12;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-
-body{
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
-}
-
-.app{
-  width:100%;
-  max-width:620px;
-  margin:auto;
-  padding:20px 16px 45px
-}
-
-h1{
-  text-align:center;
-  font-size:46px;
-  margin:18px 0 25px;
-  letter-spacing:3px;
-  font-weight:900
-}
-
-.card{
-  background:#131724;
-  border:1px solid #292f43;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.18)
-}
-
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#090b12;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.app{width:100%;max-width:620px;margin:auto;padding:20px 16px 45px}
+h1{text-align:center;font-size:46px;margin:18px 0 25px;letter-spacing:3px;font-weight:900}
+.card{background:#131724;border:1px solid #292f43;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 h2{margin-top:0}
-
-input,button,select{
-  width:100%;
-  height:54px;
-  border-radius:14px;
-  font-size:17px;
-  margin-top:10px
-}
-
-input,select{
-  padding:0 15px;
-  background:#090c14;
-  border:1px solid #353c51;
-  color:#fff;
-  outline:none
-}
-
-button{
-  border:0;
-  background:#6264ff;
-  color:#fff;
-  font-weight:800;
-  cursor:pointer
-}
-
-button:active{
-  transform:scale(.98)
-}
-
-button:disabled{
-  opacity:.5
-}
-
-.secondary{
-  background:#242a3b
-}
-
-.danger{
-  background:#8f354c
-}
-
-.hidden{
-  display:none!important
-}
-
-.center{
-  text-align:center
-}
-
-.status{
-  margin-top:13px;
-  padding:13px;
-  border-radius:12px;
-  background:#1c2130;
-  font-size:14px;
-  line-height:1.4;
-  word-break:break-word
-}
-
+input,button,select{width:100%;height:54px;border-radius:14px;font-size:17px;margin-top:10px}
+input,select{padding:0 15px;background:#090c14;border:1px solid #353c51;color:#fff;outline:none}
+button{border:0;background:#6264ff;color:#fff;font-weight:800}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.5}
+.secondary{background:#242a3b}
+.danger{background:#8f354c}
+.hidden{display:none!important}
+.center{text-align:center}
+.status{margin-top:13px;padding:13px;border-radius:12px;background:#1c2130;font-size:14px;line-height:1.4;word-break:break-word}
 .ok{color:#7ee5a7}
 .err{color:#ff8199}
-
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px
-}
-
-.tab{
-  margin:0;
-  background:#242a3b
-}
-
-.tab.active{
-  background:#6264ff
-}
-
-.code{
-  text-align:center;
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:12px 0
-}
-
-.player{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:14px;
-  border-radius:12px;
-  margin-top:8px;
-  min-height:50px
-}
-
-.host{
-  float:right;
-  color:#8c8fff;
-  font-size:13px;
-  font-weight:700
-}
-
-.roleBox{
-  text-align:center;
-  padding:20px 5px
-}
-
-.role{
-  font-size:35px;
-  font-weight:900;
-  margin:20px 0 10px
-}
-
-.word{
-  font-size:36px;
-  font-weight:900;
-  margin:18px 0
-}
-
-.category{
-  color:#a2a8ba;
-  font-size:15px
-}
-
-.clueHeader{
-  text-align:center;
-  margin-bottom:18px
-}
-
-.clueHeader h2{
-  margin-bottom:6px
-}
-
-.clueHeader p{
-  margin:0;
-  color:#9299aa;
-  font-size:14px
-}
-
-.timer{
-  font-size:62px;
-  line-height:1;
-  font-weight:900;
-  text-align:center;
-  margin:18px 0 22px
-}
-
-.timerWarning{
-  font-size:62px;
-  line-height:1;
-  font-weight:900;
-  text-align:center;
-  margin:18px 0 22px
-}
-
-.noTimer{
-  text-align:center;
-  font-size:20px;
-  font-weight:800;
-  margin:18px 0 22px;
-  color:#9b9dff
-}
-
-.orderRow{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:13px;
-  border-radius:13px;
-  margin-top:8px;
-  transition:.15s
-}
-
-.orderRow.current{
-  background:#1d2040;
-  border-color:#6264ff;
-  box-shadow:0 0 0 1px rgba(98,100,255,.15)
-}
-
-.orderRow.done{
-  opacity:.65
-}
-
-.orderRow.skipped{
-  opacity:.55;
-  border-color:#713346
-}
-
-.orderNumber{
-  width:34px;
-  height:34px;
-  min-width:34px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#282e41;
-  font-weight:900
-}
-
-.current .orderNumber{
-  background:#6264ff
-}
-
-.orderName{
-  font-size:17px;
-  font-weight:700;
-  flex:1
-}
-
-.orderStatus{
-  font-size:12px;
-  font-weight:800;
-  color:#8991a5;
-  text-align:right
-}
-
-.current .orderStatus{
-  color:#9b9dff
-}
-
-.done .orderStatus{
-  color:#70d89a
-}
-
-.skipped .orderStatus{
-  color:#ff8199
-}
-
-.youBadge{
-  display:inline-block;
-  font-size:11px;
-  font-weight:800;
-  background:#282e41;
-  color:#aeb4c4;
-  padding:4px 7px;
-  border-radius:7px;
-  margin-left:6px
-}
-
-.current .youBadge{
-  background:#6264ff;
-  color:#fff
-}
-
-.turnMessage{
-  margin-top:16px;
-  text-align:center;
-  padding:14px;
-  border-radius:12px;
-  background:#1c2130;
-  font-weight:700
-}
-
-.hostControlsClue{
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px solid #292f43
-}
-
-.hostLabel{
-  font-size:12px;
-  font-weight:800;
-  color:#888fa2;
-  text-align:center;
-  margin-bottom:2px
-}
-
-.choice{
-  background:#1d2332;
-  border:1px solid #30384d;
-  margin-top:8px
-}
-
-.choice.selected{
-  background:#6264ff;
-  border-color:#6264ff
-}
-
-.result{
-  text-align:center;
-  font-size:25px;
-  font-weight:900;
-  padding:18px
-}
-
-.small{
-  text-align:center;
-  color:#8e95a8;
-  font-size:13px
-}
-
-hr{
-  border:0;
-  border-top:1px solid #292f43;
-  margin:20px 0
-}
-
-.connectionDot{
-  display:inline-block;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#ff8199;
-  margin-right:6px
-}
-
-.connectionDot.connected{
-  background:#70d89a
-}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{margin:0;background:#242a3b}
+.tab.active{background:#6264ff}
+.code{text-align:center;font-size:42px;font-weight:900;letter-spacing:7px;margin:12px 0}
+.player{background:#0d111b;border:1px solid #252b3c;padding:14px;border-radius:12px;margin-top:8px;min-height:50px}
+.host{float:right;color:#8c8fff;font-size:13px;font-weight:700}
+.roleBox{text-align:center;padding:20px 5px}
+.role{font-size:35px;font-weight:900;margin:20px 0 10px}
+.word{font-size:36px;font-weight:900;margin:18px 0}
+.category{color:#a2a8ba;font-size:15px}
+.clueHeader{text-align:center;margin-bottom:18px}
+.clueHeader h2{margin-bottom:6px}
+.clueHeader p{margin:0;color:#9299aa;font-size:14px}
+.timer,.timerWarning{font-size:62px;line-height:1;font-weight:900;text-align:center;margin:18px 0 22px}
+.timerWarning{color:#ff8199}
+.noTimer{text-align:center;font-size:20px;font-weight:800;margin:18px 0 22px;color:#9b9dff}
+.orderRow{display:flex;align-items:center;gap:11px;background:#0d111b;border:1px solid #252b3c;padding:13px;border-radius:13px;margin-top:8px;transition:.15s}
+.orderRow.current{background:#1d2040;border-color:#6264ff;box-shadow:0 0 0 1px rgba(98,100,255,.15)}
+.orderRow.done{opacity:.65}
+.orderRow.skipped{opacity:.55;border-color:#713346}
+.orderNumber{width:34px;height:34px;min-width:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#282e41;font-weight:900}
+.current .orderNumber{background:#6264ff}
+.orderName{font-size:17px;font-weight:700;flex:1}
+.orderStatus{font-size:12px;font-weight:800;color:#8991a5;text-align:right}
+.current .orderStatus{color:#9b9dff}
+.done .orderStatus{color:#70d89a}
+.skipped .orderStatus{color:#ff8199}
+.youBadge{display:inline-block;font-size:11px;font-weight:800;background:#282e41;color:#aeb4c4;padding:4px 7px;border-radius:7px;margin-left:6px}
+.current .youBadge{background:#6264ff;color:#fff}
+.turnMessage{margin-top:16px;text-align:center;padding:14px;border-radius:12px;background:#1c2130;font-weight:700}
+.hostControlsClue{margin-top:12px;padding-top:12px;border-top:1px solid #292f43}
+.hostLabel{font-size:12px;font-weight:800;color:#888fa2;text-align:center;margin-bottom:2px}
+.choice{background:#1d2332;border:1px solid #30384d;margin-top:8px}
+.choice.selected{background:#6264ff;border-color:#6264ff}
+.result{text-align:center;font-size:25px;font-weight:900;padding:18px}
+.small{text-align:center;color:#8e95a8;font-size:13px}
+hr{border:0;border-top:1px solid #292f43;margin:20px 0}
+.connectionDot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff8199;margin-right:7px}
+.connectionDot.okDot{background:#70d89a}
 </style>
 </head>
 
 <body>
-
 <main class="app">
 
 <h1>IMPOSTER</h1>
@@ -375,89 +85,49 @@ hr{
 <section id="home">
 
 <div class="tabs">
-
-<button id="createTab" class="tab active">
-Create Game
-</button>
-
-<button id="joinTab" class="tab">
-Join Game
-</button>
-
+<button id="createTab" class="tab active">Create Game</button>
+<button id="joinTab" class="tab">Join Game</button>
 </div>
 
 <div id="createCard" class="card">
-
 <h2>Create Room</h2>
 
-<input
-id="createName"
-maxlength="24"
-autocomplete="name"
-placeholder="Your name"
->
+<input id="createName" maxlength="24" autocomplete="name" placeholder="Your name">
 
-<button id="createButton">
-Create Room
-</button>
+<button id="createButton">Create Room</button>
 
 <div id="createStatus" class="status">
-<span class="connectionDot"></span>
 Connecting to multiplayer...
 </div>
-
 </div>
 
 <div id="joinCard" class="card hidden">
-
 <h2>Join Room</h2>
 
-<input
-id="joinName"
-maxlength="24"
-autocomplete="name"
-placeholder="Your name"
->
+<input id="joinName" maxlength="24" autocomplete="name" placeholder="Your name">
 
-<input
-id="joinCode"
-maxlength="6"
-autocapitalize="characters"
-placeholder="6-character room code"
->
+<input id="joinCode" maxlength="6" autocapitalize="characters" placeholder="6-character room code">
 
-<button id="joinButton">
-Join Game
-</button>
+<button id="joinButton">Join Game</button>
 
 <div id="joinStatus" class="status">
 Enter the room code your friend gave you.
 </div>
-
 </div>
 
 </section>
 
-
 <section id="lobby" class="card hidden">
 
-<h2 class="center">
-Game Lobby
-</h2>
+<h2 class="center">Game Lobby</h2>
 
-<div id="roomCode" class="code">
-------
-</div>
+<div id="roomCode" class="code">------</div>
 
-<p class="center">
-Share this code with your friends.
-</p>
+<p class="center">Share this code with your friends.</p>
 
 <hr>
 
-<div id="players">
-Loading players...
-</div>
+<div id="players">Loading players...</div>
 
 <div id="hostControls" class="hidden">
 
@@ -466,16 +136,11 @@ Loading players...
 <h3>Game Settings</h3>
 
 <label>Category</label>
-
 <select id="category">
-<option value="random">
-Random Category
-</option>
+<option value="random">Random Category</option>
 </select>
 
-<label style="display:block;margin-top:14px">
-Clue time
-</label>
+<label style="display:block;margin-top:14px">Clue time</label>
 
 <select id="clueTime">
 <option value="30">30 seconds</option>
@@ -485,68 +150,42 @@ Clue time
 <option value="0">♾️ No Time Limit</option>
 </select>
 
-<button id="startButton">
-Start Game
-</button>
+<button id="startButton">Start Game</button>
 
 </div>
 
-<button id="leaveButton" class="secondary">
-Leave Room
-</button>
+<button id="leaveButton" class="secondary">Leave Room</button>
 
-<div id="lobbyStatus" class="status">
-Waiting for players...
-</div>
+<div id="lobbyStatus" class="status">Waiting for players...</div>
 
 </section>
-
 
 <section id="roleScreen" class="card hidden">
 
 <div class="roleBox">
 
-<div class="category" id="roleCategory">
-CATEGORY
-</div>
+<div class="category" id="roleCategory">CATEGORY</div>
 
-<div id="roleTitle" class="role">
-YOUR ROLE
-</div>
+<div id="roleTitle" class="role">YOUR ROLE</div>
 
-<div id="roleWord" class="word">
-WORD
-</div>
+<div id="roleWord" class="word">WORD</div>
 
 <p id="roleDescription"></p>
 
-<button id="readyButton">
-I'm Ready
-</button>
+<button id="readyButton">I'm Ready</button>
 
 </div>
 
 </section>
 
-
 <section id="clueScreen" class="card hidden">
 
 <div class="clueHeader">
-
-<h2>
-Clue Order
-</h2>
-
-<p>
-Everyone follows the same order.
-The first player changes every round.
-</p>
-
+<h2>Clue Order</h2>
+<p>Everyone follows this order. The first player changes every round.</p>
 </div>
 
-<div id="clueTimer" class="timer">
-60
-</div>
+<div id="clueTimer" class="timer">60</div>
 
 <div id="clueOrderList"></div>
 
@@ -554,85 +193,49 @@ The first player changes every round.
 Getting clue order...
 </div>
 
-<button id="clueDoneButton">
-I Gave My Clue
-</button>
+<button id="clueDoneButton">I Gave My Clue</button>
 
-<div
-id="hostSkipControls"
-class="hostControlsClue hidden"
->
-
-<div class="hostLabel">
-HOST CONTROLS
-</div>
-
-<button
-id="hostSkipButton"
-class="danger"
->
-⏭ Skip Current Player
-</button>
-
+<div id="hostSkipControls" class="hostControlsClue hidden">
+<div class="hostLabel">HOST CONTROLS</div>
+<button id="hostSkipButton" class="danger">⏭ Skip Current Player</button>
 </div>
 
 </section>
-
 
 <section id="votingScreen" class="card hidden">
 
-<h2 class="center">
-Vote
-</h2>
+<h2 class="center">Vote</h2>
 
-<p class="center">
-Who do you think the Imposter is?
-</p>
+<p class="center">Who do you think the Imposter is?</p>
 
 <div id="votePlayers"></div>
 
-<button id="submitVoteButton" disabled>
-Submit Vote
-</button>
+<button id="submitVoteButton" disabled>Submit Vote</button>
 
-<div id="voteStatus" class="status center">
-Choose a player.
-</div>
+<div id="voteStatus" class="status center">Choose a player.</div>
 
 </section>
 
-
 <section id="resultsScreen" class="card hidden">
 
-<h2 class="center">
-Results
-</h2>
+<h2 class="center">Results</h2>
 
-<div id="resultText" class="result">
-Calculating...
-</div>
+<div id="resultText" class="result">Calculating...</div>
 
 <div id="voteResults"></div>
 
-<button id="nextRoundButton">
-Next Round
-</button>
+<button id="nextRoundButton">Next Round</button>
 
-<button id="backLobbyButton" class="secondary">
-Back to Lobby
-</button>
+<button id="backLobbyButton" class="secondary">Back to Lobby</button>
 
 </section>
 
 <p class="small">
-<span id="connectionIndicator">
-<span class="connectionDot"></span>
-Connecting
-</span>
+<span id="connectionDot" class="connectionDot"></span>
+<span id="connectionText">Connecting...</span>
 </p>
 
 </main>
-
 
 <script>
 "use strict";
@@ -647,410 +250,268 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
-let db = null;
+let db=null;
 
+function initSupabase(){
+
+if(!window.supabase){
+throw new Error(
+"Supabase library failed to load. Check your internet connection and reload the page."
+);
+}
+
+db=window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY,
+{
+auth:{
+persistSession:false,
+autoRefreshToken:false
+},
+realtime:{
+params:{
+eventsPerSecond:20
+}
+}
+});
+
+return db;
+}
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let game = null;
-let player = null;
-let channel = null;
+let game=null;
+let player=null;
+let channel=null;
 
-let clueOrder = [];
-let skippedPlayers = new Set();
+let clueOrder=[];
+let skippedPlayers=new Set();
 
-let currentTurn = 0;
-let currentRound = 1;
+let currentTurn=0;
+let clueTimerValue=60;
+let clueInterval=null;
+let syncInterval=null;
 
-let timeLimit = 60;
-let clueTimerValue = 60;
-let clueInterval = null;
+let selectedVote=null;
+let currentRound=1;
+let timeLimit=60;
 
-let selectedVote = null;
-
-let connectionReady = false;
-let subscriptionReady = false;
-
-let phase = "lobby";
-
-/*
-  IMPORTANT:
-
-  Only the HOST is allowed to advance the authoritative
-  clue state.
-
-  Other phones listen for the host's state broadcasts.
-*/
-
-let hostStateVersion = 0;
-
-let heartbeatInterval = null;
-let syncInterval = null;
-
-let roleLoading = false;
-let votingLoading = false;
-
-let lastAppliedState = null;
-
+let lastGameStatus=null;
+let phaseChanging=false;
+let lastSyncAt=0;
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const home =
-document.getElementById("home");
+const home=document.getElementById("home");
+const lobby=document.getElementById("lobby");
+const roleScreen=document.getElementById("roleScreen");
+const clueScreen=document.getElementById("clueScreen");
+const votingScreen=document.getElementById("votingScreen");
+const resultsScreen=document.getElementById("resultsScreen");
 
-const lobby =
-document.getElementById("lobby");
+const createTab=document.getElementById("createTab");
+const joinTab=document.getElementById("joinTab");
 
-const roleScreen =
-document.getElementById("roleScreen");
+const createCard=document.getElementById("createCard");
+const joinCard=document.getElementById("joinCard");
 
-const clueScreen =
-document.getElementById("clueScreen");
+const createName=document.getElementById("createName");
+const joinName=document.getElementById("joinName");
+const joinCode=document.getElementById("joinCode");
 
-const votingScreen =
-document.getElementById("votingScreen");
+const createButton=document.getElementById("createButton");
+const joinButton=document.getElementById("joinButton");
 
-const resultsScreen =
-document.getElementById("resultsScreen");
+const createStatus=document.getElementById("createStatus");
+const joinStatus=document.getElementById("joinStatus");
 
-const createTab =
-document.getElementById("createTab");
+const roomCode=document.getElementById("roomCode");
+const players=document.getElementById("players");
 
-const joinTab =
-document.getElementById("joinTab");
+const hostControls=document.getElementById("hostControls");
 
-const createCard =
-document.getElementById("createCard");
+const category=document.getElementById("category");
+const clueTime=document.getElementById("clueTime");
 
-const joinCard =
-document.getElementById("joinCard");
+const startButton=document.getElementById("startButton");
+const leaveButton=document.getElementById("leaveButton");
 
-const createName =
-document.getElementById("createName");
+const lobbyStatus=document.getElementById("lobbyStatus");
 
-const joinName =
-document.getElementById("joinName");
+const roleCategory=document.getElementById("roleCategory");
+const roleTitle=document.getElementById("roleTitle");
+const roleWord=document.getElementById("roleWord");
+const roleDescription=document.getElementById("roleDescription");
 
-const joinCode =
-document.getElementById("joinCode");
+const readyButton=document.getElementById("readyButton");
 
-const createButton =
-document.getElementById("createButton");
+const clueTimer=document.getElementById("clueTimer");
+const clueOrderList=document.getElementById("clueOrderList");
+const clueTurnMessage=document.getElementById("clueTurnMessage");
 
-const joinButton =
-document.getElementById("joinButton");
+const clueDoneButton=document.getElementById("clueDoneButton");
 
-const createStatus =
-document.getElementById("createStatus");
+const hostSkipControls=document.getElementById("hostSkipControls");
+const hostSkipButton=document.getElementById("hostSkipButton");
 
-const joinStatus =
-document.getElementById("joinStatus");
+const votePlayers=document.getElementById("votePlayers");
+const submitVoteButton=document.getElementById("submitVoteButton");
+const voteStatus=document.getElementById("voteStatus");
 
-const roomCode =
-document.getElementById("roomCode");
+const resultText=document.getElementById("resultText");
+const voteResults=document.getElementById("voteResults");
 
-const players =
-document.getElementById("players");
+const nextRoundButton=document.getElementById("nextRoundButton");
+const backLobbyButton=document.getElementById("backLobbyButton");
 
-const hostControls =
-document.getElementById("hostControls");
-
-const category =
-document.getElementById("category");
-
-const clueTime =
-document.getElementById("clueTime");
-
-const startButton =
-document.getElementById("startButton");
-
-const leaveButton =
-document.getElementById("leaveButton");
-
-const lobbyStatus =
-document.getElementById("lobbyStatus");
-
-const roleCategory =
-document.getElementById("roleCategory");
-
-const roleTitle =
-document.getElementById("roleTitle");
-
-const roleWord =
-document.getElementById("roleWord");
-
-const roleDescription =
-document.getElementById("roleDescription");
-
-const readyButton =
-document.getElementById("readyButton");
-
-const clueTimer =
-document.getElementById("clueTimer");
-
-const clueOrderList =
-document.getElementById("clueOrderList");
-
-const clueTurnMessage =
-document.getElementById("clueTurnMessage");
-
-const clueDoneButton =
-document.getElementById("clueDoneButton");
-
-const hostSkipControls =
-document.getElementById("hostSkipControls");
-
-const hostSkipButton =
-document.getElementById("hostSkipButton");
-
-const votePlayers =
-document.getElementById("votePlayers");
-
-const submitVoteButton =
-document.getElementById("submitVoteButton");
-
-const voteStatus =
-document.getElementById("voteStatus");
-
-const resultText =
-document.getElementById("resultText");
-
-const voteResults =
-document.getElementById("voteResults");
-
-const nextRoundButton =
-document.getElementById("nextRoundButton");
-
-const backLobbyButton =
-document.getElementById("backLobbyButton");
-
-const connectionIndicator =
-document.getElementById("connectionIndicator");
-
+const connectionDot=document.getElementById("connectionDot");
+const connectionText=document.getElementById("connectionText");
 
 /* =========================================================
-   HELPERS
-========================================================= */
-
-function setStatus(el,text,type=""){
-  el.textContent = text;
-  el.className = "status " + type;
-}
-
-
-function connectionText(text,connected=false){
-
-  connectionIndicator.innerHTML =
-    '<span class="connectionDot '+
-    (connected ? "connected" : "")+
-    '"></span>'+
-    text;
-}
-
-
-function sleep(ms){
-  return new Promise(resolve=>setTimeout(resolve,ms));
-}
-
-
-/* =========================================================
-   TOKEN
+   UTILITIES
 ========================================================= */
 
 function getToken(){
 
-  let token =
-    localStorage.getItem("imposter_token");
+let token=localStorage.getItem("imposter_token");
 
-  if(!token){
+if(!token){
 
-    if(
-      window.crypto &&
-      typeof crypto.randomUUID === "function"
-    ){
-
-      token = crypto.randomUUID();
-
-    }else{
-
-      token =
-        Date.now().toString(36)+
-        Math.random().toString(36).slice(2);
-
-    }
-
-    localStorage.setItem(
-      "imposter_token",
-      token
-    );
-  }
-
-  return token;
+if(crypto&&crypto.randomUUID){
+token=crypto.randomUUID();
+}else{
+token=
+"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+.replace(/[xy]/g,c=>{
+const r=Math.random()*16|0;
+const v=c==="x"?r:(r&3)|8;
+return v.toString(16);
+});
 }
 
+localStorage.setItem("imposter_token",token);
+}
 
-/* =========================================================
-   SCREEN
-========================================================= */
+return token;
+}
 
 function show(screen){
 
-  [
-    home,
-    lobby,
-    roleScreen,
-    clueScreen,
-    votingScreen,
-    resultsScreen
-  ].forEach(x=>{
-    x.classList.add("hidden");
-  });
+[
+home,
+lobby,
+roleScreen,
+clueScreen,
+votingScreen,
+resultsScreen
+].forEach(x=>x.classList.add("hidden"));
 
-  screen.classList.remove("hidden");
+screen.classList.remove("hidden");
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 }
 
+function setStatus(el,text,type=""){
+el.textContent=text;
+el.className="status "+type;
+}
 
-/* =========================================================
-   TABS
-========================================================= */
+function setConnection(ok,text){
 
-createTab.onclick=()=>{
-
-  createTab.classList.add("active");
-  joinTab.classList.remove("active");
-
-  createCard.classList.remove("hidden");
-  joinCard.classList.add("hidden");
-};
-
-
-joinTab.onclick=()=>{
-
-  joinTab.classList.add("active");
-  createTab.classList.remove("active");
-
-  joinCard.classList.remove("hidden");
-  createCard.classList.add("hidden");
-};
-
-
-/* =========================================================
-   SUPABASE INITIALIZATION
-========================================================= */
-
-async function initializeSupabase(){
-
-  try{
-
-    if(
-      !window.supabase ||
-      typeof window.supabase.createClient !== "function"
-    ){
-
-      throw new Error(
-        "Supabase library failed to load. Check your internet connection and reload the page."
-      );
-
-    }
-
-    db =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-        {
-          auth:{
-            persistSession:false,
-            autoRefreshToken:false
-          },
-          realtime:{
-            params:{
-              eventsPerSecond:20
-            }
-          }
-        }
-      );
-
-    /*
-      Do not allow the connection screen to hang forever.
-    */
-
-    const request =
-      db
-      .from("game_categories")
-      .select("id,name")
-      .limit(1);
-
-    const timeout =
-      new Promise((_,reject)=>{
-
-        setTimeout(()=>{
-          reject(
-            new Error(
-              "The multiplayer server did not respond within 10 seconds."
-            )
-          );
-        },10000);
-
-      });
-
-    const result =
-      await Promise.race([
-        request,
-        timeout
-      ]);
-
-    if(result.error)
-      throw result.error;
-
-    connectionReady=true;
-
-    setStatus(
-      createStatus,
-      "✓ Multiplayer server connected",
-      "ok"
-    );
-
-    connectionText(
-      "Multiplayer connected",
-      true
-    );
-
-    await loadCategories();
-
-  }catch(error){
-
-    console.error(
-      "Supabase connection error:",
-      error
-    );
-
-    connectionReady=false;
-
-    setStatus(
-      createStatus,
-      "Connection failed: "+
-      (error.message || "Unknown error"),
-      "err"
-    );
-
-    connectionText(
-      "Multiplayer disconnected",
-      false
-    );
-
-  }
+connectionDot.classList.toggle("okDot",ok);
+connectionText.textContent=text;
 
 }
 
+/* =========================================================
+   CONNECTION CHECK
+========================================================= */
+
+async function checkConnection(){
+
+setConnection(false,"Connecting...");
+
+setStatus(
+createStatus,
+"Connecting to multiplayer..."
+);
+
+try{
+
+if(!db){
+initSupabase();
+}
+
+/*
+ IMPORTANT:
+ We use a very small direct query.
+ This prevents the page from hanging forever if
+ the library or API is unavailable.
+*/
+
+const timeout=new Promise((_,reject)=>{
+setTimeout(
+()=>reject(
+new Error("Connection timed out after 8 seconds.")
+),
+8000
+);
+});
+
+const request=db
+.from("game_categories")
+.select("id,name")
+.limit(1);
+
+const result=await Promise.race([
+request,
+timeout
+]);
+
+if(result.error)
+throw result.error;
+
+setConnection(
+true,
+"Multiplayer connected"
+);
+
+setStatus(
+createStatus,
+"✓ Multiplayer server connected",
+"ok"
+);
+
+await loadCategories();
+
+}catch(e){
+
+console.error("SUPABASE CONNECTION ERROR:",e);
+
+setConnection(
+false,
+"Multiplayer connection problem"
+);
+
+setStatus(
+createStatus,
+"Connection failed: "+(
+e.message||
+"Unable to reach Supabase."
+),
+"err"
+);
+
+}
+
+}
 
 /* =========================================================
    CATEGORIES
@@ -1058,992 +519,597 @@ async function initializeSupabase(){
 
 async function loadCategories(){
 
-  if(!db)
-    return;
+try{
 
-  try{
+const r=await db
+.from("game_categories")
+.select("id,name")
+.eq("active",true)
+.order("name");
 
-    const result =
-      await db
-      .from("game_categories")
-      .select("id,name")
-      .eq("active",true)
-      .order("name");
+if(r.error){
+console.warn("Categories:",r.error);
+return;
+}
 
-    if(result.error)
-      throw result.error;
+category.innerHTML=
+'<option value="random">Random Category</option>';
 
-    category.innerHTML =
-      '<option value="random">Random Category</option>';
+(r.data||[]).forEach(c=>{
 
-    (result.data || []).forEach(c=>{
+const option=document.createElement("option");
 
-      const option =
-        document.createElement("option");
+option.value=c.id;
+option.textContent=c.name;
 
-      option.value=c.id;
-      option.textContent=c.name;
+category.appendChild(option);
 
-      category.appendChild(option);
+});
 
-    });
+}catch(e){
 
-  }catch(error){
-
-    console.error(
-      "Category loading error:",
-      error
-    );
-
-  }
+console.error(e);
 
 }
 
+}
 
 /* =========================================================
-   CREATE GAME
+   TABS
+========================================================= */
+
+createTab.onclick=()=>{
+
+createTab.classList.add("active");
+joinTab.classList.remove("active");
+
+createCard.classList.remove("hidden");
+joinCard.classList.add("hidden");
+
+};
+
+joinTab.onclick=()=>{
+
+joinTab.classList.add("active");
+createTab.classList.remove("active");
+
+joinCard.classList.remove("hidden");
+createCard.classList.add("hidden");
+
+};
+
+/* =========================================================
+   CREATE
 ========================================================= */
 
 async function createGame(){
 
-  if(!db || !connectionReady){
+if(!db){
 
-    setStatus(
-      createStatus,
-      "Multiplayer is not connected yet. Tap reload and try again.",
-      "err"
-    );
+setStatus(
+createStatus,
+"Multiplayer is not connected yet. Please wait a moment and try again.",
+"err"
+);
 
-    return;
-  }
+await checkConnection();
 
-  const name =
-    createName.value.trim();
+return;
+}
 
-  if(!name){
+const name=createName.value.trim();
 
-    setStatus(
-      createStatus,
-      "Enter your name.",
-      "err"
-    );
+if(!name){
 
-    return;
-  }
+setStatus(
+createStatus,
+"Enter your name.",
+"err"
+);
 
-  createButton.disabled=true;
+return;
+}
 
-  setStatus(
-    createStatus,
-    "Creating room..."
-  );
+createButton.disabled=true;
 
-  try{
+setStatus(
+createStatus,
+"Creating room..."
+);
 
-    const result =
-      await db.rpc(
-        "create_game",
-        {
-          p_host_token:getToken(),
-          p_name:name,
-          p_max_players:12
-        }
-      );
+try{
 
-    if(result.error)
-      throw result.error;
+const r=await db.rpc(
+"create_game",
+{
+p_host_token:getToken(),
+p_name:name,
+p_max_players:12
+}
+);
 
-    if(!result.data)
-      throw new Error("The server returned no game.");
+if(r.error)
+throw r.error;
 
-    game =
-      result.data.game;
+if(!r.data)
+throw new Error("Server returned no game data.");
 
-    player =
-      result.data.player;
+game=r.data.game;
+player=r.data.player;
 
-    if(!game || !player)
-      throw new Error("Invalid room response from server.");
+if(!game||!player)
+throw new Error("Invalid game response from server.");
 
-    openLobby();
+openLobby();
 
-  }catch(error){
+}catch(e){
 
-    console.error(
-      "Create game error:",
-      error
-    );
+console.error(e);
 
-    setStatus(
-      createStatus,
-      "Could not create room: "+
-      (error.message || "Unknown error"),
-      "err"
-    );
+setStatus(
+createStatus,
+"Could not create room: "+
+(e.message||"Unknown error"),
+"err"
+);
 
-  }finally{
+}finally{
 
-    createButton.disabled=false;
-
-  }
+createButton.disabled=false;
 
 }
 
+}
 
 /* =========================================================
-   JOIN GAME
+   JOIN
 ========================================================= */
 
 async function joinGame(){
 
-  if(!db || !connectionReady){
+if(!db){
 
-    setStatus(
-      joinStatus,
-      "Multiplayer is not connected yet. Reload the page and try again.",
-      "err"
-    );
+setStatus(
+joinStatus,
+"Multiplayer is not connected yet.",
+"err"
+);
 
-    return;
-  }
+await checkConnection();
 
-  const name =
-    joinName.value.trim();
+return;
+}
 
-  const code =
-    joinCode.value
-    .trim()
-    .toUpperCase();
+const name=joinName.value.trim();
 
-  if(!name){
+const code=joinCode.value
+.trim()
+.toUpperCase();
 
-    setStatus(
-      joinStatus,
-      "Enter your name.",
-      "err"
-    );
+if(!name){
 
-    return;
-  }
+setStatus(
+joinStatus,
+"Enter your name.",
+"err"
+);
 
-  if(!/^[A-Z0-9]{6}$/.test(code)){
+return;
+}
 
-    setStatus(
-      joinStatus,
-      "Enter the 6-character room code.",
-      "err"
-    );
+if(!/^[A-Z0-9]{6}$/.test(code)){
 
-    return;
-  }
+setStatus(
+joinStatus,
+"Enter the 6-character room code.",
+"err"
+);
 
-  joinButton.disabled=true;
+return;
+}
 
-  setStatus(
-    joinStatus,
-    "Joining room..."
-  );
+joinButton.disabled=true;
 
-  try{
+setStatus(
+joinStatus,
+"Joining room..."
+);
 
-    const result =
-      await db.rpc(
-        "join_game",
-        {
-          p_code:code,
-          p_player_token:getToken(),
-          p_name:name
-        }
-      );
+try{
 
-    if(result.error)
-      throw result.error;
+const r=await db.rpc(
+"join_game",
+{
+p_code:code,
+p_player_token:getToken(),
+p_name:name
+}
+);
 
-    if(!result.data)
-      throw new Error("The server returned no game.");
+if(r.error)
+throw r.error;
 
-    game =
-      result.data.game;
+if(!r.data)
+throw new Error("Server returned no game data.");
 
-    player =
-      result.data.player;
+game=r.data.game;
+player=r.data.player;
 
-    if(!game || !player)
-      throw new Error("Invalid room response from server.");
+if(!game||!player)
+throw new Error("Invalid game response from server.");
 
-    openLobby();
+openLobby();
 
-  }catch(error){
+}catch(e){
 
-    console.error(
-      "Join game error:",
-      error
-    );
+console.error(e);
 
-    setStatus(
-      joinStatus,
-      "Could not join room: "+
-      (error.message || "Unknown error"),
-      "err"
-    );
+setStatus(
+joinStatus,
+"Could not join room: "+
+(e.message||"Unknown error"),
+"err"
+);
 
-  }finally{
+}finally{
 
-    joinButton.disabled=false;
-
-  }
+joinButton.disabled=false;
 
 }
 
-
-/* =========================================================
-   OPEN LOBBY
-========================================================= */
-
-async function openLobby(){
-
-  if(!game || !player)
-    return;
-
-  phase="lobby";
-
-  show(lobby);
-
-  roomCode.textContent =
-    game.code;
-
-  hostControls.classList.toggle(
-    "hidden",
-    !player.is_host
-  );
-
-  await loadPlayers();
-
-  await setupRealtime();
-
-  startRecoveryLoops();
-
-  /*
-    If the database says we're already in another phase,
-    immediately catch up.
-  */
-
-  await refreshGamePhase();
-
 }
 
-
 /* =========================================================
-   LOAD PLAYERS
+   LOBBY
 ========================================================= */
+
+function openLobby(){
+
+if(!game||!player)
+return;
+
+show(lobby);
+
+roomCode.textContent=game.code;
+
+hostControls.classList.toggle(
+"hidden",
+!player.is_host
+);
+
+loadPlayers();
+subscribeToGame();
+startSyncLoop();
+
+}
 
 async function loadPlayers(){
 
-  if(!db || !game)
-    return;
+if(!game||!db)
+return;
 
-  try{
+try{
 
-    const result =
-      await db
-      .from("game_players")
-      .select(
-        "id,display_name,is_host,is_alive"
-      )
-      .eq(
-        "game_id",
-        game.id
-      )
-      .order("joined_at");
+const r=await db
+.from("game_players")
+.select("id,display_name,is_host,is_alive")
+.eq("game_id",game.id)
+.order("joined_at");
 
-    if(result.error)
-      throw result.error;
+if(r.error)
+throw r.error;
 
-    players.innerHTML =
-      "<h3>Players ("+
-      (result.data || []).length+
-      ")</h3>";
+players.innerHTML=
+"<h3>Players ("+
+r.data.length+
+")</h3>";
 
-    (result.data || []).forEach(p=>{
+r.data.forEach(p=>{
 
-      const div =
-        document.createElement("div");
+const div=document.createElement("div");
 
-      div.className="player";
+div.className="player";
+div.textContent=p.display_name;
 
-      div.textContent =
-        p.display_name;
+if(p.is_host){
 
-      if(p.is_host){
+const h=document.createElement("span");
 
-        const host =
-          document.createElement("span");
+h.className="host";
+h.textContent="HOST";
 
-        host.className="host";
-
-        host.textContent="HOST";
-
-        div.appendChild(host);
-
-      }
-
-      players.appendChild(div);
-
-    });
-
-    lobbyStatus.textContent =
-      (result.data || []).length+
-      " player"+
-      ((result.data || []).length===1?"":"s")+
-      " in the room.";
-
-  }catch(error){
-
-    console.error(
-      "Player loading error:",
-      error
-    );
-
-    players.innerHTML =
-      "<p>Could not load players. Retrying...</p>";
-
-  }
+div.appendChild(h);
 
 }
 
+players.appendChild(div);
+
+});
+
+lobbyStatus.textContent=
+r.data.length+
+" player"+
+(r.data.length===1?"":"s")+
+" in the room.";
+
+}catch(e){
+
+console.error(e);
+
+players.innerHTML=
+"<p>Could not load players. Retrying...</p>";
+
+}
+
+}
 
 /* =========================================================
    REALTIME
 ========================================================= */
 
-async function setupRealtime(){
+function subscribeToGame(){
 
-  if(!db || !game)
-    return;
+if(!game||!db)
+return;
 
-  if(channel){
+if(channel){
 
-    try{
-      await db.removeChannel(channel);
-    }catch(e){}
+try{
+db.removeChannel(channel);
+}catch(e){}
 
-    channel=null;
-  }
+channel=null;
+}
 
-  subscriptionReady=false;
+const roomId=game.id;
 
-  const channelName =
-    "imposter-room-"+game.id;
+channel=db
+.channel("imposter-room-"+roomId+"-"+Date.now())
 
-  channel =
-    db
-    .channel(
-      channelName,
-      {
-        config:{
-          broadcast:{
-            self:true
-          },
-          presence:{
-            key:getToken()
-          }
-        }
-      }
-    )
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"game_players",
+filter:"game_id=eq."+roomId
+},
+async()=>{
 
-    /*
-      DATABASE CHANGES
-    */
+await loadPlayers();
 
-    .on(
-      "postgres_changes",
-      {
-        event:"*",
-        schema:"public",
-        table:"game_players",
-        filter:"game_id=eq."+game.id
-      },
-      async()=>{
-        await loadPlayers();
-      }
-    )
+/*
+ Player changes can also affect the game phase.
+ Resync immediately.
+*/
 
-    .on(
-      "postgres_changes",
-      {
-        event:"*",
-        schema:"public",
-        table:"games",
-        filter:"id=eq."+game.id
-      },
-      async(payload)=>{
+await syncGame();
 
-        const newPhase =
-          payload &&
-          payload.new &&
-          payload.new.status;
+}
+)
 
-        if(newPhase){
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"games",
+filter:"id=eq."+roomId
+},
+async payload=>{
 
-          await handlePhaseFromDatabase(
-            newPhase
-          );
+console.log("GAME UPDATE",payload);
 
-        }
+await syncGame();
 
-      }
-    )
+}
+)
 
-    /*
-      BROADCAST GAME STATE
-    */
+.on(
+"broadcast",
+{
+event:"game-sync"
+},
+async payload=>{
 
-    .on(
-      "broadcast",
-      {
-        event:"game-state"
-      },
-      async(message)=>{
+const data=payload.payload;
 
-        const state =
-          message &&
-          message.payload;
+if(!data)
+return;
 
-        if(!state)
-          return;
+if(data.roomId!==roomId)
+return;
 
-        await receiveGameState(state);
+if(data.round&&
+Number(data.round)!==Number(currentRound)){
 
-      }
-    )
-
-    /*
-      PLAYER REQUESTS HOST ADVANCE
-    */
-
-    .on(
-      "broadcast",
-      {
-        event:"turn-request"
-      },
-      async(message)=>{
-
-        if(!player || !player.is_host)
-          return;
-
-        const data =
-          message &&
-          message.payload;
-
-        if(!data)
-          return;
-
-        if(data.round !== currentRound)
-          return;
-
-        if(data.type==="done"){
-
-          /*
-            Only advance if the requesting player is
-            actually the current player.
-          */
-
-          const current =
-            clueOrder[currentTurn];
-
-          if(
-            current &&
-            current.id===data.playerId
-          ){
-
-            advanceTurnAuthoritative();
-          }
-
-        }
-
-      }
-    )
-
-    .on(
-      "presence",
-      {
-        event:"sync"
-      },
-      ()=>{
-
-        /*
-          Presence sync gives us a convenient moment
-          to push the latest state again.
-        */
-
-        if(player && player.is_host){
-          broadcastAuthoritativeState();
-        }
-
-      }
-    );
-
-  channel.subscribe(
-    async(status)=>{
-
-      console.log(
-        "Realtime status:",
-        status
-      );
-
-      if(status==="SUBSCRIBED"){
-
-        subscriptionReady=true;
-
-        connectionText(
-          "Multiplayer connected",
-          true
-        );
-
-        /*
-          Presence lets the host know phones are around.
-        */
-
-        try{
-
-          await channel.track({
-            playerId:player.id,
-            name:player.display_name,
-            joinedAt:Date.now()
-          });
-
-        }catch(e){}
-
-        /*
-          Immediately send the latest state.
-        */
-
-        if(player.is_host){
-
-          await broadcastAuthoritativeState();
-
-        }else{
-
-          await requestStateSync();
-
-        }
-
-      }
-
-      else if(
-        status==="CHANNEL_ERROR" ||
-        status==="TIMED_OUT" ||
-        status==="CLOSED"
-      ){
-
-        subscriptionReady=false;
-
-        connectionText(
-          "Reconnecting multiplayer...",
-          false
-        );
-
-        scheduleRealtimeReconnect();
-
-      }
-
-    }
-  );
+currentRound=Number(data.round);
 
 }
 
+if(data.type==="turn"){
+
+if(typeof data.turn==="number"){
+
+currentTurn=data.turn;
+
+}
+
+if(data.skipped){
+
+data.skipped.forEach(id=>{
+skippedPlayers.add(id);
+});
+
+}
+
+await renderSynchronizedClueState();
+
+}
+
+if(data.type==="phase"){
+
+await syncGame();
+
+}
+
+}
+)
+
+.subscribe(status=>{
+
+console.log("Realtime:",status);
+
+if(status==="SUBSCRIBED"){
+
+setConnection(true,"Multiplayer connected");
+
+}else if(
+status==="CHANNEL_ERROR"||
+status==="TIMED_OUT"
+){
+
+setConnection(
+false,
+"Realtime reconnecting..."
+);
+
+setTimeout(()=>{
+if(game)subscribeToGame();
+},1500);
+
+}else if(status==="CLOSED"){
+
+setConnection(
+false,
+"Realtime reconnecting..."
+);
+
+}
+
+});
+
+}
 
 /* =========================================================
-   REALTIME RECONNECT
+   SYNC LOOP
 ========================================================= */
 
-let reconnectTimer=null;
+/*
+ Realtime is fast.
+ Polling is our safety net.
 
-function scheduleRealtimeReconnect(){
+ This means if one phone misses a WebSocket event,
+ it will still catch up automatically.
+*/
 
-  if(reconnectTimer)
-    return;
+function startSyncLoop(){
 
-  reconnectTimer =
-    setTimeout(async()=>{
+clearInterval(syncInterval);
 
-      reconnectTimer=null;
+syncInterval=setInterval(
+async()=>{
 
-      if(!game)
-        return;
+if(game){
 
-      console.log(
-        "Attempting realtime reconnect..."
-      );
-
-      await setupRealtime();
-
-    },1500);
+await syncGame();
 
 }
 
+},
+1000
+);
+
+}
+
+async function syncGame(){
+
+if(!game||!db)
+return;
+
+try{
+
+const r=await db
+.from("games")
+.select("*")
+.eq("id",game.id)
+.maybeSingle();
+
+if(r.error)
+throw r.error;
+
+if(!r.data)
+return;
+
+lastSyncAt=Date.now();
+
+setConnection(true,"Multiplayer connected");
+
+const newStatus=r.data.status;
+
+if(newStatus!==lastGameStatus){
+
+lastGameStatus=newStatus;
+
+await handlePhase(newStatus);
+
+}else{
+
+/*
+ If we are already on the clue screen,
+ refresh the authoritative clue state.
+*/
+
+if(newStatus==="clues"){
+
+await syncClueState();
+
+}
+
+}
+
+}catch(e){
+
+console.warn("Sync failed:",e.message);
+
+setConnection(
+false,
+"Reconnecting..."
+);
+
+}
+
+}
 
 /* =========================================================
    BROADCAST
 ========================================================= */
 
-async function sendBroadcast(
-  event,
-  payload
-){
+async function broadcast(data){
 
-  if(!channel)
-    return false;
+if(!channel)
+return;
 
-  try{
+try{
 
-    await channel.send({
-      type:"broadcast",
-      event:event,
-      payload:payload
-    });
+await channel.send({
+type:"broadcast",
+event:"game-sync",
+payload:{
+...data,
+roomId:game.id,
+round:currentRound,
+sentAt:Date.now()
+}
+});
 
-    return true;
+}catch(e){
 
-  }catch(error){
-
-    console.error(
-      "Broadcast error:",
-      error
-    );
-
-    return false;
-  }
+console.warn("Broadcast failed:",e);
 
 }
 
-
-/* =========================================================
-   AUTHORITATIVE STATE
-========================================================= */
-
-function getAuthoritativeState(){
-
-  return {
-    version:hostStateVersion,
-    phase:phase,
-    round:currentRound,
-    turn:currentTurn,
-    timeLimit:timeLimit,
-    skipped:Array.from(skippedPlayers),
-    timestamp:Date.now()
-  };
-
 }
-
-
-/*
-  The host repeatedly broadcasts the current state.
-
-  This is intentional.
-
-  Realtime broadcasts are not a permanent message queue.
-  If an iPhone briefly loses connection, the next heartbeat
-  lets it catch up automatically.
-*/
-
-async function broadcastAuthoritativeState(){
-
-  if(!player || !player.is_host)
-    return;
-
-  hostStateVersion++;
-
-  await sendBroadcast(
-    "game-state",
-    getAuthoritativeState()
-  );
-
-}
-
-
-/* =========================================================
-   RECEIVE STATE
-========================================================= */
-
-async function receiveGameState(state){
-
-  if(!game || !player)
-    return;
-
-  if(
-    state.round &&
-    state.round < currentRound
-  ){
-    return;
-  }
-
-  /*
-    Host does not blindly accept its own state back.
-  */
-
-  if(player.is_host)
-    return;
-
-  lastAppliedState =
-    state;
-
-  if(state.round)
-    currentRound=state.round;
-
-  if(
-    typeof state.timeLimit==="number"
-  ){
-
-    timeLimit=
-      state.timeLimit;
-
-  }
-
-  skippedPlayers =
-    new Set(
-      Array.isArray(state.skipped)
-      ? state.skipped
-      : []
-    );
-
-  /*
-    PHASE
-  */
-
-  if(state.phase){
-
-    if(state.phase !== phase){
-
-      await handlePhase(
-        state.phase
-      );
-
-    }
-
-  }
-
-  /*
-    CLUE TURN
-  */
-
-  if(state.phase==="clues"){
-
-    currentTurn =
-      Number.isInteger(state.turn)
-      ? state.turn
-      : 0;
-
-    await ensureClueOrder();
-
-    renderClueList();
-
-    startTimer();
-
-    updateTurnMessage();
-
-  }
-
-}
-
-
-/* =========================================================
-   REQUEST STATE
-========================================================= */
-
-async function requestStateSync(){
-
-  /*
-    Ask host to broadcast by sending a tiny request.
-    The host's heartbeat also handles this automatically.
-  */
-
-  if(!channel)
-    return;
-
-  await sendBroadcast(
-    "state-request",
-    {
-      playerId:player ? player.id : null,
-      timestamp:Date.now()
-    }
-  );
-
-}
-
-
-/* =========================================================
-   HOST STATE REQUEST LISTENER
-========================================================= */
-
-async function addStateRequestListener(){
-
-  /*
-    Kept separate conceptually, but the listener is installed
-    below through setupRealtime's general broadcast system.
-  */
-
-}
-
-
-/* =========================================================
-   RECOVERY LOOPS
-========================================================= */
-
-function startRecoveryLoops(){
-
-  stopRecoveryLoops();
-
-  /*
-    Host heartbeat:
-    broadcasts authoritative state every 1.2 seconds.
-
-    This is what makes missed realtime packets recover quickly.
-  */
-
-  heartbeatInterval =
-    setInterval(()=>{
-
-      if(
-        game &&
-        player &&
-        player.is_host &&
-        subscriptionReady
-      ){
-
-        broadcastAuthoritativeState();
-
-      }
-
-    },1200);
-
-  /*
-    Every phone checks the database phase every 2.5 seconds.
-    This is only a safety net; realtime normally handles it.
-  */
-
-  syncInterval =
-    setInterval(()=>{
-
-      if(game){
-
-        refreshGamePhase();
-
-      }
-
-    },2500);
-
-}
-
-
-function stopRecoveryLoops(){
-
-  if(heartbeatInterval){
-
-    clearInterval(
-      heartbeatInterval
-    );
-
-    heartbeatInterval=null;
-  }
-
-  if(syncInterval){
-
-    clearInterval(
-      syncInterval
-    );
-
-    syncInterval=null;
-  }
-
-}
-
-
-/* =========================================================
-   DATABASE PHASE REFRESH
-========================================================= */
-
-async function refreshGamePhase(){
-
-  if(!db || !game)
-    return;
-
-  try{
-
-    const result =
-      await db
-      .from("games")
-      .select("status")
-      .eq("id",game.id)
-      .maybeSingle();
-
-    if(result.error)
-      throw result.error;
-
-    if(
-      result.data &&
-      result.data.status
-    ){
-
-      await handlePhaseFromDatabase(
-        result.data.status
-      );
-
-    }
-
-  }catch(error){
-
-    /*
-      Do not spam the user with transient polling errors.
-    */
-
-    console.warn(
-      "Phase refresh:",
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   PHASE FROM DATABASE
-========================================================= */
-
-async function handlePhaseFromDatabase(newPhase){
-
-  if(!game)
-    return;
-
-  /*
-    Do not repeatedly reload the same screen.
-  */
-
-  if(newPhase===phase){
-
-    /*
-      Even if the phase hasn't changed, if we're in clues
-      refresh the clue screen if necessary.
-    */
-
-    if(newPhase==="clues"){
-
-      ensureClueOrder()
-      .then(()=>{
-        renderClueList();
-        updateTurnMessage();
-      });
-
-    }
-
-    return;
-  }
-
-  await handlePhase(newPhase);
-
-}
-
 
 /* =========================================================
    START GAME
@@ -2051,89 +1117,58 @@ async function handlePhaseFromDatabase(newPhase){
 
 async function startGame(){
 
-  if(
-    !player ||
-    !player.is_host
-  )
-    return;
+if(!player?.is_host)
+return;
 
-  startButton.disabled=true;
+startButton.disabled=true;
 
-  timeLimit =
-    parseInt(
-      clueTime.value,
-      10
-    );
+timeLimit=parseInt(clueTime.value,10)||60;
 
-  if(!Number.isFinite(timeLimit))
-    timeLimit=60;
+try{
 
-  try{
+let r;
 
-    /*
-      Use the existing compatible start_game RPC.
+const selectedCategory=
+category.value==="random"
+?null
+:parseInt(category.value,10);
 
-      Your database has a two-argument start_game overload,
-      so this avoids relying on the second overload's exact
-      parameter signature.
-    */
+const args={
+p_code:game.code,
+p_host_token:getToken()
+};
 
-    const result =
-      await db.rpc(
-        "start_game",
-        {
-          p_code:game.code,
-          p_host_token:getToken()
-        }
-      );
+/*
+ Your database has two start_game overloads.
+ We use the original safe call first.
+*/
 
-    if(result.error)
-      throw result.error;
+r=await db.rpc(
+"start_game",
+args
+);
 
-    /*
-      Backend has started the game.
+if(r.error)
+throw r.error;
 
-      Give every phone the phase immediately rather than
-      waiting for Postgres realtime.
-    */
+await syncGame();
 
-    phase="playing";
+}catch(e){
 
-    await sendBroadcast(
-      "game-state",
-      {
-        version:++hostStateVersion,
-        phase:"playing",
-        round:currentRound,
-        turn:0,
-        timeLimit:timeLimit,
-        skipped:[],
-        timestamp:Date.now()
-      }
-    );
+console.error(e);
 
-    await loadRole();
+alert(
+"Could not start game:\n"+
+(e.message||"Unknown error")
+);
 
-  }catch(error){
+}finally{
 
-    console.error(
-      "Start game error:",
-      error
-    );
-
-    alert(
-      "Could not start game:\n"+
-      (error.message || "Unknown error")
-    );
-
-  }finally{
-
-    startButton.disabled=false;
-
-  }
+startButton.disabled=false;
 
 }
 
+}
 
 /* =========================================================
    ROLE
@@ -2141,334 +1176,1117 @@ async function startGame(){
 
 async function loadRole(){
 
-  if(roleLoading || !game)
-    return;
+if(!game||!player)
+return;
 
-  roleLoading=true;
+try{
 
-  try{
+const r=await db.rpc(
+"get_role",
+{
+p_code:game.code,
+p_player_token:getToken()
+}
+);
 
-    const result =
-      await db.rpc(
-        "get_role",
-        {
-          p_code:game.code,
-          p_player_token:getToken()
-        }
-      );
+if(r.error)
+throw r.error;
 
-    if(result.error)
-      throw result.error;
+const data=r.data;
 
-    const data =
-      result.data;
+if(!data)
+throw new Error("No role data returned.");
 
-    if(!data)
-      throw new Error("No role data received.");
+if(data.status==="lobby"){
 
-    if(data.status==="lobby"){
-
-      phase="lobby";
-
-      show(lobby);
-
-      return;
-    }
-
-    currentRound =
-      data.round || currentRound || 1;
-
-    roleCategory.textContent =
-      data.category || "CATEGORY";
-
-    if(data.is_imposter){
-
-      roleTitle.textContent =
-        "YOU ARE THE IMPOSTER";
-
-      roleWord.textContent="";
-
-      roleDescription.textContent =
-        "You don't know the secret word. Listen carefully to everyone's clues and try to blend in.";
-
-    }else{
-
-      roleTitle.textContent =
-        "YOU ARE NOT THE IMPOSTER";
-
-      roleWord.textContent =
-        data.word || "";
-
-      roleDescription.textContent =
-        "Give a clue about the word without making it too obvious.";
-
-    }
-
-    readyButton.disabled=false;
-
-    phase="playing";
-
-    show(roleScreen);
-
-  }catch(error){
-
-    console.error(
-      "Role error:",
-      error
-    );
-
-    alert(
-      "Could not load your role:\n"+
-      (error.message || "Unknown error")
-    );
-
-  }finally{
-
-    roleLoading=false;
-
-  }
+openLobby();
+return;
 
 }
 
+currentRound=
+Number(data.round||1);
+
+roleCategory.textContent=
+data.category||"CATEGORY";
+
+if(data.is_imposter){
+
+roleTitle.textContent=
+"YOU ARE THE IMPOSTER";
+
+roleWord.textContent="";
+
+roleDescription.textContent=
+"You don't know the secret word. Listen carefully to everyone's clues and try to blend in.";
+
+}else{
+
+roleTitle.textContent=
+"YOU ARE NOT THE IMPOSTER";
+
+roleWord.textContent=
+data.word||"";
+
+roleDescription.textContent=
+"Give a clue about the word without making it too obvious.";
+
+}
+
+readyButton.disabled=false;
+
+show(roleScreen);
+
+}catch(e){
+
+console.error(e);
+
+alert(
+"Could not load your role:\n"+
+(e.message||"Unknown error")
+);
+
+}
+
+}
 
 /* =========================================================
    READY
 ========================================================= */
 
-readyButton.onclick=
-async()=>{
+readyButton.onclick=async()=>{
 
-  readyButton.disabled=true;
+readyButton.disabled=true;
 
-  await showClueOrder();
+await showClueOrder();
 
 };
 
-
 /* =========================================================
-   SEEDED ORDER
+   RANDOM ORDER
 ========================================================= */
 
 function makeSeed(){
 
-  let str =
-    game.code+
-    "-ROUND-"+
-    currentRound;
+let str=
+game.code+
+"-ROUND-"+
+currentRound;
 
-  let hash=0;
+let hash=0;
 
-  for(
-    let i=0;
-    i<str.length;
-    i++
-  ){
+for(let i=0;i<str.length;i++){
 
-    hash =
-      ((hash<<5)-hash)+
-      str.charCodeAt(i);
+hash=
+((hash<<5)-hash)+
+str.charCodeAt(i);
 
-    hash |= 0;
-
-  }
-
-  return Math.abs(hash);
+hash|=0;
 
 }
 
+return Math.abs(hash);
+
+}
 
 function seededRandom(seed){
 
-  return function(){
+return function(){
 
-    const x =
-      Math.sin(seed++)*
-      10000;
+const x=Math.sin(seed++)*10000;
 
-    return x-
-      Math.floor(x);
+return x-Math.floor(x);
 
-  };
+};
 
 }
-
-
-/* =========================================================
-   GET CLUE ORDER
-========================================================= */
 
 async function getClueOrder(){
 
-  if(!db || !game)
-    throw new Error("No active game.");
+const r=await db
+.from("game_players")
+.select("id,display_name,is_alive")
+.eq("game_id",game.id)
+.eq("is_alive",true)
+.order("joined_at");
 
-  const result =
-    await db
-    .from("game_players")
-    .select(
-      "id,display_name,is_alive,joined_at"
-    )
-    .eq(
-      "game_id",
-      game.id
-    )
-    .eq(
-      "is_alive",
-      true
-    )
-    .order("joined_at");
+if(r.error)
+throw r.error;
 
-  if(result.error)
-    throw result.error;
+let list=(r.data||[]).slice();
 
-  let list =
-    (result.data || []).slice();
+const random=seededRandom(makeSeed());
 
-  const random =
-    seededRandom(
-      makeSeed()
-    );
+for(let i=list.length-1;i>0;i--){
 
-  for(
-    let i=list.length-1;
-    i>0;
-    i--
-  ){
+const j=Math.floor(
+random()*(i+1)
+);
 
-    const j =
-      Math.floor(
-        random()*(i+1)
-      );
-
-    [
-      list[i],
-      list[j]
-    ] =
-    [
-      list[j],
-      list[i]
-    ];
-
-  }
-
-  return list;
+[
+list[i],
+list[j]
+]=
+[
+list[j],
+list[i]
+];
 
 }
 
-
-/* =========================================================
-   ENSURE ORDER
-========================================================= */
-
-async function ensureClueOrder(){
-
-  if(clueOrder.length)
-    return;
-
-  try{
-
-    clueOrder =
-      await getClueOrder();
-
-  }catch(error){
-
-    console.error(
-      "Clue order error:",
-      error
-    );
-
-  }
+return list;
 
 }
 
-
 /* =========================================================
-   SHOW CLUE ORDER
+   CLUE SCREEN
 ========================================================= */
 
 async function showClueOrder(){
 
-  show(clueScreen);
+show(clueScreen);
 
-  phase="clues";
+skippedPlayers=new Set();
 
-  skippedPlayers =
-    new Set();
+clueOrderList.innerHTML="";
 
-  clueOrder=[];
+clueTurnMessage.textContent=
+"Synchronizing clue order...";
 
-  currentTurn=0;
+try{
 
-  clueOrderList.innerHTML="";
+clueOrder=await getClueOrder();
 
-  clueTurnMessage.textContent =
-    "Setting up clue order...";
+currentTurn=0;
 
-  try{
+timeLimit=
+parseInt(clueTime.value,10)||60;
 
-    timeLimit =
-      parseInt(
-        clueTime.value,
-        10
-      );
+/*
+ Broadcast the initial state so everyone gets
+ the same order immediately.
+*/
 
-    if(
-      !Number.isFinite(timeLimit)
-    ){
+await broadcast({
+type:"turn",
+turn:currentTurn,
+skipped:[]
+});
 
-      timeLimit=60;
+renderClueList();
 
-    }
+startClueTurn();
 
-    await ensureClueOrder();
+}catch(e){
 
-    if(!clueOrder.length){
+console.error(e);
 
-      clueTurnMessage.textContent =
-        "Waiting for players...";
+clueTurnMessage.textContent=
+"Could not create clue order. Retrying...";
 
-      return;
-    }
-
-    renderClueList();
-
-    updateTurnMessage();
-
-    startTimer();
-
-    /*
-      HOST publishes the exact initial state.
-
-      This is the synchronization anchor.
-    */
-
-    if(player.is_host){
-
-      await broadcastAuthoritativeState();
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Clue setup error:",
-      error
-    );
-
-    clueTurnMessage.textContent =
-      "Could not create clue order. Retrying...";
-
-  }
+setTimeout(()=>{
+if(game)syncClueState();
+},1000);
 
 }
 
+}
 
 /* =========================================================
-   RENDER CLUE LIST
+   SYNC CLUE STATE
+========================================================= */
+
+async function syncClueState(){
+
+if(!game)
+return;
+
+if(!clueOrder.length){
+
+try{
+clueOrder=await getClueOrder();
+}catch(e){
+return;
+}
+
+}
+
+await renderSynchronizedClueState();
+
+}
+
+async function renderSynchronizedClueState(){
+
+if(!game)
+return;
+
+if(
+document.getElementById("clueScreen").classList.contains("hidden")
+){
+
+show(clueScreen);
+
+}
+
+renderClueList();
+startClueTurn();
+
+}
+
+/* =========================================================
+   RENDER LIST
 ========================================================= */
 
 function renderClueList(){
 
-  clueOrderList.innerHTML="";
+clueOrderList.innerHTML="";
 
-  clueOrder.for
+clueOrder.forEach((p,index)=>{
+
+const row=document.createElement("div");
+
+row.className="orderRow";
+
+if(index===currentTurn)
+row.classList.add("current");
+
+if(index<currentTurn)
+row.classList.add("done");
+
+if(skippedPlayers.has(p.id))
+row.classList.add("skipped");
+
+const number=document.createElement("div");
+
+number.className="orderNumber";
+number.textContent=index+1;
+
+row.appendChild(number);
+
+const name=document.createElement("div");
+
+name.className="orderName";
+name.textContent=p.display_name;
+
+if(p.id===player.id){
+
+const you=document.createElement("span");
+
+you.className="youBadge";
+you.textContent="YOU";
+
+name.appendChild(you);
+
+}
+
+row.appendChild(name);
+
+const status=document.createElement("div");
+
+status.className="orderStatus";
+
+if(skippedPlayers.has(p.id)){
+
+status.textContent="⏭ SKIPPED";
+
+}else if(index<currentTurn){
+
+status.textContent="✓ DONE";
+
+}else if(index===currentTurn){
+
+status.textContent="NOW";
+
+}else{
+
+status.textContent="WAITING";
+
+}
+
+row.appendChild(status);
+
+clueOrderList.appendChild(row);
+
+});
+
+}
+
+/* =========================================================
+   CURRENT TURN
+========================================================= */
+
+function startClueTurn(){
+
+while(
+currentTurn<clueOrder.length &&
+skippedPlayers.has(
+clueOrder[currentTurn].id
+)
+){
+
+currentTurn++;
+
+}
+
+if(currentTurn>=clueOrder.length){
+
+goToVoting();
+
+return;
+
+}
+
+renderClueList();
+
+const current=clueOrder[currentTurn];
+
+const isMe=
+current.id===player.id;
+
+if(isMe){
+
+clueTurnMessage.textContent=
+"🔥 IT'S YOUR TURN — GIVE YOUR CLUE!";
+
+clueDoneButton.style.display="block";
+
+}else{
+
+clueTurnMessage.textContent=
+"Waiting for "+
+current.display_name+
+" to give their clue...";
+
+clueDoneButton.style.display="none";
+
+}
+
+hostSkipControls.classList.toggle(
+"hidden",
+!player.is_host
+);
+
+startTimer();
+
+}
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+clearInterval(clueInterval);
+
+if(timeLimit===0){
+
+clueTimer.className="noTimer";
+clueTimer.textContent="♾️ No Time Limit";
+
+return;
+
+}
+
+clueTimer.className="timer";
+
+clueTimerValue=timeLimit;
+
+clueTimer.textContent=clueTimerValue;
+
+clueInterval=setInterval(()=>{
+
+clueTimerValue--;
+
+clueTimer.textContent=clueTimerValue;
+
+if(clueTimerValue<=10)
+clueTimer.className="timerWarning";
+
+if(clueTimerValue<=0){
+
+clearInterval(clueInterval);
+
+nextClue("timeout");
+
+}
+
+},1000);
+
+}
+
+/* =========================================================
+   ADVANCE TURN
+========================================================= */
+
+async function nextClue(reason="done"){
+
+clearInterval(clueInterval);
+
+if(
+currentTurn>=clueOrder.length
+)
+return;
+
+currentTurn++;
+
+renderClueList();
+
+/*
+ Send the new turn BEFORE doing anything else.
+ This makes other phones update almost immediately.
+*/
+
+await broadcast({
+type:"turn",
+turn:currentTurn,
+skipped:Array.from(skippedPlayers)
+});
+
+if(currentTurn>=clueOrder.length){
+
+await goToVoting();
+
+return;
+
+}
+
+startClueTurn();
+
+}
+
+/* =========================================================
+   PLAYER FINISHES CLUE
+========================================================= */
+
+clueDoneButton.onclick=async()=>{
+
+const current=clueOrder[currentTurn];
+
+if(
+current &&
+current.id===player.id
+){
+
+clueDoneButton.disabled=true;
+
+await nextClue("done");
+
+clueDoneButton.disabled=false;
+
+}
+
+};
+
+/* =========================================================
+   HOST SKIP
+========================================================= */
+
+hostSkipButton.onclick=async()=>{
+
+if(!player.is_host)
+return;
+
+if(
+currentTurn>=clueOrder.length
+)
+return;
+
+const current=clueOrder[currentTurn];
+
+if(!current)
+return;
+
+hostSkipButton.disabled=true;
+
+/*
+ Mark it locally first so the host changes instantly.
+*/
+
+skippedPlayers.add(current.id);
+
+renderClueList();
+
+currentTurn++;
+
+renderClueList();
+
+/*
+ Broadcast BOTH the skipped player and the new turn
+ in the same message.
+
+ Every other phone receives one authoritative update.
+*/
+
+await broadcast({
+type:"turn",
+turn:currentTurn,
+skipped:Array.from(skippedPlayers)
+});
+
+if(currentTurn>=clueOrder.length){
+
+await goToVoting();
+
+hostSkipButton.disabled=false;
+
+return;
+
+}
+
+startClueTurn();
+
+hostSkipButton.disabled=false;
+
+};
+
+/* =========================================================
+   VOTING
+========================================================= */
+
+async function goToVoting(){
+
+clearInterval(clueInterval);
+
+if(phaseChanging)
+return;
+
+phaseChanging=true;
+
+try{
+
+if(player.is_host){
+
+const r=await db.rpc(
+"set_phase",
+{
+p_code:game.code,
+p_host_token:getToken(),
+p_phase:"voting"
+}
+);
+
+if(r.error)
+throw r.error;
+
+}
+
+/*
+ Don't wait for a Realtime event.
+ Switch immediately.
+*/
+
+showVoting();
+
+await broadcast({
+type:"phase",
+phase:"voting"
+});
+
+}catch(e){
+
+console.error(e);
+
+showVoting();
+
+}finally{
+
+phaseChanging=false;
+
+}
+
+}
+
+async function showVoting(){
+
+show(votingScreen);
+
+selectedVote=null;
+
+submitVoteButton.disabled=true;
+
+voteStatus.textContent=
+"Choose a player.";
+
+try{
+
+const r=await db
+.from("game_players")
+.select("id,display_name,is_alive")
+.eq("game_id",game.id)
+.eq("is_alive",true);
+
+if(r.error)
+throw r.error;
+
+votePlayers.innerHTML="";
+
+r.data.forEach(p=>{
+
+if(p.id===player.id)
+return;
+
+const b=document.createElement("button");
+
+b.className="choice";
+b.textContent=p.display_name;
+
+b.onclick=()=>{
+
+document
+.querySelectorAll(".choice")
+.forEach(x=>
+x.classList.remove("selected")
+);
+
+b.classList.add("selected");
+
+selectedVote=p.id;
+
+submitVoteButton.disabled=false;
+
+};
+
+votePlayers.appendChild(b);
+
+});
+
+}catch(e){
+
+console.error(e);
+
+votePlayers.textContent=
+"Could not load players. Retrying...";
+
+setTimeout(()=>{
+if(game)showVoting();
+},1000);
+
+}
+
+}
+
+/* =========================================================
+   VOTE
+========================================================= */
+
+submitVoteButton.onclick=async()=>{
+
+if(!selectedVote)
+return;
+
+submitVoteButton.disabled=true;
+
+try{
+
+const r=await db.rpc(
+"cast_vote",
+{
+p_code:game.code,
+p_voter_token:getToken(),
+p_target_id:selectedVote
+}
+);
+
+if(r.error)
+throw r.error;
+
+voteStatus.textContent=
+"✓ Vote submitted. Waiting for everyone...";
+
+/*
+ Host checks frequently rather than relying on an arbitrary
+ 2-second delay.
+*/
+
+if(player.is_host){
+
+let checks=0;
+
+const check=setInterval(async()=>{
+
+checks++;
+
+try{
+
+const result=await db.rpc(
+"get_vote_result",
+{
+p_code:game.code,
+p_host_token:getToken()
+}
+);
+
+if(!result.error&&result.data){
+
+clearInterval(check);
+
+await finishVoting();
+
+}
+
+}catch(e){}
+
+if(checks>=10)
+clearInterval(check);
+
+},500);
+
+}
+
+}catch(e){
+
+voteStatus.textContent=
+e.message||"Could not submit vote.";
+
+submitVoteButton.disabled=false;
+
+}
+
+};
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+async function finishVoting(){
+
+if(!player.is_host)
+return;
+
+try{
+
+const r=await db.rpc(
+"get_vote_result",
+{
+p_code:game.code,
+p_host_token:getToken()
+}
+);
+
+if(r.error)
+throw r.error;
+
+voteResults.innerHTML="";
+
+const results=r.data||[];
+
+if(results.length){
+
+const winner=results[0];
+
+resultText.textContent=
+winner.name+
+" received the most votes.";
+
+results.forEach(p=>{
+
+const div=document.createElement("div");
+
+div.className="player";
+
+div.textContent=
+p.name+
+" — "+
+p.votes+
+(p.votes===1?" vote":" votes");
+
+voteResults.appendChild(div);
+
+});
+
+}else{
+
+resultText.textContent="No votes.";
+
+}
+
+const phase=await db.rpc(
+"set_phase",
+{
+p_code:game.code,
+p_host_token:getToken(),
+p_phase:"results"
+}
+);
+
+if(phase.error)
+throw phase.error;
+
+await broadcast({
+type:"phase",
+phase:"results"
+});
+
+showResults();
+
+}catch(e){
+
+console.error(e);
+
+}
+
+}
+
+function showResults(){
+
+show(resultsScreen);
+
+nextRoundButton.style.display=
+player.is_host?"block":"none";
+
+}
+
+/* =========================================================
+   NEXT ROUND
+========================================================= */
+
+nextRoundButton.onclick=async()=>{
+
+if(!player.is_host)
+return;
+
+nextRoundButton.disabled=true;
+
+try{
+
+const r=await db.rpc(
+"start_game",
+{
+p_code:game.code,
+p_host_token:getToken()
+}
+);
+
+if(r.error)
+throw r.error;
+
+await syncGame();
+
+}catch(e){
+
+alert(
+"Could not start next round:\n"+
+(e.message||"Unknown error")
+);
+
+}finally{
+
+nextRoundButton.disabled=false;
+
+}
+
+};
+
+/* =========================================================
+   BACK TO LOBBY
+========================================================= */
+
+backLobbyButton.onclick=async()=>{
+
+show(lobby);
+
+await loadPlayers();
+
+await syncGame();
+
+};
+
+/* =========================================================
+   PHASE HANDLER
+========================================================= */
+
+async function handlePhase(phase){
+
+if(!game)
+return;
+
+console.log("PHASE:",phase);
+
+if(phase==="lobby"){
+
+openLobby();
+
+}else if(phase==="playing"){
+
+await loadRole();
+
+}else if(phase==="clues"){
+
+await syncClueState();
+
+}else if(phase==="voting"){
+
+await showVoting();
+
+}else if(phase==="results"){
+
+showResults();
+
+}
+
+}
+
+/* =========================================================
+   LEAVE
+========================================================= */
+
+leaveButton.onclick=async()=>{
+
+clearInterval(clueInterval);
+clearInterval(syncInterval);
+
+if(channel){
+
+try{
+await db.removeChannel(channel);
+}catch(e){}
+
+channel=null;
+
+}
+
+game=null;
+player=null;
+
+clueOrder=[];
+skippedPlayers.clear();
+
+currentTurn=0;
+
+lastGameStatus=null;
+
+show(home);
+
+setStatus(
+createStatus,
+"Ready to create a game.",
+"ok"
+);
+
+setConnection(
+true,
+"Multiplayer connected"
+);
+
+};
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+joinCode.addEventListener(
+"input",
+()=>{
+
+joinCode.value=
+joinCode.value
+.toUpperCase()
+.replace(/[^A-Z0-9]/g,"")
+.slice(0,6);
+
+}
+);
+
+/*
+ Pressing Enter works on iPhone keyboards too.
+*/
+
+createName.addEventListener(
+"keydown",
+e=>{
+if(e.key==="Enter")
+createGame();
+}
+);
+
+joinName.addEventListener(
+"keydown",
+e=>{
+if(e.key==="Enter")
+joinGame();
+}
+);
+
+joinCode.addEventListener(
+"keydown",
+e=>{
+if(e.key==="Enter")
+joinGame();
+}
+);
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+createButton.onclick=createGame;
+joinButton.onclick=joinGame;
+startButton.onclick=startGame;
+
+/* =========================================================
+   PAGE VISIBILITY
+========================================================= */
+
+/*
+ iPhone Safari can suspend the page while another app/tab
+ is open. When the player comes back, force an immediate
+ resynchronization.
+*/
+
+document.addEventListener(
+"visibilitychange",
+async()=>{
+
+if(!document.hidden&&game){
+
+console.log("Page resumed — syncing game.");
+
+await syncGame();
+
+if(lastGameStatus==="clues"){
+
+await syncClueState();
+
+}
+
+}
+
+}
+);
+
+/* =========================================================
+   INIT
+========================================================= */
+
+(async()=>{
+
+try{
+
+initSupabase();
+
+}catch(e){
+
+console.error(e);
+
+setConnection(
+false,
+"Supabase library unavailable"
+);
+
+setStatus(
+createStatus,
+"Supabase failed to load. Reload the page or check your connection.",
+"err"
+);
+
+return;
+
+}
+
+await checkConnection();
+
+})();
+
+</script>
+</body>
+</html>
