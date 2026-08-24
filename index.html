@@ -623,6 +623,68 @@ hr{
 .resultCorrect{color:#7ee5a7}
 .resultWrong{color:#ff8199}
 
+/* NEW DISTINCT WIN SCREENS */
+
+.winCard{
+  border-radius:18px;
+  padding:24px 18px;
+  margin-bottom:18px;
+  text-align:center
+}
+
+.civilianWin{
+  background:linear-gradient(
+    145deg,
+    #11291f,
+    #162f27
+  );
+  border:1px solid #34795a;
+}
+
+.imposterWin{
+  background:linear-gradient(
+    145deg,
+    #301824,
+    #261a30
+  );
+  border:1px solid #7a3d59;
+}
+
+.winIcon{
+  font-size:64px;
+  line-height:1;
+  margin-bottom:12px
+}
+
+.winTitle{
+  font-size:32px;
+  font-weight:1000;
+  margin:0
+}
+
+.winSubtitle{
+  margin-top:9px;
+  color:#b8bdca;
+  line-height:1.5
+}
+
+.winReason{
+  margin-top:16px;
+  padding:13px;
+  background:rgba(0,0,0,.18);
+  border-radius:12px;
+  font-size:14px;
+  line-height:1.5
+}
+
+.voteWin{
+  color:#ff8199
+}
+
+.guessWin{
+  color:#c7a5ff
+}
+
 .resultPlayer{
   background:#0d111b;
   border:1px solid #252b3c;
@@ -983,8 +1045,9 @@ Everyone sees the same order. Just follow the numbers.
 
 <p class="voteInstructions">
 You can vote for <strong>nobody</strong>, <strong>one player</strong>,
-or <strong>two players</strong>.<br>
-If you select two, both players must be the Imposters for the vote to succeed.
+or <strong>two players</strong>.<br><br>
+<strong>Important:</strong> everyone votes, including Imposters.
+The players with the most votes determine whether the Imposters were identified.
 </p>
 
 <div id="votePlayers"></div>
@@ -1015,12 +1078,12 @@ Choose nobody, one player, or two players.
 <h2 class="guessTitle">Final Guess</h2>
 
 <p class="guessSubtitle">
-You were correctly identified as an Imposter — but you get one last chance to steal the win.
+The Imposter(s) were correctly identified — but they get one last chance to steal the win.
 </p>
 
 <div class="guessWarning">
-You only get ONE guess.<br>
-Enter the secret word exactly or as close as you can.
+Each Imposter gets ONE guess.<br>
+If any Imposter guesses the secret word correctly, the Imposters win.
 </div>
 
 <input
@@ -1051,8 +1114,8 @@ The Imposter Is Making Their Final Guess
 </div>
 
 <div class="guessWaitingText">
-The Imposter was correctly identified.<br>
-They now have one final chance to guess the secret word.
+The Imposter(s) were correctly identified.<br>
+They now have their final chance to guess the secret word.
 </div>
 
 </div>
@@ -1082,6 +1145,18 @@ Here is how everyone voted and who was actually an Imposter.
 <section id="resultsScreen" class="card hidden">
 
 <h2 class="center">Results</h2>
+
+<div id="winBanner" class="winCard hidden">
+
+<div id="winIcon" class="winIcon"></div>
+
+<h2 id="winTitle" class="winTitle"></h2>
+
+<div id="winSubtitle" class="winSubtitle"></div>
+
+<div id="winReason" class="winReason"></div>
+
+</div>
 
 <div id="resultText" class="result">
 Calculating...
@@ -1245,6 +1320,12 @@ const guessVoteResultsList=document.getElementById("guessVoteResultsList");
 const finalGuessInput=document.getElementById("finalGuessInput");
 const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
 const finalGuessStatus=document.getElementById("finalGuessStatus");
+
+const winBanner=document.getElementById("winBanner");
+const winIcon=document.getElementById("winIcon");
+const winTitle=document.getElementById("winTitle");
+const winSubtitle=document.getElementById("winSubtitle");
+const winReason=document.getElementById("winReason");
 
 const resultText=document.getElementById("resultText");
 const voteResults=document.getElementById("voteResults");
@@ -1495,7 +1576,7 @@ function updateModeDescription(){
 if(gameMode.value==="variable_imposters"){
 
 modeDescription.textContent=
-"Each round randomly has 0, 1, or 2 Imposters. Voting always allows nobody, one player, or two players.";
+"Each round randomly has 0, 1, or 2 Imposters. Voting allows nobody, one player, or two players.";
 
 }else{
 
@@ -2732,7 +2813,9 @@ p_nobody:nobodySelected
 if(result.error)
 throw result.error;
 
-if(result.data?.all_voted){
+const data=result.data||{};
+
+if(data.all_voted){
 
 voteStatus.textContent=
 "✓ Everyone has voted. Revealing...";
@@ -2743,6 +2826,8 @@ voteStatus.textContent=
 "✓ Vote submitted. Waiting for everyone...";
 
 }
+
+await sleep(400);
 
 await syncGame();
 
@@ -2820,9 +2905,7 @@ guessWaitingPanel.classList.remove("hidden");
 }
 
 
-/* =====================================================
-   VOTE RESULTS + ROLE REVEAL
-===================================================== */
+/* VOTE REVEAL */
 
 const revealResult=
 await db.rpc(
@@ -2841,8 +2924,6 @@ revealResult.data;
 
 guessVoteResultsList.innerHTML="";
 
-
-/* NOBODY VOTES */
 
 const nobodyVotes=
 Number(reveal.nobody_votes||0);
@@ -2871,8 +2952,11 @@ nobodyName.textContent=
 const nobodyBadge=
 document.createElement("span");
 
-nobodyBadge.className="roleBadge civilianBadge";
-nobodyBadge.textContent="NOT A PLAYER";
+nobodyBadge.className=
+"roleBadge civilianBadge";
+
+nobodyBadge.textContent=
+"NOT A PLAYER";
 
 nobodyTop.appendChild(nobodyName);
 nobodyTop.appendChild(nobodyBadge);
@@ -2960,7 +3044,6 @@ div.appendChild(votes);
 guessVoteResultsList.appendChild(div);
 
 });
-
 
 guessVoteResults.classList.remove(
 "hidden"
@@ -3080,6 +3163,146 @@ finalGuessInput.disabled=false;
 
 
 /* =========================================================
+   WIN SCREEN
+========================================================= */
+
+function renderWinScreen(data){
+
+winBanner.classList.remove("hidden");
+
+const outcome=
+data.outcome||"";
+
+winBanner.className=
+"winCard";
+
+if(
+outcome==="civilians_win_no_imposters"||
+outcome==="civilians_win"
+){
+
+winBanner.classList.add(
+"civilianWin"
+);
+
+winIcon.textContent="🕵️‍♂️";
+
+winTitle.textContent=
+"CIVILIANS WIN";
+
+winSubtitle.textContent=
+"The civilians successfully stopped the Imposter threat.";
+
+if(outcome==="civilians_win_no_imposters"){
+
+winReason.textContent=
+"There were no Imposters this round. Nobody was supposed to be identified.";
+
+}else{
+
+winReason.textContent=
+"The Imposters were correctly identified, but failed their final guess.";
+
+}
+
+return;
+
+}
+
+
+/* IMPOSTER VOTE WIN */
+
+if(outcome==="imposters_win_vote"){
+
+winBanner.classList.add(
+"imposterWin"
+);
+
+winIcon.textContent="🚨";
+
+winTitle.textContent=
+"IMPOSTERS WIN";
+
+winSubtitle.textContent=
+"The civilians failed to correctly identify the Imposter(s).";
+
+winReason.textContent=
+"The vote did not correctly identify all of the Imposters. The Imposters fooled the civilians.";
+
+return;
+
+}
+
+
+/* IMPOSTER FINAL GUESS WIN */
+
+if(outcome==="imposters_win_guess"){
+
+winBanner.classList.add(
+"imposterWin"
+);
+
+winIcon.textContent="🧠";
+
+winTitle.textContent=
+"IMPOSTERS WIN";
+
+winSubtitle.textContent=
+"The civilians identified the Imposter(s), but the final guess was correct.";
+
+winReason.textContent=
+"At least one Imposter correctly guessed the secret word.";
+
+return;
+
+}
+
+
+/* PENDING */
+
+if(outcome==="imposter_final_guess_pending"){
+
+winBanner.classList.add(
+"imposterWin"
+);
+
+winIcon.textContent="🚨";
+
+winTitle.textContent=
+"FINAL GUESS";
+
+winSubtitle.textContent=
+"The Imposter(s) were identified.";
+
+winReason.textContent=
+"They now have one final chance to steal the win.";
+
+return;
+
+}
+
+
+/* FALLBACK */
+
+winBanner.classList.add(
+"civilianWin"
+);
+
+winIcon.textContent="🏁";
+
+winTitle.textContent=
+"ROUND COMPLETE";
+
+winSubtitle.textContent=
+"The round has ended.";
+
+winReason.textContent=
+"See the results below.";
+
+}
+
+
+/* =========================================================
    PUBLIC RESULTS
 ========================================================= */
 
@@ -3096,6 +3319,7 @@ player.is_host?"block":"none";
 voteResults.innerHTML="";
 finalGuessResult.classList.add("hidden");
 actualWordBox.classList.add("hidden");
+winBanner.classList.add("hidden");
 
 try{
 
@@ -3119,6 +3343,8 @@ throw new Error(
 "No results returned."
 );
 
+renderWinScreen(data);
+
 actualWord.textContent=
 data.word||"";
 
@@ -3127,17 +3353,28 @@ actualWordBox.classList.remove(
 );
 
 
-/* GAME RESULT */
+/* RESULT SUMMARY */
 
-if(data.correct===true){
+if(
+data.outcome==="imposters_win_vote"||
+data.outcome==="imposters_win_guess"
+){
 
 resultText.innerHTML=
-"🎉 <span class='resultCorrect'>The Imposter(s) guessed the word!</span>";
+"🚨 <span class='resultWrong'>The Imposters win!</span>";
+
+}else if(
+data.outcome==="civilians_win"||
+data.outcome==="civilians_win_no_imposters"
+){
+
+resultText.innerHTML=
+"✓ <span class='resultCorrect'>The civilians win!</span>";
 
 }else{
 
-resultText.innerHTML=
-"❌ <span class='resultWrong'>The civilians win!</span>";
+resultText.textContent=
+"Round complete.";
 
 }
 
@@ -3919,16 +4156,14 @@ document.addEventListener(
 async()=>{
 if(!document.hidden&&game)
 await syncGame();
-}
-);
+});
 
 window.addEventListener(
 "pageshow",
 async()=>{
 if(game)
 await syncGame();
-}
-);
+});
 
 
 /* =========================================================
