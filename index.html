@@ -613,67 +613,15 @@ hr{
 
 /* RESULTS */
 
-#resultsScreen{
-  transition:.25s ease
-}
-
 .result{
   text-align:center;
   font-size:25px;
   font-weight:900;
-  padding:18px;
-  border-radius:18px;
-  margin-bottom:15px
+  padding:18px
 }
 
 .resultCorrect{color:#7ee5a7}
 .resultWrong{color:#ff8199}
-
-/* DISTINCT WIN SCREENS */
-
-#resultsScreen.civilianWin{
-  border:2px solid #43d98b;
-  background:
-    radial-gradient(circle at top,#163b2b 0,#131724 45%,#131724 100%);
-  box-shadow:
-    0 0 35px rgba(67,217,139,.14),
-    0 10px 35px rgba(0,0,0,.25)
-}
-
-#resultsScreen.civilianWin .result{
-  background:#123425;
-  border:1px solid #2e9e69;
-  color:#7ee5a7
-}
-
-#resultsScreen.imposterWin{
-  border:2px solid #e04d6b;
-  background:
-    radial-gradient(circle at top,#3b1825 0,#131724 45%,#131724 100%);
-  box-shadow:
-    0 0 35px rgba(224,77,107,.15),
-    0 10px 35px rgba(0,0,0,.25)
-}
-
-#resultsScreen.imposterWin .result{
-  background:#351622;
-  border:1px solid #a33d58;
-  color:#ff8199
-}
-
-.winBanner{
-  text-align:center;
-  font-size:52px;
-  margin:5px 0 2px
-}
-
-.winSubtext{
-  text-align:center;
-  font-size:14px;
-  color:#9da4b7;
-  line-height:1.5;
-  margin-bottom:8px
-}
 
 .resultPlayer{
   background:#0d111b;
@@ -1033,16 +981,12 @@ Everyone sees the same order. Just follow the numbers.
 
 <h2 class="center">Vote</h2>
 
-<p class="voteInstructions">
-You can vote for <strong>nobody</strong>, <strong>one player</strong>,
-or <strong>two players</strong>.<br>
-If you select two, both players must be the Imposters for the vote to succeed.
+<p id="voteInstructions" class="voteInstructions">
 </p>
 
 <div id="votePlayers"></div>
 
 <div id="voteCounter" class="voteCounter">
-0 / 2 selected
 </div>
 
 <button id="submitVoteButton" disabled>
@@ -1050,7 +994,7 @@ Submit Vote
 </button>
 
 <div id="voteStatus" class="status center">
-Choose nobody, one player, or two players.
+Choose your vote.
 </div>
 
 </section>
@@ -1093,7 +1037,6 @@ Think carefully...
 
 </div>
 
-
 <div id="guessWaitingPanel" class="guessWaiting hidden">
 
 <div class="guessWaitingIcon">⏳</div>
@@ -1108,9 +1051,6 @@ They now have one final chance to guess the secret word.
 </div>
 
 </div>
-
-
-<!-- VOTE REVEAL DURING FINAL GUESS -->
 
 <div id="guessVoteResults" class="guessReveal hidden">
 
@@ -1133,15 +1073,11 @@ Here is how everyone voted and who was actually an Imposter.
 
 <section id="resultsScreen" class="card hidden">
 
-<div id="winBanner" class="winBanner"></div>
-
 <h2 class="center">Results</h2>
 
 <div id="resultText" class="result">
 Calculating...
 </div>
-
-<div id="winSubtext" class="winSubtext"></div>
 
 <div id="actualWordBox" class="infoBox hidden">
 Secret Word: <strong id="actualWord"></strong>
@@ -1219,8 +1155,9 @@ let lastStatus=null;
 let selectedVotes=[];
 let nobodySelected=false;
 let syncing=false;
-
 let categoryNames=new Map();
+
+let lastPlayersSignature="";
 
 
 /* =========================================================
@@ -1287,6 +1224,7 @@ const clueOrderList=document.getElementById("clueOrderList");
 const hostClueControls=document.getElementById("hostClueControls");
 const startVotingButton=document.getElementById("startVotingButton");
 
+const voteInstructions=document.getElementById("voteInstructions");
 const votePlayers=document.getElementById("votePlayers");
 const voteCounter=document.getElementById("voteCounter");
 const submitVoteButton=document.getElementById("submitVoteButton");
@@ -1294,7 +1232,6 @@ const voteStatus=document.getElementById("voteStatus");
 
 const guessPanel=document.getElementById("imposterGuessPanel");
 const guessWaitingPanel=document.getElementById("guessWaitingPanel");
-
 const guessVoteResults=document.getElementById("guessVoteResults");
 const guessVoteResultsList=document.getElementById("guessVoteResultsList");
 
@@ -1311,9 +1248,6 @@ const actualWord=document.getElementById("actualWord");
 const finalGuessResult=document.getElementById("finalGuessResult");
 const finalGuessWord=document.getElementById("finalGuessWord");
 const finalGuessOutcome=document.getElementById("finalGuessOutcome");
-
-const winBanner=document.getElementById("winBanner");
-const winSubtext=document.getElementById("winSubtext");
 
 const nextRoundButton=document.getElementById("nextRoundButton");
 const backLobbyButton=document.getElementById("backLobbyButton");
@@ -1554,12 +1488,12 @@ function updateModeDescription(){
 if(gameMode.value==="variable_imposters"){
 
 modeDescription.textContent=
-"Each round randomly has 0, 1, or 2 Imposters. If there are 0 Imposters, civilians must vote Nobody to win.";
+"Each round randomly has 0, 1, or 2 Imposters. With 0 Imposters, everyone must vote Nobody to win.";
 
 }else{
 
 modeDescription.textContent=
-"Classic mode always has exactly 1 Imposter.";
+"Classic mode always has exactly 1 Imposter. Each player votes for exactly one other player.";
 
 }
 
@@ -1583,6 +1517,15 @@ previewHints.textContent=
 game.imposter_hints_enabled
 ?"ON"
 :"OFF";
+
+
+/*
+ IMPORTANT HOST FIX:
+
+Do not only trust the original player object.
+loadPlayers() refreshes player.is_host whenever the
+database says the host changed.
+*/
 
 if(player?.is_host){
 
@@ -1908,14 +1851,9 @@ show(lobby);
 roomCode.textContent=
 game.code;
 
-hostControls.classList.toggle(
-"hidden",
-!player.is_host
-);
+await loadPlayers();
 
 updateSettingsPreview();
-
-await loadPlayers();
 
 subscribeToGame();
 
@@ -1937,7 +1875,7 @@ const result=
 await db
 .from("game_players")
 .select(
-"id,display_name,is_host,is_alive"
+"id,display_name,is_host,is_alive,joined_at"
 )
 .eq("game_id",game.id)
 .order("joined_at");
@@ -1947,12 +1885,74 @@ throw result.error;
 
 const list=result.data||[];
 
-const stillHere=
-list.some(
+const me=list.find(
 p=>p.id===player.id
 );
 
-if(!stillHere){
+
+/*
+ HOST TRANSFER FIX
+
+This is the important part.
+
+Previously the local `player.is_host`
+could remain false after the old host left.
+
+Now every player refresh checks the database
+and updates the local player object.
+*/
+
+if(me){
+
+const oldHost=!!player.is_host;
+const newHost=!!me.is_host;
+
+player.is_host=newHost;
+player.is_alive=me.is_alive;
+player.display_name=me.display_name;
+
+
+/*
+ If host status changed, immediately update every
+ host-only control without requiring a reload.
+*/
+
+if(oldHost!==newHost){
+
+updateLeaveUI();
+
+hostControls.classList.toggle(
+"hidden",
+!newHost
+);
+
+hostClueControls.classList.toggle(
+"hidden",
+!newHost
+);
+
+if(newHost){
+
+setStatus(
+lobbyStatus,
+"You are now the host. You can change the game settings.",
+"ok"
+);
+
+}else{
+
+setStatus(
+lobbyStatus,
+"Waiting for the host..."
+);
+
+}
+
+}
+
+}
+
+if(!me){
 
 await clearLocalGame();
 
@@ -1965,6 +1965,22 @@ createStatus,
 return;
 
 }
+
+
+/*
+ Detect whether the actual player list changed.
+ This forces the kick buttons to rebuild correctly.
+*/
+
+const signature=
+list.map(p=>
+p.id+":"+p.is_host+":"+p.is_alive
+).join("|");
+
+lastPlayersSignature=signature;
+
+
+/* Rebuild player list */
 
 players.innerHTML=
 "<h3>Players ("+
@@ -2012,7 +2028,14 @@ document.createElement("button");
 kick.className="kickButton";
 kick.textContent="Kick";
 
-kick.onclick=()=>kickPlayer(p);
+kick.onclick=async(e)=>{
+
+e.preventDefault();
+e.stopPropagation();
+
+await kickPlayer(p);
+
+};
 
 div.appendChild(kick);
 
@@ -2022,11 +2045,42 @@ players.appendChild(div);
 
 });
 
+
+/*
+ Always refresh host controls after loading players.
+ This makes host transfer immediate.
+*/
+
+hostControls.classList.toggle(
+"hidden",
+!player.is_host
+);
+
+updateLeaveUI();
+
+updateSettingsPreview();
+
+if(game.status==="lobby"){
+
+if(player.is_host){
+
 lobbyStatus.textContent=
 list.length+
 " player"+
 (list.length===1?"":"s")+
-" in the room.";
+" in the room. You are the host.";
+
+}else{
+
+lobbyStatus.textContent=
+list.length+
+" player"+
+(list.length===1?"":"s")+
+" in the room. Waiting for the host.";
+
+}
+
+}
 
 }
 
@@ -2038,6 +2092,9 @@ list.length+
 async function kickPlayer(target){
 
 if(!player?.is_host||!game)
+return;
+
+if(target.id===player.id)
 return;
 
 if(!confirm(
@@ -2060,9 +2117,17 @@ p_player_id:target.id
 if(result.error)
 throw result.error;
 
+
+/*
+ Immediately reload the player list instead of
+ waiting for a realtime event.
+*/
+
 await loadPlayers();
 
 }catch(error){
+
+console.error(error);
 
 alert(
 "Could not kick player:\n"+
@@ -2091,7 +2156,7 @@ db.removeChannel(channel);
 
 channel=
 db.channel(
-"imposter-"+game.id
+"imposter-"+game.id+"-"+getToken()
 )
 
 .on(
@@ -2116,7 +2181,19 @@ table:"game_players",
 filter:"game_id=eq."+game.id
 },
 async()=>{
+
+/*
+ Do not merely update the visual player list.
+ This refresh also updates player.is_host,
+ which is what fixes host transfer.
+*/
+
+try{
 await loadPlayers();
+}catch(error){
+console.warn(error);
+}
+
 }
 )
 
@@ -2188,6 +2265,8 @@ throw result.error;
 if(!result.data)
 throw new Error("Game no longer exists.");
 
+const oldGame=game;
+
 game=result.data;
 
 saveRoom();
@@ -2199,6 +2278,24 @@ true,
 
 updateSettingsPreview();
 
+
+/*
+ Always refresh players while in lobby.
+ This catches host transfers even if a realtime
+ event is missed.
+*/
+
+if(game.status==="lobby"){
+
+await loadPlayers();
+
+}
+
+
+/*
+ Phase changes.
+*/
+
 if(game.status!==lastStatus){
 
 lastStatus=game.status;
@@ -2206,15 +2303,6 @@ lastStatus=game.status;
 await handlePhase(game.status);
 
 }else{
-
-if(game.status==="lobby"){
-
-if(lobby.classList.contains("hidden"))
-await openLobby();
-else
-await loadPlayers();
-
-}
 
 if(
 game.status==="playing"||
@@ -2273,7 +2361,9 @@ async function handlePhase(status){
 if(status==="lobby"){
 
 await loadPlayers();
+
 show(lobby);
+
 return;
 
 }
@@ -2284,6 +2374,7 @@ status==="clues"
 ){
 
 await showGameScreen();
+
 return;
 
 }
@@ -2291,6 +2382,7 @@ return;
 if(status==="voting"){
 
 await showVoting();
+
 return;
 
 }
@@ -2298,6 +2390,7 @@ return;
 if(status==="imposter_guess"){
 
 await showImposterGuess();
+
 return;
 
 }
@@ -2305,6 +2398,7 @@ return;
 if(status==="results"){
 
 await loadResults();
+
 return;
 
 }
@@ -2335,6 +2429,7 @@ const data=result.data;
 if(data.status==="lobby"){
 
 show(lobby);
+
 return;
 
 }
@@ -2598,10 +2693,36 @@ nobodySelected=false;
 
 submitVoteButton.disabled=true;
 
-voteStatus.textContent=
-"Choose nobody, one player, or two players.";
+const isVariable=
+game.game_mode==="variable_imposters";
 
-updateVoteCounter();
+
+/*
+ MODE-SPECIFIC INSTRUCTIONS
+*/
+
+if(isVariable){
+
+voteInstructions.innerHTML=
+"You can vote for <strong>Nobody</strong>, <strong>one player</strong>, or <strong>two players</strong>.<br>"+
+"If you select two, both players must be the Imposters for the vote to succeed.";
+
+voteCounter.textContent=
+"0 / 2 selected";
+
+}else{
+
+voteInstructions.innerHTML=
+"Choose <strong>exactly one</strong> of the other players.<br>"+
+"Classic mode has exactly one Imposter.";
+
+voteCounter.textContent=
+"0 / 1 selected";
+
+}
+
+voteStatus.textContent=
+"Choose your vote.";
 
 const result=
 await db
@@ -2617,9 +2738,17 @@ throw result.error;
 votePlayers.innerHTML="";
 
 
-/* NOBODY */
+/*
+ ========================================================
+ VARIABLE MODE ONLY — NOBODY BUTTON
+ ========================================================
+*/
 
-const nobodyButton=
+let nobodyButton=null;
+
+if(isVariable){
+
+nobodyButton=
 document.createElement("button");
 
 nobodyButton.className=
@@ -2649,12 +2778,24 @@ updateVoteCounter();
 
 };
 
-votePlayers.appendChild(nobodyButton);
+votePlayers.appendChild(
+nobodyButton
+);
+
+}
 
 
-/* PLAYERS */
+/*
+ ========================================================
+ PLAYER VOTES
+ ========================================================
+*/
 
 (result.data||[]).forEach(p=>{
+
+/*
+ Nobody can still never be used to vote for yourself.
+*/
 
 if(p.id===player.id)
 return;
@@ -2667,15 +2808,62 @@ button.textContent=p.display_name;
 
 button.onclick=()=>{
 
+/*
+ If somebody was selected, selecting a player
+ cancels Nobody.
+*/
+
 if(nobodySelected){
 
 nobodySelected=false;
 
+if(nobodyButton)
 nobodyButton.classList.remove(
 "selected"
 );
 
 }
+
+
+/*
+ CLASSIC:
+ exactly one player.
+ Clicking another player replaces the previous choice.
+*/
+
+if(!isVariable){
+
+document.querySelectorAll(".choice")
+.forEach(b=>{
+if(b!==nobodyButton)
+b.classList.remove("selected");
+});
+
+selectedVotes=[
+p.id
+];
+
+button.classList.add(
+"selected"
+);
+
+submitVoteButton.disabled=false;
+
+voteCounter.textContent=
+"1 / 1 selected";
+
+voteStatus.textContent=
+"You selected "+p.display_name+".";
+
+return;
+
+}
+
+
+/*
+ VARIABLE:
+ maximum two players.
+*/
 
 const index=
 selectedVotes.indexOf(p.id);
@@ -2743,6 +2931,11 @@ votePlayers.appendChild(button);
 
 }
 
+
+/* =========================================================
+   VOTE COUNTER
+========================================================= */
+
 function updateVoteCounter(){
 
 if(nobodySelected){
@@ -2754,9 +2947,16 @@ return;
 
 }
 
+const max=
+game?.game_mode==="variable_imposters"
+?2
+:1;
+
 voteCounter.textContent=
 selectedVotes.length+
-" / 2 selected";
+" / "+
+max+
+" selected";
 
 }
 
@@ -2767,11 +2967,38 @@ selectedVotes.length+
 
 submitVoteButton.onclick=async()=>{
 
+const isVariable=
+game.game_mode==="variable_imposters";
+
+
+/*
+ Server-side validation also protects this,
+ but keep the UI validation consistent.
+*/
+
+if(!isVariable){
+
+if(
+nobodySelected ||
+selectedVotes.length!==1
+){
+
+voteStatus.textContent=
+"Classic mode requires exactly one player.";
+
+return;
+
+}
+
+}else{
+
 if(
 selectedVotes.length===0 &&
 !nobodySelected
 )
 return;
+
+}
 
 submitVoteButton.disabled=true;
 
@@ -2875,9 +3102,6 @@ guessWaitingPanel.classList.remove("hidden");
 
 }
 
-
-/* VOTE RESULTS + ROLE REVEAL */
-
 const revealResult=
 await db.rpc(
 "get_vote_reveal_state",
@@ -2894,9 +3118,6 @@ const reveal=
 revealResult.data;
 
 guessVoteResultsList.innerHTML="";
-
-
-/* NOBODY */
 
 const nobodyVotes=
 Number(reveal.nobody_votes||0);
@@ -2950,9 +3171,6 @@ nobodyDiv.appendChild(nobodyCount);
 guessVoteResultsList.appendChild(
 nobodyDiv
 );
-
-
-/* PLAYERS */
 
 (reveal.players||[]).forEach(p=>{
 
@@ -3140,18 +3358,6 @@ async function loadResults(){
 
 show(resultsScreen);
 
-/*
- * IMPORTANT:
- * Clear any previous win styling before loading the new round.
- */
-resultsScreen.classList.remove(
-"civilianWin",
-"imposterWin"
-);
-
-winBanner.textContent="";
-winSubtext.textContent="";
-
 nextRoundButton.style.display=
 player.is_host?"block":"none";
 
@@ -3176,8 +3382,7 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-const data=
-result.data;
+const data=result.data;
 
 if(!data)
 throw new Error(
@@ -3192,126 +3397,83 @@ actualWordBox.classList.remove(
 );
 
 
-/* =========================================================
-   AUTHORITATIVE OUTCOME
-========================================================= */
-
-const outcome=
-data.outcome;
+/* RESULT */
 
 if(
-outcome==="civilians_win_no_imposters"
+data.outcome==="civilians_win_no_imposters"
 ){
 
-resultsScreen.classList.add(
-"civilianWin"
+resultText.innerHTML=
+"🎉 <span class='resultCorrect'>Civilians Win!</span>";
+
+const explanation=
+document.createElement("div");
+
+explanation.className="small";
+explanation.style.marginTop="8px";
+
+explanation.textContent=
+"There were no Imposters, and the civilians correctly chose Nobody.";
+
+resultText.appendChild(
+explanation
 );
 
-winBanner.textContent="🎉";
-
-winSubtext.textContent=
-"No Imposters were among you — and the civilians correctly chose Nobody.";
-
-resultText.innerHTML=
-"✓ CIVILIANS WIN";
-
 }else if(
-outcome==="civilians_failed_no_imposter_vote"
+data.outcome==="civilians_failed_no_imposter_vote"
 ){
 
-resultsScreen.classList.add(
-"imposterWin"
+resultText.innerHTML=
+"❌ <span class='resultWrong'>Imposters Win!</span>";
+
+const explanation=
+document.createElement("div");
+
+explanation.className="small";
+explanation.style.marginTop="8px";
+
+explanation.textContent=
+"There were no Imposters, but the civilians failed to choose Nobody.";
+
+resultText.appendChild(
+explanation
 );
 
-winBanner.textContent="🚨";
-
-winSubtext.textContent=
-"There were no Imposters, but the civilians failed to unanimously choose Nobody.";
-
-resultText.innerHTML=
-"IMPOSTERS WIN";
-
 }else if(
-outcome==="imposters_win_vote"
+data.outcome==="imposters_win_vote"
 ){
 
-resultsScreen.classList.add(
-"imposterWin"
-);
-
-winBanner.textContent="🚨";
-
-winSubtext.textContent=
-"The civilians failed to correctly identify every Imposter.";
-
 resultText.innerHTML=
-"IMPOSTERS WIN";
+"🚨 <span class='resultWrong'>Imposters Win!</span>";
 
 }else if(
-outcome==="imposters_win_guess"
+data.outcome==="imposters_win_guess"
 ){
 
-resultsScreen.classList.add(
-"imposterWin"
-);
-
-winBanner.textContent="🚨";
-
-winSubtext.textContent=
-"The Imposter was identified, but the final guess was correct.";
-
 resultText.innerHTML=
-"IMPOSTERS WIN";
+"🚨 <span class='resultWrong'>Imposters Win!</span>";
 
 }else if(
-outcome==="civilians_win"
+data.outcome==="civilians_win"
 ){
 
-resultsScreen.classList.add(
-"civilianWin"
-);
+resultText.innerHTML=
+"🎉 <span class='resultCorrect'>Civilians Win!</span>";
 
-winBanner.textContent="🎉";
-
-winSubtext.textContent=
-"The Imposter was identified, but failed the final word guess.";
+}else if(data.correct===true){
 
 resultText.innerHTML=
-"✓ CIVILIANS WIN";
-
-}else if(
-outcome==="imposter_final_guess_pending"
-){
-
-/*
- * This normally shouldn't be reached because the UI uses the
- * imposter_guess phase, but it prevents a misleading result.
- */
-resultText.innerHTML=
-"⏳ FINAL GUESS PENDING";
-
-winSubtext.textContent=
-"The Imposter still has a final guess to make.";
+"🎉 <span class='resultCorrect'>Civilians Win!</span>";
 
 }else{
 
-/*
- * Never guess the winner from an old `correct` boolean.
- * If the authoritative outcome is missing, show an error
- * instead of displaying the wrong winner.
- */
 resultText.innerHTML=
-"⚠️ RESULT UNAVAILABLE";
-
-winSubtext.textContent=
-"The server did not return a valid round outcome.";
+"❌ <span class='resultWrong'>Imposters Win!</span>";
 
 }
 
 
-/* =========================================================
-   FINAL GUESSES
-========================================================= */
+/* FINAL GUESSES */
 
 const guesses=
 Array.isArray(data.guesses)
@@ -3402,9 +3564,7 @@ data.correct
 }
 
 
-/* =========================================================
-   VOTES + ROLES
-========================================================= */
+/* VOTES */
 
 const nobodyInfo=
 document.createElement("div");
@@ -3526,15 +3686,6 @@ console.error(
 "Results:",
 error
 );
-
-resultsScreen.classList.remove(
-"civilianWin",
-"imposterWin"
-);
-
-winBanner.textContent="⚠️";
-winSubtext.textContent=
-"Something went wrong while loading the authoritative result.";
 
 resultText.textContent=
 "Results could not be loaded.";
@@ -3857,6 +4008,7 @@ clueOrder=[];
 lastStatus=null;
 selectedVotes=[];
 nobodySelected=false;
+lastPlayersSignature="";
 
 clearSavedRoom();
 
