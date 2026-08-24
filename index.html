@@ -1,733 +1,3 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090b12">
-<title>IMPOSTER</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
-}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:#090b12;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-
-body{
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)
-}
-
-.app{
-  width:100%;
-  max-width:620px;
-  margin:auto;
-  padding:20px 16px 60px
-}
-
-h1{
-  text-align:center;
-  font-size:46px;
-  margin:18px 0 25px;
-  letter-spacing:3px;
-  font-weight:900
-}
-
-.card{
-  background:#131724;
-  border:1px solid #292f43;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.18)
-}
-
-h2{
-  margin-top:0
-}
-
-input,button,select{
-  width:100%;
-  height:54px;
-  border-radius:14px;
-  font-size:17px;
-  margin-top:10px
-}
-
-input,select{
-  padding:0 15px;
-  background:#090c14;
-  border:1px solid #353c51;
-  color:#fff;
-  outline:none
-}
-
-button{
-  border:0;
-  background:#6264ff;
-  color:#fff;
-  font-weight:800;
-  cursor:pointer
-}
-
-button:active{
-  transform:scale(.98)
-}
-
-button:disabled{
-  opacity:.5
-}
-
-.secondary{
-  background:#242a3b
-}
-
-.danger{
-  background:#8f354c
-}
-
-.hidden{
-  display:none!important
-}
-
-.center{
-  text-align:center
-}
-
-.status{
-  margin-top:13px;
-  padding:13px;
-  border-radius:12px;
-  background:#1c2130;
-  font-size:14px;
-  line-height:1.4;
-  word-break:break-word
-}
-
-.ok{
-  color:#7ee5a7
-}
-
-.err{
-  color:#ff8199
-}
-
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px
-}
-
-.tab{
-  margin:0;
-  background:#242a3b
-}
-
-.tab.active{
-  background:#6264ff
-}
-
-.code{
-  text-align:center;
-  font-size:42px;
-  font-weight:900;
-  letter-spacing:7px;
-  margin:12px 0
-}
-
-.player{
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:14px;
-  border-radius:12px;
-  margin-top:8px;
-  min-height:50px
-}
-
-.host{
-  float:right;
-  color:#8c8fff;
-  font-size:13px;
-  font-weight:700
-}
-
-/* GAME INFO */
-
-.gameInfo{
-  text-align:center;
-  padding:4px 0 18px
-}
-
-.gameCategory{
-  color:#9da4b7;
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:1px
-}
-
-.myRole{
-  margin-top:8px;
-  font-size:30px;
-  font-weight:900
-}
-
-.myWord{
-  margin-top:10px;
-  font-size:40px;
-  font-weight:900;
-  word-break:break-word
-}
-
-.imposter{
-  color:#ff8199
-}
-
-.normal{
-  color:#7ee5a7
-}
-
-.roleDescription{
-  color:#9da4b7;
-  margin:10px 0 0;
-  line-height:1.5
-}
-
-/* CLUE ORDER */
-
-.clueTitle{
-  text-align:center;
-  font-size:25px;
-  font-weight:900;
-  margin:0
-}
-
-.clueSubtitle{
-  text-align:center;
-  color:#9299aa;
-  font-size:14px;
-  margin:7px 0 18px
-}
-
-.timer{
-  text-align:center;
-  font-size:60px;
-  line-height:1;
-  font-weight:900;
-  margin:8px 0 20px
-}
-
-.timerWarning{
-  color:#ff8199
-}
-
-.noTimer{
-  font-size:20px;
-  color:#9b9dff
-}
-
-.orderRow{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  background:#0d111b;
-  border:1px solid #252b3c;
-  padding:13px;
-  border-radius:13px;
-  margin-top:8px
-}
-
-.orderNumber{
-  width:38px;
-  height:38px;
-  min-width:38px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#282e41;
-  font-weight:900
-}
-
-.orderName{
-  font-size:17px;
-  font-weight:700;
-  flex:1
-}
-
-.youBadge{
-  display:inline-block;
-  font-size:11px;
-  font-weight:800;
-  background:#6264ff;
-  color:#fff;
-  padding:4px 7px;
-  border-radius:7px;
-  margin-left:7px
-}
-
-.infoBox{
-  background:#101522;
-  border:1px solid #292f43;
-  border-radius:12px;
-  padding:13px;
-  margin-top:15px;
-  font-size:13px;
-  color:#aeb4c4;
-  text-align:center;
-  line-height:1.5
-}
-
-.hostControls{
-  margin-top:18px;
-  padding-top:18px;
-  border-top:1px solid #292f43
-}
-
-.hostLabel{
-  font-size:12px;
-  font-weight:800;
-  color:#888fa2;
-  text-align:center
-}
-
-/* LEAVE */
-
-.gameLeaveButton{
-  position:fixed;
-  top:calc(env(safe-area-inset-top) + 10px);
-  left:12px;
-  z-index:9999;
-  width:auto;
-  min-width:110px;
-  height:42px;
-  padding:0 14px;
-  margin:0;
-  border-radius:12px;
-  background:#242a3b;
-  border:1px solid #353c51;
-  font-size:14px;
-  box-shadow:0 5px 18px rgba(0,0,0,.25)
-}
-
-.leaveControls{
-  position:fixed;
-  top:calc(env(safe-area-inset-top) + 58px);
-  left:12px;
-  z-index:9998;
-  width:170px
-}
-
-.leaveControls button{
-  height:42px;
-  margin-top:7px;
-  font-size:13px
-}
-
-/* VOTING */
-
-.choice{
-  background:#1d2332;
-  border:1px solid #30384d;
-  margin-top:8px
-}
-
-.choice.selected{
-  background:#6264ff;
-  border-color:#6264ff
-}
-
-/* RESULTS */
-
-.result{
-  text-align:center;
-  font-size:25px;
-  font-weight:900;
-  padding:18px
-}
-
-.small{
-  text-align:center;
-  color:#8e95a8;
-  font-size:13px
-}
-
-hr{
-  border:0;
-  border-top:1px solid #292f43;
-  margin:20px 0
-}
-
-.connectionDot{
-  display:inline-block;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#ff8199;
-  margin-right:7px
-}
-
-.connectionDot.okDot{
-  background:#70d89a
-}
-
-.rejoinCard{
-  margin-top:12px;
-  border:1px solid #6264ff;
-  background:#171a2b
-}
-
-.rejoinTitle{
-  font-size:19px;
-  font-weight:900;
-  margin-bottom:7px
-}
-
-.rejoinInfo{
-  color:#9da4b7;
-  font-size:14px;
-  line-height:1.5
-}
-</style>
-</head>
-
-<body>
-
-<button id="gameLeaveButton"
-        class="gameLeaveButton hidden">
-← Leave Game
-</button>
-
-<div id="leaveControls"
-     class="leaveControls hidden">
-
-  <button id="bringLobbyButton"
-          class="secondary hidden">
-    Bring Everyone Back To Lobby
-  </button>
-
-</div>
-
-<main class="app">
-
-<h1>IMPOSTER</h1>
-
-<!-- HOME -->
-
-<section id="home">
-
-<div class="tabs">
-
-<button id="createTab"
-        class="tab active">
-Create Game
-</button>
-
-<button id="joinTab"
-        class="tab">
-Join Game
-</button>
-
-</div>
-
-<div id="createCard"
-     class="card">
-
-<h2>Create Room</h2>
-
-<input id="createName"
-       maxlength="24"
-       autocomplete="name"
-       placeholder="Your name">
-
-<button id="createButton">
-Create Room
-</button>
-
-<div id="createStatus"
-     class="status">
-Connecting to multiplayer...
-</div>
-
-</div>
-
-<div id="joinCard"
-     class="card hidden">
-
-<h2>Join Room</h2>
-
-<input id="joinName"
-       maxlength="24"
-       autocomplete="name"
-       placeholder="Your name">
-
-<input id="joinCode"
-       maxlength="6"
-       autocapitalize="characters"
-       placeholder="6-character room code">
-
-<button id="joinButton">
-Join Game
-</button>
-
-<div id="joinStatus"
-     class="status">
-Enter the room code your friend gave you.
-</div>
-
-</div>
-
-<div id="rejoinCard"
-     class="card rejoinCard hidden">
-
-<div class="rejoinTitle">
-Previous Game Found
-</div>
-
-<div id="rejoinInfo"
-     class="rejoinInfo">
-Checking previous game...
-</div>
-
-<button id="rejoinButton">
-Rejoin Game
-</button>
-
-<button id="forgetGameButton"
-        class="secondary">
-Don't Rejoin
-</button>
-
-</div>
-
-</section>
-
-
-<!-- LOBBY -->
-
-<section id="lobby"
-         class="card hidden">
-
-<h2 class="center">
-Game Lobby
-</h2>
-
-<div id="roomCode"
-     class="code">
-------
-</div>
-
-<p class="center">
-Share this code with your friends.
-</p>
-
-<hr>
-
-<div id="players">
-Loading players...
-</div>
-
-<div id="hostControls"
-     class="hidden">
-
-<hr>
-
-<h3>Game Settings</h3>
-
-<label>Category</label>
-
-<select id="category">
-<option value="random">
-Random Category
-</option>
-</select>
-
-<label style="display:block;margin-top:14px">
-Clue time
-</label>
-
-<select id="clueTime">
-
-<option value="30">
-30 seconds
-</option>
-
-<option value="45">
-45 seconds
-</option>
-
-<option value="60" selected>
-60 seconds
-</option>
-
-<option value="90">
-90 seconds
-</option>
-
-<option value="0">
-♾️ No Time Limit
-</option>
-
-</select>
-
-<button id="startButton">
-Start Game
-</button>
-
-</div>
-
-<div id="lobbyStatus"
-     class="status">
-Waiting for players...
-</div>
-
-</section>
-
-
-<!-- GAME / CLUES -->
-
-<section id="clueScreen"
-         class="card hidden">
-
-<div class="gameInfo">
-
-<div id="gameCategory"
-     class="gameCategory">
-CATEGORY
-</div>
-
-<div id="myRole"
-     class="myRole">
-YOUR ROLE
-</div>
-
-<div id="myWord"
-     class="myWord">
-WORD
-</div>
-
-<div id="roleDescription"
-     class="roleDescription">
-</div>
-
-</div>
-
-<hr>
-
-<div class="clueTitle">
-Clue Order
-</div>
-
-<div class="clueSubtitle">
-Give your clue when your number comes up.
-</div>
-
-<div id="clueTimer"
-     class="timer">
-60
-</div>
-
-<div id="clueOrderList"></div>
-
-<div id="hostClueControls"
-     class="hostControls hidden">
-
-<div class="hostLabel">
-HOST
-</div>
-
-<button id="startVotingButton">
-Start Voting
-</button>
-
-</div>
-
-<div id="clueInfo"
-     class="infoBox">
-Everyone sees the same order. Just follow the numbers.
-</div>
-
-</section>
-
-
-<!-- VOTING -->
-
-<section id="votingScreen"
-         class="card hidden">
-
-<h2 class="center">
-Vote
-</h2>
-
-<p class="center">
-Who do you think the Imposter is?
-</p>
-
-<div id="votePlayers"></div>
-
-<button id="submitVoteButton"
-        disabled>
-Submit Vote
-</button>
-
-<div id="voteStatus"
-     class="status center">
-Choose a player.
-</div>
-
-</section>
-
-
-<!-- RESULTS -->
-
-<section id="resultsScreen"
-         class="card hidden">
-
-<h2 class="center">
-Results
-</h2>
-
-<div id="resultText"
-     class="result">
-Calculating...
-</div>
-
-<div id="voteResults"></div>
-
-<button id="nextRoundButton">
-Next Round
-</button>
-
-<button id="backLobbyButton"
-        class="secondary">
-Back To Lobby
-</button>
-
-</section>
-
-
-<p class="small">
-
-<span id="connectionDot"
-      class="connectionDot"></span>
-
-<span id="connectionText">
-Connecting...
-</span>
-
-</p>
-
-</main>
-
-
 <script>
 "use strict";
 
@@ -741,94 +11,199 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_OT5vlPKSNyzftGwrNesWAA_j2i2L88V";
 
-let db=null;
-
+let db = null;
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let game=null;
-let player=null;
-let channel=null;
+let game = null;
+let player = null;
+let channel = null;
 
-let clueOrder=[];
-let clueTimerInterval=null;
-let syncInterval=null;
+let clueOrder = [];
+let skippedPlayers = new Set();
 
-let lastStatus=null;
-let selectedVote=null;
-let syncing=false;
+let currentTurn = 0;
+let currentRound = 1;
+let timeLimit = 60;
 
-let savedRoster=[];
+let clueInterval = null;
+let syncInterval = null;
 
+let selectedVote = null;
+
+let lastGameStatus = null;
+let syncing = false;
+
+let savedRoster = [];
+
+let playerRole = null;
+let playerWord = "";
+let playerHint = "";
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const home=document.getElementById("home");
-const lobby=document.getElementById("lobby");
-const clueScreen=document.getElementById("clueScreen");
-const votingScreen=document.getElementById("votingScreen");
-const resultsScreen=document.getElementById("resultsScreen");
+const home = document.getElementById("home");
+const lobby = document.getElementById("lobby");
+const roleScreen = document.getElementById("roleScreen");
+const clueScreen = document.getElementById("clueScreen");
+const votingScreen = document.getElementById("votingScreen");
+const resultsScreen = document.getElementById("resultsScreen");
 
-const createTab=document.getElementById("createTab");
-const joinTab=document.getElementById("joinTab");
+const createTab = document.getElementById("createTab");
+const joinTab = document.getElementById("joinTab");
 
-const createCard=document.getElementById("createCard");
-const joinCard=document.getElementById("joinCard");
+const createCard = document.getElementById("createCard");
+const joinCard = document.getElementById("joinCard");
 
-const createName=document.getElementById("createName");
-const joinName=document.getElementById("joinName");
-const joinCode=document.getElementById("joinCode");
+const createName = document.getElementById("createName");
+const joinName = document.getElementById("joinName");
+const joinCode = document.getElementById("joinCode");
 
-const createButton=document.getElementById("createButton");
-const joinButton=document.getElementById("joinButton");
+const createButton = document.getElementById("createButton");
+const joinButton = document.getElementById("joinButton");
 
-const createStatus=document.getElementById("createStatus");
-const joinStatus=document.getElementById("joinStatus");
+const createStatus = document.getElementById("createStatus");
+const joinStatus = document.getElementById("joinStatus");
 
-const rejoinCard=document.getElementById("rejoinCard");
-const rejoinInfo=document.getElementById("rejoinInfo");
-const rejoinButton=document.getElementById("rejoinButton");
-const forgetGameButton=document.getElementById("forgetGameButton");
+const roomCode = document.getElementById("roomCode");
+const players = document.getElementById("players");
 
-const roomCode=document.getElementById("roomCode");
-const players=document.getElementById("players");
+const hostControls = document.getElementById("hostControls");
+const category = document.getElementById("category");
+const clueTime = document.getElementById("clueTime");
+const startButton = document.getElementById("startButton");
+const bringLobbyButton = document.getElementById("bringLobbyButton");
+const lobbyStatus = document.getElementById("lobbyStatus");
 
-const hostControls=document.getElementById("hostControls");
-const category=document.getElementById("category");
-const clueTime=document.getElementById("clueTime");
-const startButton=document.getElementById("startButton");
-const lobbyStatus=document.getElementById("lobbyStatus");
+const roleCategory = document.getElementById("roleCategory");
+const roleTitle = document.getElementById("roleTitle");
+const roleWord = document.getElementById("roleWord");
+const roleDescription = document.getElementById("roleDescription");
+const readyButton = document.getElementById("readyButton");
 
-const gameCategory=document.getElementById("gameCategory");
-const myRole=document.getElementById("myRole");
-const myWord=document.getElementById("myWord");
-const roleDescription=document.getElementById("roleDescription");
+const clueTimer = document.getElementById("clueTimer");
+const clueOrderList = document.getElementById("clueOrderList");
+const clueTurnMessage = document.getElementById("clueTurnMessage");
+const clueDoneButton = document.getElementById("clueDoneButton");
 
-const clueTimer=document.getElementById("clueTimer");
-const clueOrderList=document.getElementById("clueOrderList");
-const hostClueControls=document.getElementById("hostClueControls");
-const startVotingButton=document.getElementById("startVotingButton");
+const hostSkipControls =
+document.getElementById("hostSkipControls");
 
-const votePlayers=document.getElementById("votePlayers");
-const submitVoteButton=document.getElementById("submitVoteButton");
-const voteStatus=document.getElementById("voteStatus");
+const hostSkipButton =
+document.getElementById("hostSkipButton");
 
-const resultText=document.getElementById("resultText");
-const voteResults=document.getElementById("voteResults");
+const votePlayers =
+document.getElementById("votePlayers");
 
-const nextRoundButton=document.getElementById("nextRoundButton");
-const backLobbyButton=document.getElementById("backLobbyButton");
+const submitVoteButton =
+document.getElementById("submitVoteButton");
 
-const gameLeaveButton=document.getElementById("gameLeaveButton");
-const leaveControls=document.getElementById("leaveControls");
-const bringLobbyButton=document.getElementById("bringLobbyButton");
+const voteStatus =
+document.getElementById("voteStatus");
 
-const connectionDot=document.getElementById("connectionDot");
-const connectionText=document.getElementById("connectionText");
+const resultText =
+document.getElementById("resultText");
+
+const voteResults =
+document.getElementById("voteResults");
+
+const nextRoundButton =
+document.getElementById("nextRoundButton");
+
+const backLobbyButton =
+document.getElementById("backLobbyButton");
+
+const connectionDot =
+document.getElementById("connectionDot");
+
+const connectionText =
+document.getElementById("connectionText");
+
+const gameLeaveButton =
+document.getElementById("gameLeaveButton");
+
+const rejoinCard =
+document.getElementById("rejoinCard");
+
+const rejoinInfo =
+document.getElementById("rejoinInfo");
+
+const rejoinButton =
+document.getElementById("rejoinButton");
+
+const forgetGameButton =
+document.getElementById("forgetGameButton");
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+function show(screen){
+
+  [
+    home,
+    lobby,
+    roleScreen,
+    clueScreen,
+    votingScreen,
+    resultsScreen
+  ].forEach(x => x.classList.add("hidden"));
+
+  screen.classList.remove("hidden");
+
+  updateLeaveButton();
+
+  window.scrollTo({
+    top:0,
+    behavior:"instant"
+  });
+}
+
+
+function setStatus(element,text,type=""){
+
+  element.textContent = text;
+  element.className = "status " + type;
+}
+
+
+function setConnection(ok,text){
+
+  connectionDot.classList.toggle(
+    "okDot",
+    ok
+  );
+
+  connectionText.textContent = text;
+}
+
+
+function updateLeaveButton(){
+
+  if(game && player){
+
+    gameLeaveButton.classList.remove(
+      "hidden"
+    );
+
+  }else{
+
+    gameLeaveButton.classList.add(
+      "hidden"
+    );
+
+  }
+}
 
 
 /* =========================================================
@@ -837,43 +212,51 @@ const connectionText=document.getElementById("connectionText");
 
 function getToken(){
 
-let token=localStorage.getItem(
-"imposter_player_token"
-);
+  let token =
+    localStorage.getItem(
+      "imposter_player_token"
+    );
 
-if(!token){
+  if(!token){
 
-if(
-window.crypto &&
-typeof crypto.randomUUID==="function"
-){
+    if(
+      window.crypto &&
+      typeof crypto.randomUUID === "function"
+    ){
 
-token=crypto.randomUUID();
+      token = crypto.randomUUID();
 
-}else{
+    }else{
 
-token=
-"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-.replace(/[xy]/g,c=>{
+      token =
+        "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+        .replace(
+          /[xy]/g,
+          function(c){
 
-const r=Math.random()*16|0;
-const v=c==="x"?r:(r&3)|8;
+            const r =
+              Math.random()*16|0;
 
-return v.toString(16);
+            const v =
+              c==="x"
+              ? r
+              : (r&3)|8;
 
-});
+            return v.toString(16);
 
-}
+          }
+        );
 
-localStorage.setItem(
-"imposter_player_token",
-token
-);
+    }
 
-}
+    localStorage.setItem(
+      "imposter_player_token",
+      token
+    );
 
-return token;
+  }
 
+  return token;
 }
 
 
@@ -883,165 +266,129 @@ return token;
 
 function saveRoom(){
 
-if(!game)
-return;
+  if(!game) return;
 
-localStorage.setItem(
-"imposter_room_code",
-game.code
-);
+  localStorage.setItem(
+    "imposter_room_code",
+    game.code
+  );
 
-if(savedRoster.length){
+  if(savedRoster.length){
 
-localStorage.setItem(
-"imposter_room_roster",
-JSON.stringify(savedRoster)
-);
+    localStorage.setItem(
+      "imposter_room_roster",
+      JSON.stringify(savedRoster)
+    );
 
+  }
 }
 
-}
 
 function clearSavedRoom(){
 
-localStorage.removeItem(
-"imposter_room_code"
-);
+  localStorage.removeItem(
+    "imposter_room_code"
+  );
 
-localStorage.removeItem(
-"imposter_room_roster"
-);
+  localStorage.removeItem(
+    "imposter_room_roster"
+  );
 
-savedRoster=[];
-
+  savedRoster = [];
 }
+
+
+function saveRoster(list){
+
+  if(!Array.isArray(list)) return;
+
+  savedRoster =
+    list.map(p => ({
+      id:p.id,
+      display_name:p.display_name
+    }));
+
+  try{
+
+    localStorage.setItem(
+      "imposter_room_roster",
+      JSON.stringify(savedRoster)
+    );
+
+  }catch(e){
+
+    console.warn(
+      "Could not save roster:",
+      e
+    );
+
+  }
+}
+
 
 function loadSavedRoster(){
 
-try{
+  try{
 
-const raw=localStorage.getItem(
-"imposter_room_roster"
-);
+    const raw =
+      localStorage.getItem(
+        "imposter_room_roster"
+      );
 
-if(!raw){
+    if(!raw){
 
-savedRoster=[];
-return;
+      savedRoster = [];
+      return;
 
-}
+    }
 
-const data=JSON.parse(raw);
+    const parsed = JSON.parse(raw);
 
-savedRoster=
-Array.isArray(data)?data:[];
+    savedRoster =
+      Array.isArray(parsed)
+      ? parsed
+      : [];
 
-}catch{
+  }catch(e){
 
-savedRoster=[];
+    savedRoster = [];
 
-}
-
-}
-
-
-/* =========================================================
-   UI
-========================================================= */
-
-function show(screen){
-
-[
-home,
-lobby,
-clueScreen,
-votingScreen,
-resultsScreen
-].forEach(
-x=>x.classList.add("hidden")
-);
-
-screen.classList.remove("hidden");
-
-updateLeaveUI();
-
-window.scrollTo({
-top:0,
-behavior:"instant"
-});
-
-}
-
-function setStatus(el,text,type=""){
-
-el.textContent=text;
-el.className="status "+type;
-
-}
-
-function setConnection(ok,text){
-
-connectionDot.classList.toggle(
-"okDot",
-ok
-);
-
-connectionText.textContent=text;
-
-}
-
-function updateLeaveUI(){
-
-if(!game||!player){
-
-gameLeaveButton.classList.add("hidden");
-leaveControls.classList.add("hidden");
-
-return;
-
-}
-
-gameLeaveButton.classList.remove("hidden");
-leaveControls.classList.remove("hidden");
-
-bringLobbyButton.classList.toggle(
-"hidden",
-!player.is_host
-);
-
+  }
 }
 
 
 /* =========================================================
-   SUPABASE INIT
+   SUPABASE
 ========================================================= */
 
 function initSupabase(){
 
-if(!window.supabase){
+  if(!window.supabase){
 
-throw new Error(
-"Supabase failed to load."
-);
+    throw new Error(
+      "Supabase library failed to load."
+    );
 
-}
+  }
 
-db=window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY,
-{
-auth:{
-persistSession:false,
-autoRefreshToken:false
-},
-realtime:{
-params:{
-eventsPerSecond:30
-}
-}
-}
-);
+  db =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY,
+      {
+        auth:{
+          persistSession:false,
+          autoRefreshToken:false
+        },
+        realtime:{
+          params:{
+            eventsPerSecond:30
+          }
+        }
+      }
+    );
 
+  return db;
 }
 
 
@@ -1051,53 +398,88 @@ eventsPerSecond:30
 
 async function checkConnection(){
 
-setConnection(
-false,
-"Connecting..."
-);
+  setConnection(
+    false,
+    "Connecting..."
+  );
 
-try{
+  setStatus(
+    createStatus,
+    "Connecting to multiplayer..."
+  );
 
-const result=
-await db
-.from("game_categories")
-.select("id")
-.limit(1);
+  try{
 
-if(result.error)
-throw result.error;
+    if(!db)
+      initSupabase();
 
-setConnection(
-true,
-"Multiplayer connected"
-);
+    const timeout =
+      new Promise(
+        (_,reject)=>{
 
-setStatus(
-createStatus,
-"✓ Multiplayer server connected",
-"ok"
-);
+          setTimeout(
+            () => reject(
+              new Error(
+                "Connection timed out."
+              )
+            ),
+            8000
+          );
 
-await loadCategories();
+        }
+      );
 
-}catch(error){
+    const request =
+      db
+      .from("game_categories")
+      .select("id,name")
+      .limit(1);
 
-console.error(error);
+    const result =
+      await Promise.race([
+        request,
+        timeout
+      ]);
 
-setConnection(
-false,
-"Multiplayer connection problem"
-);
+    if(result.error)
+      throw result.error;
 
-setStatus(
-createStatus,
-"Connection failed: "+
-error.message,
-"err"
-);
+    setConnection(
+      true,
+      "Multiplayer connected"
+    );
 
-}
+    setStatus(
+      createStatus,
+      "✓ Multiplayer server connected",
+      "ok"
+    );
 
+    await loadCategories();
+
+  }catch(error){
+
+    console.error(
+      "Connection error:",
+      error
+    );
+
+    setConnection(
+      false,
+      "Multiplayer connection problem"
+    );
+
+    setStatus(
+      createStatus,
+      "Connection failed: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "err"
+    );
+
+  }
 }
 
 
@@ -1107,39 +489,44 @@ error.message,
 
 async function loadCategories(){
 
-try{
+  try{
 
-const result=
-await db
-.from("game_categories")
-.select("id,name")
-.eq("active",true)
-.order("name");
+    const result =
+      await db
+      .from("game_categories")
+      .select("id,name")
+      .eq("active",true)
+      .order("name");
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-category.innerHTML=
-'<option value="random">Random Category</option>';
+    category.innerHTML =
+      '<option value="random">Random Category</option>';
 
-(result.data||[]).forEach(cat=>{
+    (result.data || []).forEach(cat => {
 
-const option=
-document.createElement("option");
+      const option =
+        document.createElement("option");
 
-option.value=cat.id;
-option.textContent=cat.name;
+      option.value =
+        String(cat.id);
 
-category.appendChild(option);
+      option.textContent =
+        cat.name;
 
-});
+      category.appendChild(option);
 
-}catch(error){
+    });
 
-console.error(error);
+  }catch(error){
 
-}
+    console.error(
+      "Category loading:",
+      error
+    );
 
+  }
 }
 
 
@@ -1147,190 +534,227 @@ console.error(error);
    TABS
 ========================================================= */
 
-createTab.onclick=()=>{
+createTab.onclick = () => {
 
-createTab.classList.add("active");
-joinTab.classList.remove("active");
+  createTab.classList.add("active");
+  joinTab.classList.remove("active");
 
-createCard.classList.remove("hidden");
-joinCard.classList.add("hidden");
+  createCard.classList.remove("hidden");
+  joinCard.classList.add("hidden");
 
 };
 
-joinTab.onclick=()=>{
 
-joinTab.classList.add("active");
-createTab.classList.remove("active");
+joinTab.onclick = () => {
 
-joinCard.classList.remove("hidden");
-createCard.classList.add("hidden");
+  joinTab.classList.add("active");
+  createTab.classList.remove("active");
+
+  joinCard.classList.remove("hidden");
+  createCard.classList.add("hidden");
 
 };
 
 
 /* =========================================================
-   CREATE
+   CREATE GAME
 ========================================================= */
 
 async function createGame(){
 
-const name=createName.value.trim();
+  if(!db){
 
-if(!name){
+    await checkConnection();
 
-setStatus(
-createStatus,
-"Enter your name.",
-"err"
-);
+    if(!db)
+      return;
 
-return;
+  }
 
-}
+  const name =
+    createName.value.trim();
 
-createButton.disabled=true;
+  if(!name){
 
-setStatus(
-createStatus,
-"Creating room..."
-);
+    setStatus(
+      createStatus,
+      "Enter your name.",
+      "err"
+    );
 
-try{
+    return;
+  }
 
-const result=
-await db.rpc(
-"create_game",
-{
-p_host_token:getToken(),
-p_name:name,
-p_max_players:12
-}
-);
+  createButton.disabled = true;
 
-if(result.error)
-throw result.error;
+  setStatus(
+    createStatus,
+    "Creating room..."
+  );
 
-game=result.data.game;
-player=result.data.player;
+  try{
 
-if(!game||!player)
-throw new Error(
-"Invalid game response."
-);
+    const result =
+      await db.rpc(
+        "create_game",
+        {
+          p_host_token:getToken(),
+          p_name:name,
+          p_max_players:12
+        }
+      );
 
-saveRoster([
-{
-id:player.id,
-display_name:player.display_name
-}
-]);
+    if(result.error)
+      throw result.error;
 
-saveRoom();
+    if(!result.data)
+      throw new Error(
+        "No game data returned."
+      );
 
-openLobby();
+    game =
+      result.data.game;
 
-}catch(error){
+    player =
+      result.data.player;
 
-console.error(error);
+    if(!game || !player)
+      throw new Error(
+        "Invalid game response."
+      );
 
-setStatus(
-createStatus,
-"Could not create room: "+
-error.message,
-"err"
-);
+    savedRoster = [{
+      id:player.id,
+      display_name:player.display_name
+    }];
 
-}finally{
+    saveRoom();
 
-createButton.disabled=false;
+    await openLobby();
 
-}
+  }catch(error){
 
+    console.error(error);
+
+    setStatus(
+      createStatus,
+      "Could not create room: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "err"
+    );
+
+  }finally{
+
+    createButton.disabled = false;
+
+  }
 }
 
 
 /* =========================================================
-   JOIN
+   JOIN GAME
 ========================================================= */
 
 async function joinGame(){
 
-const name=joinName.value.trim();
+  if(!db){
 
-const code=joinCode.value
-.trim()
-.toUpperCase();
+    await checkConnection();
 
-if(!name){
+    if(!db)
+      return;
 
-setStatus(
-joinStatus,
-"Enter your name.",
-"err"
-);
+  }
 
-return;
+  const name =
+    joinName.value.trim();
 
-}
+  const code =
+    joinCode.value
+    .trim()
+    .toUpperCase();
 
-if(!/^[A-Z0-9]{6}$/.test(code)){
+  if(!name){
 
-setStatus(
-joinStatus,
-"Enter the 6-character room code.",
-"err"
-);
+    setStatus(
+      joinStatus,
+      "Enter your name.",
+      "err"
+    );
 
-return;
+    return;
+  }
 
-}
+  if(!/^[A-Z0-9]{6}$/.test(code)){
 
-joinButton.disabled=true;
+    setStatus(
+      joinStatus,
+      "Enter the 6-character room code.",
+      "err"
+    );
 
-setStatus(
-joinStatus,
-"Joining room..."
-);
+    return;
+  }
 
-try{
+  joinButton.disabled = true;
 
-const result=
-await db.rpc(
-"join_game",
-{
-p_code:code,
-p_player_token:getToken(),
-p_name:name
-}
-);
+  setStatus(
+    joinStatus,
+    "Joining room..."
+  );
 
-if(result.error)
-throw result.error;
+  try{
 
-game=result.data.game;
-player=result.data.player;
+    const result =
+      await db.rpc(
+        "join_game",
+        {
+          p_code:code,
+          p_player_token:getToken(),
+          p_name:name
+        }
+      );
 
-saveRoom();
+    if(result.error)
+      throw result.error;
 
-openLobby();
+    game =
+      result.data.game;
 
-}catch(error){
+    player =
+      result.data.player;
 
-console.error(error);
+    if(!game || !player)
+      throw new Error(
+        "Invalid game response."
+      );
 
-setStatus(
-joinStatus,
-"Could not join room: "+
-error.message,
-"err"
-);
+    saveRoom();
 
-}finally{
+    await openLobby();
 
-joinButton.disabled=false;
+  }catch(error){
 
-}
+    console.error(error);
 
+    setStatus(
+      joinStatus,
+      "Could not join room: " +
+      (
+        error.message ||
+        "Unknown error"
+      ),
+      "err"
+    );
+
+  }finally{
+
+    joinButton.disabled = false;
+
+  }
 }
 
 
@@ -1338,137 +762,181 @@ joinButton.disabled=false;
    REJOIN CHECK
 ========================================================= */
 
-/*
- IMPORTANT FIX:
-
-We do NOT trust the saved roster.
-
-We directly count the players currently
-inside the room.
-
-Rejoin is shown ONLY when:
-- the room exists
-- this player still exists
-- there are at least TWO players currently
-  in the room
-*/
-
 async function checkForPreviousGame(){
 
-const code=localStorage.getItem(
-"imposter_room_code"
-);
+  const savedCode =
+    localStorage.getItem(
+      "imposter_room_code"
+    );
 
-if(!code)
-return;
+  if(!savedCode)
+    return;
 
-try{
+  loadSavedRoster();
 
-const result=
-await db.rpc(
-"resume_game",
-{
-p_code:code,
-p_player_token:getToken()
-}
-);
+  try{
 
-if(result.error)
-throw result.error;
+    const result =
+      await db.rpc(
+        "resume_game",
+        {
+          p_code:savedCode,
+          p_player_token:getToken()
+        }
+      );
 
-if(!result.data)
-throw new Error("Unavailable");
+    if(result.error)
+      throw result.error;
 
-const oldGame=result.data.game;
-const oldPlayer=result.data.player;
+    if(!result.data)
+      throw new Error(
+        "Previous game unavailable."
+      );
 
-if(!oldGame||!oldPlayer)
-throw new Error("Unavailable");
+    const previousGame =
+      result.data.game;
 
+    const previousPlayer =
+      result.data.player;
 
-const playersResult=
-await db
-.from("game_players")
-.select("id,display_name,is_alive")
-.eq("game_id",oldGame.id);
+    if(!previousGame || !previousPlayer)
+      throw new Error(
+        "Previous game unavailable."
+      );
 
-if(playersResult.error)
-throw playersResult.error;
+    const activeStatuses = [
+      "lobby",
+      "playing",
+      "clues",
+      "voting",
+      "results"
+    ];
 
-const currentPlayers=
-playersResult.data||[];
+    if(
+      !activeStatuses.includes(
+        previousGame.status
+      )
+    ){
 
+      throw new Error(
+        "Game is no longer active."
+      );
 
-/*
- The critical condition:
- there must be somebody besides you.
-*/
+    }
 
-if(currentPlayers.length<2){
+    const playersResult =
+      await db
+      .from("game_players")
+      .select(
+        "id,display_name,is_host,is_alive"
+      )
+      .eq(
+        "game_id",
+        previousGame.id
+      );
 
-rejoinCard.classList.add("hidden");
+    if(playersResult.error)
+      throw playersResult.error;
 
-return;
+    const currentPlayers =
+      playersResult.data || [];
 
-}
+    /*
+      IMPORTANT:
+      There must actually be another
+      person in the room.
+    */
 
+    if(currentPlayers.length < 2){
 
-const active=[
-"lobby",
-"playing",
-"clues",
-"voting",
-"results"
-];
+      rejoinCard.classList.add(
+        "hidden"
+      );
 
-if(!active.includes(oldGame.status)){
+      clearSavedRoom();
 
-rejoinCard.classList.add("hidden");
+      return;
+    }
 
-return;
+    /*
+      If we have a saved roster,
+      make sure the room still contains
+      the same group.
+    */
 
-}
+    if(savedRoster.length){
 
+      const currentIds =
+        new Set(
+          currentPlayers.map(
+            p => p.id
+          )
+        );
 
-let phase="Game in progress.";
+      const everyoneStillHere =
+        savedRoster.every(
+          p => currentIds.has(p.id)
+        );
 
-if(oldGame.status==="lobby")
-phase="The lobby is still open.";
+      if(!everyoneStillHere){
 
-if(oldGame.status==="playing"||
-oldGame.status==="clues")
-phase="The clue round is active.";
+        rejoinCard.classList.add(
+          "hidden"
+        );
 
-if(oldGame.status==="voting")
-phase="Voting is active.";
+        return;
+      }
 
-if(oldGame.status==="results")
-phase="The results are showing.";
+    }
 
+    let phaseText =
+      "Game in progress.";
 
-rejoinInfo.innerHTML=
-"Room <strong>"+
-oldGame.code+
-"</strong><br>"+
-phase+
-"<br><br>"+
-currentPlayers.length+
-" players are currently in the room.";
+    if(previousGame.status === "lobby")
+      phaseText =
+        "The lobby is still open.";
 
+    if(previousGame.status === "playing")
+      phaseText =
+        "The role round is active.";
 
-rejoinCard.classList.remove("hidden");
+    if(previousGame.status === "clues")
+      phaseText =
+        "The clue round is active.";
 
-}catch(error){
+    if(previousGame.status === "voting")
+      phaseText =
+        "Voting is active.";
 
-console.log(
-"No rejoinable game:",
-error.message
-);
+    if(previousGame.status === "results")
+      phaseText =
+        "The results are being shown.";
 
-rejoinCard.classList.add("hidden");
+    rejoinInfo.innerHTML =
+      "Room <strong>" +
+      previousGame.code +
+      "</strong><br>" +
+      phaseText +
+      "<br><br>" +
+      currentPlayers.length +
+      " players are still in the game.";
 
-}
+    rejoinCard.classList.remove(
+      "hidden"
+    );
 
+  }catch(error){
+
+    console.log(
+      "No rejoinable game:",
+      error.message
+    );
+
+    rejoinCard.classList.add(
+      "hidden"
+    );
+
+  }
 }
 
 
@@ -1476,128 +944,154 @@ rejoinCard.classList.add("hidden");
    REJOIN
 ========================================================= */
 
-rejoinButton.onclick=async()=>{
+rejoinButton.onclick = async () => {
 
-const code=localStorage.getItem(
-"imposter_room_code"
-);
+  const savedCode =
+    localStorage.getItem(
+      "imposter_room_code"
+    );
 
-if(!code)
-return;
+  if(!savedCode)
+    return;
 
-rejoinButton.disabled=true;
+  rejoinButton.disabled = true;
 
-try{
+  rejoinInfo.textContent =
+    "Rejoining game...";
 
-const result=
-await db.rpc(
-"resume_game",
-{
-p_code:code,
-p_player_token:getToken()
-}
-);
+  try{
 
-if(result.error)
-throw result.error;
+    const result =
+      await db.rpc(
+        "resume_game",
+        {
+          p_code:savedCode,
+          p_player_token:getToken()
+        }
+      );
 
-game=result.data.game;
-player=result.data.player;
+    if(result.error)
+      throw result.error;
 
+    if(!result.data)
+      throw new Error(
+        "Game is no longer available."
+      );
 
-/*
- Check AGAIN immediately before joining.
-*/
+    game =
+      result.data.game;
 
-const playersResult=
-await db
-.from("game_players")
-.select("id,display_name")
-.eq("game_id",game.id);
+    player =
+      result.data.player;
 
-if(playersResult.error)
-throw playersResult.error;
+    if(!game || !player)
+      throw new Error(
+        "Invalid game response."
+      );
 
-if(
-(playersResult.data||[]).length<2
-){
+    const resultPlayers =
+      await db
+      .from("game_players")
+      .select(
+        "id,display_name"
+      )
+      .eq(
+        "game_id",
+        game.id
+      );
 
-throw new Error(
-"No other players are still in this room."
-);
+    if(resultPlayers.error)
+      throw resultPlayers.error;
 
-}
+    const currentPlayers =
+      resultPlayers.data || [];
 
-rejoinCard.classList.add("hidden");
+    if(currentPlayers.length < 2){
 
-saveRoom();
+      game = null;
+      player = null;
 
-openLobby();
+      clearSavedRoom();
 
-await syncGame();
+      throw new Error(
+        "Nobody else is still in that game."
+      );
 
-}catch(error){
+    }
 
-console.error(error);
+    saveRoom();
 
-rejoinInfo.textContent=
-error.message;
+    rejoinCard.classList.add(
+      "hidden"
+    );
 
-clearSavedRoom();
+    lastGameStatus = null;
 
-setTimeout(()=>{
-rejoinCard.classList.add("hidden");
-},1800);
+    await openLobby();
+    await syncGame();
 
-}finally{
+  }catch(error){
 
-rejoinButton.disabled=false;
+    console.error(
+      "Rejoin error:",
+      error
+    );
 
-}
+    game = null;
+    player = null;
+
+    rejoinInfo.textContent =
+      error.message ||
+      "Could not rejoin the game.";
+
+  }finally{
+
+    rejoinButton.disabled = false;
+
+  }
 
 };
 
 
 /* =========================================================
-   FORGET
+   DON'T REJOIN
 ========================================================= */
 
-forgetGameButton.onclick=()=>{
+forgetGameButton.onclick = () => {
 
-clearSavedRoom();
+  clearSavedRoom();
 
-rejoinCard.classList.add(
-"hidden"
-);
+  rejoinCard.classList.add(
+    "hidden"
+  );
 
 };
 
 
 /* =========================================================
-   OPEN LOBBY
+   LOBBY
 ========================================================= */
 
 async function openLobby(){
 
-if(!game||!player)
-return;
+  if(!game || !player)
+    return;
 
-show(lobby);
+  show(lobby);
 
-roomCode.textContent=game.code;
+  roomCode.textContent =
+    game.code;
 
-hostControls.classList.toggle(
-"hidden",
-!player.is_host
-);
+  hostControls.classList.toggle(
+    "hidden",
+    !player.is_host
+  );
 
-updateLeaveUI();
+  await loadPlayers();
 
-await loadPlayers();
+  subscribeToGame();
 
-subscribeToGame();
-
-startSyncLoop();
+  startSyncLoop();
 
 }
 
@@ -1608,90 +1102,89 @@ startSyncLoop();
 
 async function loadPlayers(){
 
-if(!game)
-return;
+  if(!game || !db)
+    return;
 
-try{
+  try{
 
-const result=
-await db
-.from("game_players")
-.select(
-"id,display_name,is_host,is_alive"
-)
-.eq("game_id",game.id)
-.order("joined_at");
+    const result =
+      await db
+      .from("game_players")
+      .select(
+        "id,display_name,is_host,is_alive"
+      )
+      .eq(
+        "game_id",
+        game.id
+      )
+      .order("joined_at");
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-const list=result.data||[];
+    const list =
+      result.data || [];
 
-players.innerHTML=
-"<h3>Players ("+
-list.length+
-")</h3>";
+    if(list.length)
+      saveRoster(list);
 
-list.forEach(p=>{
+    players.innerHTML =
+      "<h3>Players (" +
+      list.length +
+      ")</h3>";
 
-const div=
-document.createElement("div");
+    list.forEach(p => {
 
-div.className="player";
+      const div =
+        document.createElement("div");
 
-div.textContent=p.display_name;
+      div.className =
+        "player";
 
-if(player&&p.id===player.id){
+      div.textContent =
+        p.display_name;
 
-div.textContent+=" (You)";
+      if(p.id === player?.id)
+        div.textContent +=
+          " (You)";
 
-}
+      if(p.is_host){
 
-if(p.is_host){
+        const h =
+          document.createElement("span");
 
-const h=
-document.createElement("span");
+        h.className = "host";
+        h.textContent = "HOST";
 
-h.className="host";
-h.textContent="HOST";
+        div.appendChild(h);
 
-div.appendChild(h);
+      }
 
-}
+      players.appendChild(div);
 
-players.appendChild(div);
+    });
 
-});
+    lobbyStatus.textContent =
+      list.length +
+      " player" +
+      (
+        list.length === 1
+        ? ""
+        : "s"
+      ) +
+      " in the room.";
 
+  }catch(error){
 
-lobbyStatus.textContent=
-list.length+
-" player"+
-(list.length===1?"":"s")+
-" in the room.";
+    console.error(
+      "Player loading:",
+      error
+    );
 
+    players.innerHTML =
+      "<p>Could not load players. Retrying...</p>";
 
-/*
- Save roster only as informational memory.
- Rejoin never trusts it.
-*/
-
-savedRoster=list.map(p=>({
-id:p.id,
-display_name:p.display_name
-}));
-
-localStorage.setItem(
-"imposter_room_roster",
-JSON.stringify(savedRoster)
-);
-
-}catch(error){
-
-console.error(error);
-
-}
-
+  }
 }
 
 
@@ -1701,99 +1194,117 @@ console.error(error);
 
 function subscribeToGame(){
 
-if(!game)
-return;
+  if(!game || !db)
+    return;
 
-if(channel){
+  if(channel){
 
-try{
-db.removeChannel(channel);
-}catch{}
+    try{
+      db.removeChannel(channel);
+    }catch(e){}
 
-}
+    channel = null;
 
-channel=
-db.channel(
-"imposter-"+game.id
-)
+  }
 
-.on(
-"postgres_changes",
-{
-event:"*",
-schema:"public",
-table:"games",
-filter:"id=eq."+game.id
-},
-async()=>{
-await syncGame();
-}
-)
+  const roomId = game.id;
 
-.on(
-"postgres_changes",
-{
-event:"*",
-schema:"public",
-table:"game_players",
-filter:"game_id=eq."+game.id
-},
-async()=>{
-await loadPlayers();
-await syncGame();
-}
-)
+  channel =
+    db
+    .channel(
+      "imposter-room-" + roomId
+    )
 
-.subscribe(status=>{
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"games",
+        filter:"id=eq." + roomId
+      },
+      async () => {
+        await syncGame();
+      }
+    )
 
-if(status==="SUBSCRIBED"){
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"game_players",
+        filter:"game_id=eq." + roomId
+      },
+      async () => {
 
-setConnection(
-true,
-"Multiplayer connected"
-);
+        await loadPlayers();
+        await syncGame();
 
-}
+      }
+    )
 
-if(
-status==="CHANNEL_ERROR"||
-status==="TIMED_OUT"
-){
+    .subscribe(status => {
 
-setConnection(
-false,
-"Realtime reconnecting..."
-);
+      console.log(
+        "Realtime status:",
+        status
+      );
 
-setTimeout(()=>{
+      if(status === "SUBSCRIBED"){
 
-if(game)
-subscribeToGame();
+        setConnection(
+          true,
+          "Multiplayer connected"
+        );
 
-},1500);
+      }
 
-}
+      if(
+        status === "CHANNEL_ERROR" ||
+        status === "TIMED_OUT"
+      ){
 
-});
+        setConnection(
+          false,
+          "Realtime reconnecting..."
+        );
+
+        setTimeout(
+          () => {
+            if(game)
+              subscribeToGame();
+          },
+          1500
+        );
+
+      }
+
+    });
 
 }
 
 
 /* =========================================================
-   SYNC LOOP
+   POLLING SAFETY NET
 ========================================================= */
 
 function startSyncLoop(){
 
-clearInterval(syncInterval);
+  clearInterval(
+    syncInterval
+  );
 
-syncInterval=
-setInterval(
-()=>{
-if(game) syncGame();
-},
-1000
-);
+  syncInterval =
+    setInterval(
+      async () => {
+
+        if(game)
+          await syncGame();
+
+      },
+      700
+    );
 
 }
 
@@ -1804,86 +1315,114 @@ if(game) syncGame();
 
 async function syncGame(){
 
-if(!game||!db||syncing)
-return;
+  if(
+    !game ||
+    !db ||
+    syncing
+  )
+    return;
 
-syncing=true;
+  syncing = true;
 
-try{
+  try{
 
-const result=
-await db
-.from("games")
-.select("*")
-.eq("id",game.id)
-.maybeSingle();
+    const result =
+      await db
+      .from("games")
+      .select("*")
+      .eq(
+        "id",
+        game.id
+      )
+      .maybeSingle();
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-if(!result.data)
-throw new Error(
-"Game no longer exists."
-);
+    if(!result.data)
+      throw new Error(
+        "Game no longer exists."
+      );
 
-game=result.data;
+    game =
+      result.data;
 
-saveRoom();
+    saveRoom();
 
-setConnection(
-true,
-"Multiplayer connected"
-);
+    setConnection(
+      true,
+      "Multiplayer connected"
+    );
 
-const status=game.status;
+    const status =
+      game.status;
 
-if(status!==lastStatus){
+    if(status !== lastGameStatus){
 
-lastStatus=status;
+      lastGameStatus =
+        status;
 
-await handlePhase(status);
+      await handlePhase(status);
 
-}else{
+    }else{
 
-if(status==="clues"){
+      /*
+        Keep each phase synchronized even
+        when the status itself has not changed.
+      */
 
-await showGameScreen();
+      if(status === "clues"){
 
-}
+        await syncClueState();
 
-if(status==="voting" &&
-votingScreen.classList.contains("hidden")){
+      }
 
-await showVoting();
+      else if(status === "voting"){
 
-}
+        if(
+          votingScreen.classList.contains(
+            "hidden"
+          )
+        ){
 
-if(status==="results" &&
-resultsScreen.classList.contains("hidden")){
+          await showVoting();
 
-await loadResults();
+        }
 
-}
+      }
 
-}
+      else if(status === "results"){
 
-}catch(error){
+        /*
+          ALWAYS refresh results.
+          This is important because the
+          transition can happen on another
+          player's device.
+        */
 
-console.warn(
-"Sync:",
-error.message
-);
+        await loadResults();
 
-setConnection(
-false,
-"Reconnecting..."
-);
+      }
 
-}finally{
+    }
 
-syncing=false;
+  }catch(error){
 
-}
+    console.warn(
+      "Sync error:",
+      error.message
+    );
+
+    setConnection(
+      false,
+      "Reconnecting..."
+    );
+
+  }finally{
+
+    syncing = false;
+
+  }
 
 }
 
@@ -1892,370 +1431,903 @@ syncing=false;
    PHASE HANDLER
 ========================================================= */
 
-async function handlePhase(status){
+async function handlePhase(phase){
 
-if(!game||!player)
-return;
+  if(!game || !player)
+    return;
 
-if(status==="lobby"){
+  console.log(
+    "AUTHORITATIVE PHASE:",
+    phase
+  );
 
-await loadPlayers();
-openLobby();
+  if(phase === "lobby"){
 
-return;
+    await loadPlayers();
+
+    openLobby();
+
+  }
+
+  else if(phase === "playing"){
+
+    await loadRole();
+
+  }
+
+  else if(phase === "clues"){
+
+    /*
+      Load the role and then immediately
+      show the clue screen.
+
+      NO "Synchronizing..." role screen.
+    */
+
+    await loadRole();
+
+    await syncClueState();
+
+  }
+
+  else if(phase === "voting"){
+
+    await showVoting();
+
+  }
+
+  else if(phase === "results"){
+
+    await loadResults();
+
+  }
 
 }
 
-if(
-status==="playing"||
-status==="clues"
+
+/* =========================================================
+   ROLE
+========================================================= */
+
+async function loadRole(){
+
+  if(!game || !player)
+    return;
+
+  try{
+
+    const result =
+      await db.rpc(
+        "get_role",
+        {
+          p_code:game.code,
+          p_player_token:getToken()
+        }
+      );
+
+    if(result.error)
+      throw result.error;
+
+    const data =
+      result.data;
+
+    if(!data)
+      throw new Error(
+        "No role data returned."
+      );
+
+    if(data.status === "lobby"){
+
+      openLobby();
+      return;
+
+    }
+
+    currentRound =
+      Number(
+        data.round || 1
+      );
+
+    timeLimit =
+      Number(
+        data.clue_time || 60
+      );
+
+    playerRole =
+      data.is_imposter
+      ? "imposter"
+      : "player";
+
+    playerWord =
+      data.word ||
+      data.secret_word ||
+      "";
+
+    playerHint =
+      data.hint ||
+      data.imposter_hint ||
+      data.hint_word ||
+      data.hintWord ||
+      "";
+
+    roleCategory.textContent =
+      data.category ||
+      "CATEGORY";
+
+    /*
+      We don't send players to the
+      separate role screen anymore.
+      Their role appears on the clue screen.
+    */
+
+    renderRoleOnClueScreen();
+
+    if(game.status === "clues"){
+
+      show(clueScreen);
+
+    }else{
+
+      show(roleScreen);
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Role error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ROLE DISPLAY ON CLUE SCREEN
+========================================================= */
+
+function renderRoleOnClueScreen(){
+
+  /*
+    Remove any old role panel.
+  */
+
+  const old =
+    document.getElementById(
+      "clueRoleInfo"
+    );
+
+  if(old)
+    old.remove();
+
+  const box =
+    document.createElement("div");
+
+  box.id =
+    "clueRoleInfo";
+
+  box.style.cssText =
+    `
+    background:#101522;
+    border:1px solid #353c51;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:18px;
+    text-align:center;
+    `;
+
+  const title =
+    document.createElement("div");
+
+  title.style.cssText =
+    `
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1px;
+    color:#9299aa;
+    margin-bottom:7px;
+    `;
+
+  title.textContent =
+    "YOUR ROLE";
+
+  box.appendChild(title);
+
+  const role =
+    document.createElement("div");
+
+  role.style.cssText =
+    `
+    font-size:25px;
+    font-weight:900;
+    margin-bottom:8px;
+    `;
+
+  if(playerRole === "imposter"){
+
+    role.textContent =
+      "YOU ARE THE IMPOSTER";
+
+    role.style.color =
+      "#ff8199";
+
+  }else{
+
+    role.textContent =
+      "YOU ARE NOT THE IMPOSTER";
+
+    role.style.color =
+      "#7ee5a7";
+
+  }
+
+  box.appendChild(role);
+
+  if(playerRole === "imposter"){
+
+    if(playerHint){
+
+      const hint =
+        document.createElement("div");
+
+      hint.style.cssText =
+        `
+        margin-top:10px;
+        padding:12px;
+        border-radius:10px;
+        background:#1c2130;
+        color:#fff;
+        font-size:18px;
+        font-weight:800;
+        `;
+
+      hint.innerHTML =
+        "💡 Hint: " +
+        escapeHTML(playerHint);
+
+      box.appendChild(hint);
+
+    }else{
+
+      const hint =
+        document.createElement("div");
+
+      hint.style.cssText =
+        `
+        color:#9299aa;
+        font-size:13px;
+        `;
+
+      hint.textContent =
+        "You don't know the secret word.";
+
+      box.appendChild(hint);
+
+    }
+
+  }else{
+
+    const word =
+      document.createElement("div");
+
+    word.style.cssText =
+      `
+      margin-top:10px;
+      font-size:28px;
+      font-weight:900;
+      `;
+
+    word.textContent =
+      playerWord || "WORD";
+
+    box.appendChild(word);
+
+  }
+
+  /*
+    Put the role information at the
+    very top of the clue screen.
+  */
+
+  clueScreen.insertBefore(
+    box,
+    clueScreen.firstChild
+  );
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   READY
+========================================================= */
+
+readyButton.onclick =
+async () => {
+
+  readyButton.disabled = true;
+
+  await syncClueState();
+
+};
+
+
+/* =========================================================
+   GET CLUE ORDER
+========================================================= */
+
+async function getClueOrder(){
+
+  const result =
+    await db
+    .from("game_players")
+    .select(
+      "id,display_name,is_alive"
+    )
+    .eq(
+      "game_id",
+      game.id
+    )
+    .eq(
+      "is_alive",
+      true
+    );
+
+  if(result.error)
+    throw result.error;
+
+  const map =
+    new Map(
+      (result.data || [])
+      .map(
+        p => [p.id,p]
+      )
+    );
+
+  const serverOrder =
+    Array.isArray(game.clue_order)
+    ? game.clue_order
+    : [];
+
+  let order =
+    serverOrder
+    .map(
+      id => map.get(id)
+    )
+    .filter(Boolean);
+
+  if(!order.length){
+
+    order =
+      (result.data || []).slice();
+
+  }
+
+  return order;
+}
+
+
+/* =========================================================
+   CLUE SYNC
+========================================================= */
+
+async function syncClueState(){
+
+  if(!game)
+    return;
+
+  if(game.status !== "clues")
+    return;
+
+  try{
+
+    clueOrder =
+      await getClueOrder();
+
+    currentTurn =
+      Number(
+        game.clue_turn || 0
+      );
+
+    currentRound =
+      Number(
+        game.round_number || 1
+      );
+
+    timeLimit =
+      Number(
+        game.clue_time || 60
+      );
+
+    skippedPlayers =
+      new Set(
+        Array.isArray(
+          game.skipped_player_ids
+        )
+        ? game.skipped_player_ids
+        : []
+      );
+
+    renderRoleOnClueScreen();
+
+    renderClueList();
+
+    startClueTurn();
+
+    show(clueScreen);
+
+  }catch(error){
+
+    console.error(
+      "Clue sync:",
+      error
+    );
+
+    /*
+      NEVER leave the player staring at
+      "Synchronizing..." forever.
+    */
+
+    clueTurnMessage.textContent =
+      "Loading clue order...";
+
+    setTimeout(
+      () => {
+
+        if(
+          game &&
+          game.status === "clues"
+        ){
+
+          syncClueState();
+
+        }
+
+      },
+      500
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER CLUE ORDER
+========================================================= */
+
+function renderClueList(){
+
+  clueOrderList.innerHTML = "";
+
+  clueOrder.forEach(
+    (p,index) => {
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "orderRow";
+
+      if(index === currentTurn)
+        row.classList.add(
+          "current"
+        );
+
+      if(index < currentTurn)
+        row.classList.add(
+          "done"
+        );
+
+      if(
+        skippedPlayers.has(p.id)
+      ){
+
+        row.classList.add(
+          "skipped"
+        );
+
+      }
+
+      const number =
+        document.createElement("div");
+
+      number.className =
+        "orderNumber";
+
+      number.textContent =
+        index + 1;
+
+      row.appendChild(number);
+
+      const name =
+        document.createElement("div");
+
+      name.className =
+        "orderName";
+
+      name.textContent =
+        p.display_name;
+
+      if(
+        p.id === player.id
+      ){
+
+        const you =
+          document.createElement("span");
+
+        you.className =
+          "youBadge";
+
+        you.textContent =
+          "YOU";
+
+        name.appendChild(you);
+
+      }
+
+      row.appendChild(name);
+
+      const status =
+        document.createElement("div");
+
+      status.className =
+        "orderStatus";
+
+      if(
+        skippedPlayers.has(p.id)
+      ){
+
+        status.textContent =
+          "⏭ SKIPPED";
+
+      }
+
+      else if(index < currentTurn){
+
+        status.textContent =
+          "✓ DONE";
+
+      }
+
+      else if(index === currentTurn){
+
+        status.textContent =
+          "NOW";
+
+      }
+
+      else{
+
+        status.textContent =
+          "WAITING";
+
+      }
+
+      row.appendChild(status);
+
+      clueOrderList.appendChild(row);
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   CLUE TURN
+========================================================= */
+
+function startClueTurn(){
+
+  if(game?.status !== "clues")
+    return;
+
+  if(!clueOrder.length){
+
+    clueTurnMessage.textContent =
+      "Loading clue order...";
+
+    return;
+  }
+
+  if(
+    currentTurn >= clueOrder.length
+  ){
+
+    clueDoneButton.style.display =
+      "none";
+
+    clueTurnMessage.textContent =
+      "Everyone has given a clue.";
+
+    return;
+
+  }
+
+  const current =
+    clueOrder[currentTurn];
+
+  const isMe =
+    current &&
+    current.id === player.id;
+
+  if(isMe){
+
+    clueTurnMessage.textContent =
+      "🔥 IT'S YOUR TURN — GIVE YOUR CLUE!";
+
+    clueDoneButton.style.display =
+      "block";
+
+    clueDoneButton.disabled =
+      false;
+
+  }else{
+
+    /*
+      No "next person" system.
+      The order is already shown.
+    */
+
+    clueTurnMessage.textContent =
+      "Follow the order above.";
+
+    clueDoneButton.style.display =
+      "none";
+
+  }
+
+  hostSkipControls.classList.toggle(
+    "hidden",
+    !player.is_host
+  );
+
+  startAuthoritativeTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startAuthoritativeTimer(){
+
+  clearInterval(
+    clueInterval
+  );
+
+  if(timeLimit === 0){
+
+    clueTimer.className =
+      "noTimer";
+
+    clueTimer.textContent =
+      "♾️ No Time Limit";
+
+    return;
+
+  }
+
+  const started =
+    game.clue_turn_started_at;
+
+  if(!started){
+
+    clueTimer.className =
+      "timer";
+
+    clueTimer.textContent =
+      timeLimit;
+
+    return;
+
+  }
+
+  function update(){
+
+    const elapsed =
+      (
+        Date.now() -
+        new Date(started).getTime()
+      ) / 1000;
+
+    const remaining =
+      Math.max(
+        0,
+        Math.ceil(
+          timeLimit - elapsed
+        )
+      );
+
+    clueTimer.textContent =
+      remaining;
+
+    clueTimer.className =
+      remaining <= 10
+      ? "timerWarning"
+      : "timer";
+
+    if(remaining <= 0){
+
+      clearInterval(
+        clueInterval
+      );
+
+      if(
+        player.is_host &&
+        game.status === "clues"
+      ){
+
+        advanceClue(
+          true,
+          true
+        );
+
+      }
+
+    }
+
+  }
+
+  update();
+
+  clueInterval =
+    setInterval(
+      update,
+      250
+    );
+
+}
+
+
+/* =========================================================
+   ADVANCE CLUE
+========================================================= */
+
+async function advanceClue(
+  skip=false,
+  timeout=false
 ){
 
-await showGameScreen();
+  if(!game || !player)
+    return;
 
-return;
+  if(game.status !== "clues")
+    return;
 
-}
+  const expectedTurn =
+    Number(
+      game.clue_turn || 0
+    );
 
-if(status==="voting"){
+  if(
+    expectedTurn !== currentTurn
+  )
+    return;
 
-await showVoting();
-return;
+  const current =
+    clueOrder[currentTurn];
 
-}
+  if(!current)
+    return;
 
-if(status==="results"){
+  if(
+    !skip &&
+    current.id !== player.id
+  )
+    return;
 
-await loadResults();
-return;
+  try{
 
-}
+    clueDoneButton.disabled =
+      true;
 
-}
+    hostSkipButton.disabled =
+      true;
 
+    const result =
+      await db.rpc(
+        "advance_clue",
+        {
+          p_code:game.code,
+          p_player_token:getToken(),
+          p_expected_turn:expectedTurn,
+          p_skip:skip
+        }
+      );
 
-/* =========================================================
-   LOAD ROLE + GAME SCREEN
-========================================================= */
+    if(result.error)
+      throw result.error;
 
-async function showGameScreen(){
+    await syncGame();
 
-if(!game||!player)
-return;
+  }catch(error){
 
-try{
+    console.error(
+      "Advance clue:",
+      error
+    );
 
-const result=
-await db.rpc(
-"get_role",
-{
-p_code:game.code,
-p_player_token:getToken()
-}
-);
+    await syncGame();
 
-if(result.error)
-throw result.error;
+  }finally{
 
-const data=result.data;
+    clueDoneButton.disabled =
+      false;
 
-if(!data)
-throw new Error(
-"No role data."
-);
+    hostSkipButton.disabled =
+      false;
 
-if(data.status==="lobby"){
-
-openLobby();
-return;
-
-}
-
-gameCategory.textContent=
-data.category||
-"CATEGORY";
-
-
-if(data.is_imposter){
-
-myRole.textContent=
-"🚨 YOU ARE THE IMPOSTER";
-
-myRole.className=
-"myRole imposter";
-
-myWord.textContent=
-"";
-
-roleDescription.textContent=
-"You don't know the word. Listen to the clues and try to blend in.";
-
-}else{
-
-myRole.textContent=
-"✓ YOU ARE NOT THE IMPOSTER";
-
-myRole.className=
-"myRole normal";
-
-myWord.textContent=
-data.word||"";
-
-roleDescription.textContent=
-"Give a clue about the word without making it too obvious.";
-
-}
-
-
-await loadClueOrder();
-
-show(clueScreen);
-
-startSharedTimer();
-
-updateLeaveUI();
-
-}catch(error){
-
-console.error(
-"Game screen:",
-error
-);
-
-}
+  }
 
 }
 
 
 /* =========================================================
-   CLUE ORDER
+   CLUE DONE
 ========================================================= */
 
-async function loadClueOrder(){
+clueDoneButton.onclick =
+async () => {
 
-if(!game)
-return;
+  if(!game || !player)
+    return;
 
-const result=
-await db
-.from("game_players")
-.select(
-"id,display_name,is_alive"
-)
-.eq("game_id",game.id)
-.eq("is_alive",true)
-.order("joined_at");
+  if(
+    clueOrder[currentTurn]?.id !==
+    player.id
+  )
+    return;
 
-if(result.error)
-throw result.error;
+  await advanceClue(
+    false,
+    false
+  );
 
-const map=
-new Map(
-(result.data||[]).map(
-p=>[p.id,p]
-)
-);
-
-let ids=
-Array.isArray(game.clue_order)
-?game.clue_order
-:[];
-
-clueOrder=
-ids
-.map(id=>map.get(id))
-.filter(Boolean);
-
-
-/*
- Fallback if clue_order is unavailable.
-*/
-
-if(!clueOrder.length){
-
-clueOrder=
-(result.data||[]).slice();
-
-}
-
-clueOrderList.innerHTML="";
-
-clueOrder.forEach((p,index)=>{
-
-const row=
-document.createElement("div");
-
-row.className="orderRow";
-
-const num=
-document.createElement("div");
-
-num.className="orderNumber";
-num.textContent=index+1;
-
-row.appendChild(num);
-
-const name=
-document.createElement("div");
-
-name.className="orderName";
-name.textContent=p.display_name;
-
-if(p.id===player.id){
-
-const badge=
-document.createElement("span");
-
-badge.className="youBadge";
-badge.textContent="YOU";
-
-name.appendChild(badge);
-
-}
-
-row.appendChild(name);
-
-clueOrderList.appendChild(row);
-
-});
-
-
-/*
- Host controls only.
-*/
-
-hostClueControls.classList.toggle(
-"hidden",
-!player.is_host
-);
-
-}
+};
 
 
 /* =========================================================
-   SHARED TIMER
+   HOST SKIP
 ========================================================= */
 
-function startSharedTimer(){
+hostSkipButton.onclick =
+async () => {
 
-clearInterval(
-clueTimerInterval
-);
+  if(!player.is_host)
+    return;
 
-const limit=
-Number(game.clue_time);
+  if(!clueOrder[currentTurn])
+    return;
 
-if(limit===0){
+  if(
+    !confirm(
+      "Skip " +
+      clueOrder[currentTurn].display_name +
+      "'s turn?"
+    )
+  )
+    return;
 
-clueTimer.className="timer noTimer";
-clueTimer.textContent=
-"♾️ No Time Limit";
-
-return;
-
-}
-
-clueTimer.className="timer";
-
-const start=
-game.started_at||
-game.clue_turn_started_at;
-
-if(!start){
-
-clueTimer.textContent=limit;
-return;
-
-}
-
-function tick(){
-
-const elapsed=
-(
-Date.now()-
-new Date(start).getTime()
-)/1000;
-
-const remaining=
-Math.max(
-0,
-Math.ceil(limit-elapsed)
-);
-
-clueTimer.textContent=
-remaining;
-
-if(remaining<=10){
-
-clueTimer.className=
-"timer timerWarning";
-
-}
-
-if(remaining<=0){
-
-clearInterval(clueTimerInterval);
-
-if(player.is_host){
-
-hostClueControls.classList.remove(
-"hidden"
-);
-
-}
-
-}
-
-}
-
-tick();
-
-clueTimerInterval=
-setInterval(tick,250);
-
-}
-
-
-/* =========================================================
-   START VOTING
-========================================================= */
-
-startVotingButton.onclick=async()=>{
-
-if(!player?.is_host)
-return;
-
-startVotingButton.disabled=true;
-
-try{
-
-const result=
-await db.rpc(
-"set_phase",
-{
-p_code:game.code,
-p_host_token:getToken(),
-p_phase:"voting"
-}
-);
-
-if(result.error)
-throw result.error;
-
-await syncGame();
-
-}catch(error){
-
-alert(
-"Could not start voting:\n"+
-error.message
-);
-
-}finally{
-
-startVotingButton.disabled=false;
-
-}
+  await advanceClue(
+    true,
+    false
+  );
 
 };
 
@@ -2266,73 +2338,122 @@ startVotingButton.disabled=false;
 
 async function showVoting(){
 
-clearInterval(clueTimerInterval);
+  clearInterval(
+    clueInterval
+  );
 
-show(votingScreen);
+  show(votingScreen);
 
-selectedVote=null;
+  selectedVote = null;
 
-submitVoteButton.disabled=true;
+  submitVoteButton.disabled =
+    true;
 
-voteStatus.textContent=
-"Choose a player.";
+  voteStatus.textContent =
+    "Choose a player.";
 
-try{
+  try{
 
-const result=
-await db
-.from("game_players")
-.select(
-"id,display_name,is_alive"
-)
-.eq("game_id",game.id)
-.eq("is_alive",true)
-.order("joined_at");
+    const result =
+      await db
+      .from("game_players")
+      .select(
+        "id,display_name,is_alive"
+      )
+      .eq(
+        "game_id",
+        game.id
+      )
+      .eq(
+        "is_alive",
+        true
+      );
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-votePlayers.innerHTML="";
+    votePlayers.innerHTML = "";
 
-(result.data||[]).forEach(p=>{
+    (result.data || []).forEach(
+      p => {
 
-if(p.id===player.id)
-return;
+        if(
+          p.id === player.id
+        )
+          return;
 
-const button=
-document.createElement("button");
+        const button =
+          document.createElement("button");
 
-button.className="choice";
-button.textContent=p.display_name;
+        button.className =
+          "choice";
 
-button.onclick=()=>{
+        button.textContent =
+          p.display_name;
 
-document
-.querySelectorAll(".choice")
-.forEach(
-b=>b.classList.remove("selected")
-);
+        button.onclick =
+          () => {
 
-button.classList.add("selected");
+            document
+            .querySelectorAll(
+              ".choice"
+            )
+            .forEach(
+              x =>
+                x.classList.remove(
+                  "selected"
+                )
+            );
 
-selectedVote=p.id;
+            button.classList.add(
+              "selected"
+            );
 
-submitVoteButton.disabled=false;
+            selectedVote =
+              p.id;
 
-};
+            submitVoteButton.disabled =
+              false;
 
-votePlayers.appendChild(button);
+            voteStatus.textContent =
+              "Vote selected. Tap Submit Vote.";
 
-});
+          };
 
-}catch(error){
+        votePlayers.appendChild(
+          button
+        );
 
-console.error(error);
+      }
+    );
 
-voteStatus.textContent=
-"Could not load players.";
+  }catch(error){
 
-}
+    console.error(
+      "Voting:",
+      error
+    );
+
+    voteStatus.textContent =
+      "Could not load players. Retrying...";
+
+    setTimeout(
+      () => {
+
+        if(
+          game &&
+          game.status === "voting"
+        ){
+
+          showVoting();
+
+        }
+
+      },
+      1000
+    );
+
+  }
 
 }
 
@@ -2341,119 +2462,79 @@ voteStatus.textContent=
    SUBMIT VOTE
 ========================================================= */
 
-submitVoteButton.onclick=async()=>{
+submitVoteButton.onclick =
+async () => {
 
-if(!selectedVote)
-return;
+  if(!selectedVote)
+    return;
 
-submitVoteButton.disabled=true;
+  submitVoteButton.disabled =
+    true;
 
-try{
+  voteStatus.textContent =
+    "Submitting vote...";
 
-const result=
-await db.rpc(
-"cast_vote",
-{
-p_code:game.code,
-p_voter_token:getToken(),
-p_target_id:selectedVote
-}
-);
+  try{
 
-if(result.error)
-throw result.error;
+    const result =
+      await db.rpc(
+        "cast_vote",
+        {
+          p_code:game.code,
+          p_voter_token:getToken(),
+          p_target_id:selectedVote
+        }
+      );
 
-voteStatus.textContent=
-"✓ Vote submitted. Waiting for everyone...";
+    if(result.error)
+      throw result.error;
 
-if(player.is_host){
+    const data =
+      result.data || {};
 
-await finishVotesWhenReady();
+    if(data.all_voted){
 
-}
+      voteStatus.textContent =
+        "✓ Everyone voted. Showing results...";
 
-}catch(error){
+    }else{
 
-voteStatus.textContent=
-error.message;
+      voteStatus.textContent =
+        "✓ Vote submitted. Waiting for everyone...";
 
-submitVoteButton.disabled=false;
+    }
 
-}
+    /*
+      DO NOT make the host manually
+      finish voting anymore.
+
+      Supabase cast_vote() changes
+      the game to results automatically
+      when everyone has voted.
+
+      Force an immediate sync so the
+      screen changes quickly.
+    */
+
+    await syncGame();
+
+  }catch(error){
+
+    console.error(
+      "Vote error:",
+      error
+    );
+
+    voteStatus.textContent =
+      error.message ||
+      "Could not submit vote.";
+
+    submitVoteButton.disabled =
+      false;
+
+  }
 
 };
-
-
-/* =========================================================
-   FINISH VOTES
-========================================================= */
-
-async function finishVotesWhenReady(){
-
-for(let i=0;i<40;i++){
-
-if(
-!game||
-game.status!=="voting"
-)
-return;
-
-try{
-
-const alive=
-await db
-.from("game_players")
-.select("id")
-.eq("game_id",game.id)
-.eq("is_alive",true);
-
-const votes=
-await db
-.from("game_votes")
-.select(
-"id",
-{count:"exact",head:true}
-)
-.eq("game_id",game.id)
-.eq("round_number",game.round_number);
-
-if(
-!alive.error &&
-!votes.error &&
-votes.count>=alive.data.length
-){
-
-const phase=
-await db.rpc(
-"set_phase",
-{
-p_code:game.code,
-p_host_token:getToken(),
-p_phase:"results"
-}
-);
-
-if(!phase.error){
-
-await syncGame();
-
-}
-
-return;
-
-}
-
-}catch(error){
-
-console.warn(error);
-
-}
-
-await sleep(500);
-
-}
-
-}
 
 
 /* =========================================================
@@ -2462,173 +2543,427 @@ await sleep(500);
 
 async function loadResults(){
 
-if(!game)
-return;
+  if(!game || !player)
+    return;
 
-show(resultsScreen);
+  if(game.status !== "results")
+    return;
 
-nextRoundButton.style.display=
-player.is_host?"block":"none";
+  try{
 
-backLobbyButton.style.display=
-player.is_host?"block":"none";
+    /*
+      IMPORTANT:
+      This is the PUBLIC result function.
 
-try{
+      EVERY player can use it.
+      The host is no longer required.
+    */
 
-const result=
-await db.rpc(
-"get_vote_result",
-{
-p_code:game.code,
-p_host_token:
-player.is_host
-?getToken()
-:null
-}
-);
+    const result =
+      await db.rpc(
+        "get_public_vote_result",
+        {
+          p_code:game.code,
+          p_player_token:getToken()
+        }
+      );
 
-if(
-player.is_host &&
-result.error
-){
+    if(result.error)
+      throw result.error;
 
-throw result.error;
+    const list =
+      Array.isArray(result.data)
+      ? result.data
+      : [];
 
-}
+    show(resultsScreen);
 
-if(
-player.is_host &&
-Array.isArray(result.data)
-){
+    voteResults.innerHTML = "";
 
-const list=result.data;
+    /*
+      Determine the highest vote count.
+    */
 
-voteResults.innerHTML="";
+    let highestVotes = 0;
 
-if(!list.length){
+    if(list.length){
 
-resultText.textContent=
-"No votes.";
+      highestVotes =
+        Math.max(
+          ...list.map(
+            p =>
+              Number(
+                p.votes || 0
+              )
+          )
+        );
 
-return;
+    }
 
-}
+    const leaders =
+      list.filter(
+        p =>
+          Number(p.votes || 0) ===
+          highestVotes
+      );
 
-const winner=list[0];
+    const isTie =
+      highestVotes > 0 &&
+      leaders.length > 1;
 
-resultText.textContent=
-winner.votes>0
-?winner.name+
-" received the most votes."
-:"No votes.";
+    /*
+      SHOW EVERYONE THE RESULTS
+    */
 
-list.forEach(p=>{
+    if(!list.length){
 
-const div=
-document.createElement("div");
+      resultText.textContent =
+        "No votes.";
 
-div.className="player";
+    }
 
-div.textContent=
-p.name+
-" — "+
-p.votes+
-(p.votes===1?" vote":" votes");
+    else if(isTie){
 
-voteResults.appendChild(div);
+      resultText.innerHTML =
+        "⚖️ TIE VOTE";
 
-});
+    }
 
-}else{
+    else{
 
-resultText.textContent=
-"Voting complete.";
+      const winner =
+        leaders[0];
 
-voteResults.innerHTML=
-'<div class="infoBox">The host is showing the final results.</div>';
+      resultText.textContent =
+        winner.name +
+        " received the most votes.";
 
-}
+    }
 
-}catch(error){
 
-console.error(error);
+    /*
+      Render vote totals for everyone.
+    */
 
-resultText.textContent=
-"Results are complete.";
+    list.forEach(
+      p => {
 
-}
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "player";
+
+        div.textContent =
+          p.name +
+          " — " +
+          p.votes +
+          (
+            Number(p.votes) === 1
+            ? " vote"
+            : " votes"
+          );
+
+        voteResults.appendChild(
+          div
+        );
+
+      }
+    );
+
+
+    /*
+      The results screen now has ONLY
+      the appropriate next action.
+    */
+
+    nextRoundButton.style.display =
+      "none";
+
+    backLobbyButton.style.display =
+      "none";
+
+    /*
+      Remove old tie button if one exists.
+    */
+
+    const oldTieButton =
+      document.getElementById(
+        "tieClueButton"
+      );
+
+    if(oldTieButton)
+      oldTieButton.remove();
+
+    const oldWaiting =
+      document.getElementById(
+        "resultsWaiting"
+      );
+
+    if(oldWaiting)
+      oldWaiting.remove();
+
+
+    if(isTie){
+
+      /*
+        TIE:
+        Host gets the button to return
+        everyone to the clue round.
+
+        Other players simply wait.
+      */
+
+      if(player.is_host){
+
+        const tieButton =
+          document.createElement("button");
+
+        tieButton.id =
+          "tieClueButton";
+
+        tieButton.className =
+          "secondary";
+
+        tieButton.textContent =
+          "↩ Back To Clue Round";
+
+        tieButton.style.marginTop =
+          "10px";
+
+        tieButton.onclick =
+          async () => {
+
+            tieButton.disabled =
+              true;
+
+            try{
+
+              const response =
+                await db.rpc(
+                  "tie_back_to_clues",
+                  {
+                    p_code:game.code,
+                    p_host_token:getToken()
+                  }
+                );
+
+              if(response.error)
+                throw response.error;
+
+              lastGameStatus =
+                null;
+
+              await syncGame();
+
+            }catch(error){
+
+              console.error(
+                "Tie return:",
+                error
+              );
+
+              alert(
+                error.message ||
+                "Could not return to clue round."
+              );
+
+              tieButton.disabled =
+                false;
+
+            }
+
+          };
+
+        resultsScreen.appendChild(
+          tieButton
+        );
+
+      }else{
+
+        const waiting =
+          document.createElement("div");
+
+        waiting.id =
+          "resultsWaiting";
+
+        waiting.className =
+          "infoBox";
+
+        waiting.textContent =
+          "It's a tie. Waiting for the host to send everyone back to the clue round.";
+
+        resultsScreen.appendChild(
+          waiting
+        );
+
+      }
+
+    }
+
+    else{
+
+      /*
+        NO TIE:
+        Only the host controls starting
+        the next game.
+
+        Everyone sees the same results.
+      */
+
+      if(player.is_host){
+
+        nextRoundButton.style.display =
+          "block";
+
+        nextRoundButton.textContent =
+          "Next Game";
+
+      }else{
+
+        const waiting =
+          document.createElement("div");
+
+        waiting.id =
+          "resultsWaiting";
+
+        waiting.className =
+          "infoBox";
+
+        waiting.textContent =
+          "Waiting for the host to start the next game.";
+
+        resultsScreen.appendChild(
+          waiting
+        );
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Results error:",
+      error
+    );
+
+    /*
+      Don't trap the player forever.
+    */
+
+    setTimeout(
+      () => {
+
+        if(
+          game &&
+          game.status === "results"
+        ){
+
+          loadResults();
+
+        }
+
+      },
+      700
+    );
+
+  }
 
 }
 
 
 /* =========================================================
-   NEXT ROUND
+   NEXT GAME
 ========================================================= */
 
-nextRoundButton.onclick=async()=>{
+nextRoundButton.onclick =
+async () => {
 
-if(!player.is_host)
-return;
+  if(!player.is_host)
+    return;
 
-nextRoundButton.disabled=true;
+  nextRoundButton.disabled =
+    true;
 
-try{
+  try{
 
-const cat=
-category.value==="random"
-?null
-:parseInt(category.value,10);
+    const selectedCategory =
+      category.value === "random"
+      ? null
+      : parseInt(
+          category.value,
+          10
+        );
 
-const time=
-parseInt(clueTime.value,10);
+    const selectedTime =
+      parseInt(
+        clueTime.value,
+        10
+      );
 
-const result=
-await db.rpc(
-"start_game",
-{
-p_code:game.code,
-p_host_token:getToken(),
-p_category_id:cat,
-p_clue_time:time
-}
-);
+    const result =
+      await db.rpc(
+        "start_game",
+        {
+          p_code:game.code,
+          p_host_token:getToken(),
+          p_category_id:selectedCategory,
+          p_clue_time:
+            Number.isFinite(
+              selectedTime
+            )
+            ? selectedTime
+            : 60
+        }
+      );
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-game=result.data.game;
+    game =
+      result.data.game;
 
-saveRoom();
+    saveRoom();
 
-const phase=
-await db.rpc(
-"set_phase",
-{
-p_code:game.code,
-p_host_token:getToken(),
-p_phase:"clues"
-}
-);
+    const phase =
+      await db.rpc(
+        "set_phase",
+        {
+          p_code:game.code,
+          p_host_token:getToken(),
+          p_phase:"playing"
+        }
+      );
 
-if(phase.error)
-throw phase.error;
+    if(phase.error)
+      throw phase.error;
 
-lastStatus=null;
+    lastGameStatus = null;
 
-await syncGame();
+    await syncGame();
 
-}catch(error){
+  }catch(error){
 
-alert(
-"Could not start next round:\n"+
-error.message
-);
+    console.error(
+      "Next game:",
+      error
+    );
 
-}finally{
+    alert(
+      "Could not start next game:\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
 
-nextRoundButton.disabled=false;
+  }finally{
 
-}
+    nextRoundButton.disabled =
+      false;
+
+  }
 
 };
 
@@ -2637,84 +2972,99 @@ nextRoundButton.disabled=false;
    START GAME
 ========================================================= */
 
-startButton.onclick=async()=>{
+startButton.onclick =
+async () => {
 
-if(!player?.is_host)
-return;
+  if(!player?.is_host)
+    return;
 
-startButton.disabled=true;
+  startButton.disabled =
+    true;
 
-try{
+  try{
 
-const cat=
-category.value==="random"
-?null
-:parseInt(category.value,10);
+    const selectedCategory =
+      category.value === "random"
+      ? null
+      : parseInt(
+          category.value,
+          10
+        );
 
-const time=
-parseInt(clueTime.value,10);
+    const selectedTime =
+      parseInt(
+        clueTime.value,
+        10
+      );
 
-const result=
-await db.rpc(
-"start_game",
-{
-p_code:game.code,
-p_host_token:getToken(),
-p_category_id:cat,
-p_clue_time:time
-}
-);
+    const result =
+      await db.rpc(
+        "start_game",
+        {
+          p_code:game.code,
+          p_host_token:getToken(),
+          p_category_id:selectedCategory,
+          p_clue_time:
+            Number.isFinite(
+              selectedTime
+            )
+            ? selectedTime
+            : 60
+        }
+      );
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-game=result.data.game;
+    game =
+      result.data.game;
 
-saveRoom();
+    saveRoom();
 
+    timeLimit =
+      Number(
+        game.clue_time || 60
+      );
 
-/*
- IMPORTANT FIX:
+    const phase =
+      await db.rpc(
+        "set_phase",
+        {
+          p_code:game.code,
+          p_host_token:getToken(),
+          p_phase:"playing"
+        }
+      );
 
-Immediately put the game into the
-actual clue phase.
+    if(phase.error)
+      throw phase.error;
 
-The old version left the game in
-"playing", which caused the clue
-screen synchronization problem.
-*/
+    lastGameStatus =
+      null;
 
-const phase=
-await db.rpc(
-"set_phase",
-{
-p_code:game.code,
-p_host_token:getToken(),
-p_phase:"clues"
-}
-);
+    await syncGame();
 
-if(phase.error)
-throw phase.error;
+  }catch(error){
 
-lastStatus=null;
+    console.error(
+      "Start game:",
+      error
+    );
 
-await syncGame();
+    alert(
+      "Could not start game:\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
 
-}catch(error){
+  }finally{
 
-console.error(error);
+    startButton.disabled =
+      false;
 
-alert(
-"Could not start game:\n"+
-error.message
-);
-
-}finally{
-
-startButton.disabled=false;
-
-}
+  }
 
 };
 
@@ -2723,87 +3073,105 @@ startButton.disabled=false;
    BACK TO LOBBY
 ========================================================= */
 
-backLobbyButton.onclick=async()=>{
+backLobbyButton.onclick =
+async () => {
 
-if(!player.is_host)
-return;
+  if(!player.is_host)
+    return;
 
-try{
+  try{
 
-const result=
-await db.rpc(
-"reset_to_lobby",
-{
-p_code:game.code,
-p_host_token:getToken()
-}
-);
+    const result =
+      await db.rpc(
+        "reset_to_lobby",
+        {
+          p_code:game.code,
+          p_host_token:getToken()
+        }
+      );
 
-if(result.error)
-throw result.error;
+    if(result.error)
+      throw result.error;
 
-lastStatus=null;
+    lastGameStatus =
+      null;
 
-await syncGame();
+    await syncGame();
 
-}catch(error){
+  }catch(error){
 
-alert(
-"Could not return to lobby:\n"+
-error.message
-);
+    alert(
+      "Could not return to lobby:\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
 
-}
+  }
 
 };
 
 
 /* =========================================================
-   BRING EVERYONE BACK
+   BRING EVERYONE BACK TO LOBBY
 ========================================================= */
 
-bringLobbyButton.onclick=async()=>{
+bringLobbyButton.onclick =
+async () => {
 
-if(!player?.is_host)
-return;
+  if(!player.is_host)
+    return;
 
-if(!confirm(
-"Bring everyone back to the lobby?"
-))
-return;
+  const yes =
+    confirm(
+      "Bring everyone back to the lobby?\n\n" +
+      "This will end the current round."
+    );
 
-bringLobbyButton.disabled=true;
+  if(!yes)
+    return;
 
-try{
+  bringLobbyButton.disabled =
+    true;
 
-const result=
-await db.rpc(
-"reset_to_lobby",
-{
-p_code:game.code,
-p_host_token:getToken()
-}
-);
+  try{
 
-if(result.error)
-throw result.error;
+    const result =
+      await db.rpc(
+        "reset_to_lobby",
+        {
+          p_code:game.code,
+          p_host_token:getToken()
+        }
+      );
 
-lastStatus=null;
+    if(result.error)
+      throw result.error;
 
-await syncGame();
+    lastGameStatus =
+      null;
 
-}catch(error){
+    await syncGame();
 
-alert(
-"Could not return everyone:\n"+
-error.message
-);
+  }catch(error){
 
-}finally{
+    console.error(error);
 
-bringLobbyButton.disabled=false;
+    alert(
+      "Could not return everyone to lobby:\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
 
-}
+  }finally{
+
+    bringLobbyButton.disabled =
+      false;
+
+  }
 
 };
 
@@ -2812,92 +3180,128 @@ bringLobbyButton.disabled=false;
    LEAVE GAME
 ========================================================= */
 
-gameLeaveButton.onclick=async()=>{
+gameLeaveButton.onclick =
+async () => {
 
-if(!game||!player)
-return;
+  if(!game || !player)
+    return;
 
-if(!confirm(
-"Leave this game?\n\n"+
-"If you're the host, another player will become host."
-))
-return;
+  const yes =
+    confirm(
+      "Leave this game?\n\n" +
+      "You will be removed from the room."
+    );
 
-gameLeaveButton.disabled=true;
+  if(!yes)
+    return;
 
-try{
+  gameLeaveButton.disabled =
+    true;
 
-const result=
-await db.rpc(
-"leave_game",
-{
-p_code:game.code,
-p_player_token:getToken()
-}
-);
+  try{
 
-if(result.error)
-throw result.error;
+    const result =
+      await db.rpc(
+        "leave_game",
+        {
+          p_code:game.code,
+          p_player_token:getToken()
+        }
+      );
 
-await clearLocalGame();
+    if(result.error)
+      throw result.error;
 
-}catch(error){
+    await clearLocalGame();
 
-alert(
-"Could not leave game:\n"+
-error.message
-);
+  }catch(error){
 
-}finally{
+    console.error(
+      "Leave game:",
+      error
+    );
 
-gameLeaveButton.disabled=false;
+    alert(
+      "Could not leave the game:\n" +
+      (
+        error.message ||
+        "Unknown error"
+      )
+    );
 
-}
+  }finally{
+
+    gameLeaveButton.disabled =
+      false;
+
+  }
 
 };
 
 
 /* =========================================================
-   CLEAR LOCAL
+   CLEAR LOCAL GAME
 ========================================================= */
 
 async function clearLocalGame(){
 
-clearInterval(clueTimerInterval);
-clearInterval(syncInterval);
+  clearInterval(
+    clueInterval
+  );
 
-if(channel){
+  clearInterval(
+    syncInterval
+  );
 
-try{
-await db.removeChannel(channel);
-}catch{}
+  if(channel){
 
-channel=null;
+    try{
 
-}
+      await db.removeChannel(
+        channel
+      );
 
-game=null;
-player=null;
-clueOrder=[];
+    }catch(e){}
 
-lastStatus=null;
+    channel = null;
 
-clearSavedRoom();
+  }
 
-show(home);
+  game = null;
+  player = null;
 
-updateLeaveUI();
+  clueOrder = [];
+  skippedPlayers.clear();
 
-setStatus(
-createStatus,
-"Ready to create a game.",
-"ok"
-);
+  currentTurn = 0;
+  currentRound = 1;
 
-setConnection(
-true,
-"Multiplayer connected"
-);
+  playerRole = null;
+  playerWord = "";
+  playerHint = "";
+
+  lastGameStatus = null;
+
+  clearSavedRoom();
+
+  rejoinCard.classList.add(
+    "hidden"
+  );
+
+  show(home);
+
+  updateLeaveButton();
+
+  setStatus(
+    createStatus,
+    "Ready to create a game.",
+    "ok"
+  );
+
+  setConnection(
+    true,
+    "Multiplayer connected"
+  );
 
 }
 
@@ -2907,29 +3311,33 @@ true,
 ========================================================= */
 
 document.addEventListener(
-"visibilitychange",
-async()=>{
+  "visibilitychange",
+  async () => {
 
-if(!document.hidden&&game){
+    if(
+      !document.hidden &&
+      game
+    ){
 
-await syncGame();
+      await syncGame();
 
-}
+    }
 
-}
+  }
 );
 
+
 window.addEventListener(
-"pageshow",
-async()=>{
+  "pageshow",
+  async () => {
 
-if(game){
+    if(game){
 
-await syncGame();
+      await syncGame();
 
-}
+    }
 
-}
+  }
 );
 
 
@@ -2938,40 +3346,52 @@ await syncGame();
 ========================================================= */
 
 joinCode.addEventListener(
-"input",
-()=>{
+  "input",
+  () => {
 
-joinCode.value=
-joinCode.value
-.toUpperCase()
-.replace(/[^A-Z0-9]/g,"")
-.slice(0,6);
+    joinCode.value =
+      joinCode.value
+      .toUpperCase()
+      .replace(
+        /[^A-Z0-9]/g,
+        ""
+      )
+      .slice(0,6);
 
-}
+  }
 );
+
 
 createName.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter")
-createGame();
-}
+  "keydown",
+  e => {
+
+    if(e.key === "Enter")
+      createGame();
+
+  }
 );
+
 
 joinName.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter")
-joinGame();
-}
+  "keydown",
+  e => {
+
+    if(e.key === "Enter")
+      joinGame();
+
+  }
 );
 
+
 joinCode.addEventListener(
-"keydown",
-e=>{
-if(e.key==="Enter")
-joinGame();
-}
+  "keydown",
+  e => {
+
+    if(e.key === "Enter")
+      joinGame();
+
+  }
 );
 
 
@@ -2979,72 +3399,51 @@ joinGame();
    EVENTS
 ========================================================= */
 
-createButton.onclick=createGame;
-joinButton.onclick=joinGame;
+createButton.onclick =
+createGame;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function saveRoster(list){
-
-savedRoster=list.map(p=>({
-id:p.id,
-display_name:p.display_name
-}));
-
-}
-
-function sleep(ms){
-
-return new Promise(
-resolve=>setTimeout(resolve,ms)
-);
-
-}
+joinButton.onclick =
+joinGame;
 
 
 /* =========================================================
    INITIALIZE
 ========================================================= */
 
-(async()=>{
+(async () => {
 
-try{
+  try{
 
-initSupabase();
+    initSupabase();
 
-}catch(error){
+  }catch(error){
 
-console.error(error);
+    console.error(error);
 
-setConnection(
-false,
-"Supabase unavailable"
-);
+    setConnection(
+      false,
+      "Supabase unavailable"
+    );
 
-setStatus(
-createStatus,
-"Supabase failed to load. Reload the page.",
-"err"
-);
+    setStatus(
+      createStatus,
+      "Supabase failed to load. Reload the page.",
+      "err"
+    );
 
-return;
+    return;
 
-}
+  }
 
-await checkConnection();
+  await checkConnection();
 
-/*
- Only SHOW rejoin.
- Do not automatically reconnect.
-*/
+  /*
+    Only SHOW a rejoin option if there
+    are actually at least two people
+    still in the room.
+  */
 
-await checkForPreviousGame();
+  await checkForPreviousGame();
 
 })();
 </script>
-
-</body>
-</html>
