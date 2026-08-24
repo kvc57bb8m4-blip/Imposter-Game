@@ -536,7 +536,28 @@ hr{
   line-height:1.5
 }
 
-/* FINAL GUESS VOTE RESULTS */
+/* FINAL GUESS VOTE REVEAL */
+
+.guessReveal{
+  margin-top:22px;
+  padding-top:20px;
+  border-top:1px solid #292f43
+}
+
+.guessRevealTitle{
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  margin:0
+}
+
+.guessRevealSubtitle{
+  text-align:center;
+  color:#9299aa;
+  font-size:13px;
+  line-height:1.4;
+  margin:6px 0 14px
+}
 
 .guessVotePlayer{
   background:#0d111b;
@@ -813,13 +834,11 @@ Clue time
 </label>
 
 <select id="clueTime">
-
 <option value="30">30 seconds</option>
 <option value="45">45 seconds</option>
 <option value="60" selected>60 seconds</option>
 <option value="90">90 seconds</option>
 <option value="0">♾️ No Time Limit</option>
-
 </select>
 
 <div class="toggleRow">
@@ -972,6 +991,7 @@ Think carefully...
 
 </div>
 
+
 <div id="guessWaitingPanel" class="guessWaiting hidden">
 
 <div class="guessWaitingIcon">⏳</div>
@@ -987,11 +1007,18 @@ They now have one final chance to guess the secret word.
 
 </div>
 
-<hr>
 
-<div id="guessVoteResults" class="hidden">
+<!-- VOTE REVEAL DURING FINAL GUESS -->
 
-<h3 class="center">Vote Results</h3>
+<div id="guessVoteResults" class="guessReveal hidden">
+
+<h3 class="guessRevealTitle">
+Vote Results
+</h3>
+
+<div class="guessRevealSubtitle">
+The Imposter was correctly identified. Here is how everyone voted.
+</div>
 
 <div id="guessVoteResultsList"></div>
 
@@ -1157,12 +1184,13 @@ const voteStatus=document.getElementById("voteStatus");
 
 const guessPanel=document.getElementById("imposterGuessPanel");
 const guessWaitingPanel=document.getElementById("guessWaitingPanel");
-const finalGuessInput=document.getElementById("finalGuessInput");
-const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
-const finalGuessStatus=document.getElementById("finalGuessStatus");
 
 const guessVoteResults=document.getElementById("guessVoteResults");
 const guessVoteResultsList=document.getElementById("guessVoteResultsList");
+
+const finalGuessInput=document.getElementById("finalGuessInput");
+const submitFinalGuessButton=document.getElementById("submitFinalGuessButton");
+const finalGuessStatus=document.getElementById("finalGuessStatus");
 
 const resultText=document.getElementById("resultText");
 const voteResults=document.getElementById("voteResults");
@@ -1197,8 +1225,7 @@ let token=localStorage.getItem(
 
 if(!token){
 
-token=
-crypto.randomUUID();
+token=crypto.randomUUID();
 
 localStorage.setItem(
 "imposter_player_token",
@@ -1944,7 +1971,6 @@ true,
 
 });
 
-
 }
 
 
@@ -2495,6 +2521,8 @@ guessVoteResultsList.innerHTML="";
 
 try{
 
+/* CHECK WHETHER THIS PLAYER IS THE IMPOSTER */
+
 const stateResult=
 await db.rpc(
 "get_imposter_guess_state",
@@ -2507,7 +2535,8 @@ p_player_token:getToken()
 if(stateResult.error)
 throw stateResult.error;
 
-const data=stateResult.data;
+const data=
+stateResult.data;
 
 if(data.is_imposter){
 
@@ -2521,42 +2550,52 @@ guessWaitingPanel.classList.remove("hidden");
 
 }
 
-/* GET PUBLIC VOTE RESULTS */
 
-const resultsResult=
+/* =====================================================
+   GET VOTE RESULTS + ROLE REVEAL
+===================================================== */
+
+const revealResult=
 await db.rpc(
-"get_public_results",
+"get_vote_reveal_state",
 {
 p_code:game.code,
 p_player_token:getToken()
 }
 );
 
-if(resultsResult.error)
-throw resultsResult.error;
+if(revealResult.error)
+throw revealResult.error;
 
-const results=
-resultsResult.data;
+const reveal=
+revealResult.data;
 
 guessVoteResultsList.innerHTML="";
 
-(results.players||[]).forEach(p=>{
+
+/* SHOW EVERY PLAYER */
+
+(reveal.players||[]).forEach(p=>{
 
 const div=
 document.createElement("div");
 
 div.className="guessVotePlayer";
 
+
 const top=
 document.createElement("div");
 
 top.className="guessVotePlayerTop";
 
+
 const name=
 document.createElement("div");
 
 name.className="guessVotePlayerName";
+
 name.textContent=p.name;
+
 
 const badge=
 document.createElement("span");
@@ -2574,8 +2613,10 @@ p.is_imposter
 ?"IMPOSTER"
 :"CIVILIAN";
 
+
 top.appendChild(name);
 top.appendChild(badge);
+
 
 const votes=
 document.createElement("div");
@@ -2590,6 +2631,7 @@ p.votes===1
 :" votes"
 );
 
+
 div.appendChild(top);
 div.appendChild(votes);
 
@@ -2597,7 +2639,11 @@ guessVoteResultsList.appendChild(div);
 
 });
 
+
+/* SHOW REVEAL */
+
 guessVoteResults.classList.remove("hidden");
+
 
 }catch(error){
 
@@ -2710,7 +2756,8 @@ p_player_token:getToken()
 if(result.error)
 throw result.error;
 
-const data=result.data;
+const data=
+result.data;
 
 if(!data)
 throw new Error("No results returned.");
@@ -2722,12 +2769,8 @@ actualWordBox.classList.remove(
 "hidden"
 );
 
-if(data.status==="imposter_guess"){
 
-resultText.innerHTML=
-"🚨 <span class='resultWrong'>The Imposter was caught!</span>";
-
-}else{
+/* WIN RESULT */
 
 if(data.correct===true){
 
@@ -2738,8 +2781,6 @@ resultText.innerHTML=
 
 resultText.innerHTML=
 "❌ <span class='resultWrong'>The civilians win!</span>";
-
-}
 
 }
 
@@ -2840,8 +2881,6 @@ voteResults.appendChild(div);
 
 });
 
-
-/* WINNER MESSAGE */
 
 const imposter=
 data.imposter_name;
@@ -3400,14 +3439,16 @@ document.addEventListener(
 async()=>{
 if(!document.hidden&&game)
 await syncGame();
-});
+}
+);
 
 window.addEventListener(
 "pageshow",
 async()=>{
 if(game)
 await syncGame();
-});
+}
+);
 
 
 /* =========================================================
